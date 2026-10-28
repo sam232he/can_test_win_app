@@ -7,7 +7,6 @@ namespace USBCANTool
     public sealed class SavedSlot
     {
         public bool Enabled { get; set; }
-        public bool RewriteOn { get; set; }
         public bool Extended { get; set; }
         public string Id { get; set; }
         public string Data { get; set; }

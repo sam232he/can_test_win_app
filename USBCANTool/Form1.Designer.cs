@@ -103,7 +103,7 @@ namespace USBCANTool
             this.grpDevice.Size = new System.Drawing.Size(880, 140);
             this.grpDevice.TabIndex = 0;
             this.grpDevice.TabStop = false;
-            this.grpDevice.Text = "RX / TX";
+            this.grpDevice.Text = "Channels";
             // 
             // lblColType
             // 
@@ -166,7 +166,7 @@ namespace USBCANTool
             this.lblRx.Name = "lblRx";
             this.lblRx.Size = new System.Drawing.Size(17, 12);
             this.lblRx.TabIndex = 6;
-            this.lblRx.Text = "RX";
+            this.lblRx.Text = "A";
             // 
             // cmbRxDevice
             // 
@@ -252,7 +252,7 @@ namespace USBCANTool
             this.lblTx.Name = "lblTx";
             this.lblTx.Size = new System.Drawing.Size(17, 12);
             this.lblTx.TabIndex = 13;
-            this.lblTx.Text = "TX";
+            this.lblTx.Text = "B";
             // 
             // cmbTxDevice
             // 
@@ -385,7 +385,7 @@ namespace USBCANTool
             this.grpRewrite.Size = new System.Drawing.Size(880, 170);
             this.grpRewrite.TabIndex = 1;
             this.grpRewrite.TabStop = false;
-            this.grpRewrite.Text = "IDs (filter / replace)";
+            this.grpRewrite.Text = "Rewrite";
             // 
             // grpRx
             // 
