@@ -18,6 +18,32 @@ Windows app that:
 > You still need the runtime DLLs from the full ZLG install package
 > (usually found next to the official demo or under the driver install folder).
 
+## Per-user installer (no administrator)
+
+You do not need PowerShell. The other PC only double-clicks the setup EXE (no PowerShell there either).
+
+**Build the setup file (pick one):**
+
+1. **Visual Studio** — open `USBCANTool.sln`, platform **x64**, Build **USBCANToolSetup** (or Build Solution). Output: `dist\USBCANToolSetup.exe`.
+2. **Command Prompt** — first build **USBCANTool** x64 in Visual Studio, then double-click `installer\Pack.bat` (or run it from `cmd.exe`). Same output file.
+
+If pack/setup fails looking for `zlgcan.dll`, copy the x64 ZLG runtime into `native\x64` (`zlgcan.dll` plus the `kerneldlls` folder).
+
+That writes **`dist\USBCANToolSetup.exe`**. Copy only that file to the other computer and double-click it. It does not request admin rights. It installs into `%LOCALAPPDATA%\Programs\USBCANTool` (this user only) and copies:
+
+- `USBCANTool.exe` and `USBCANTool.exe.config`
+- `zlgcan.dll`
+- the full `kerneldlls` folder
+
+Start Menu and optional desktop shortcuts are created for this user. Uninstall from the setup window, the Start Menu entry, or Apps & features (current user). Settings stay in `%AppData%\USBCANTool`.
+
+Quiet install: `USBCANToolSetup.exe /S`  
+Uninstall: `USBCANToolSetup.exe /uninstall`
+
+The **USB device driver** from ZLG is not inside this setup. If the adapter is new to that PC, install ZLG’s driver once (that step often needs admin). This setup only ships the application DLLs. The other PC also needs **.NET Framework 4.8** (already present on most Windows 10/11 machines).
+
+The packer looks for `zlgcan.dll` in `native\x64`, then `ZLG_CAN_SDK`, then the local Downloads ZLG package. After the first pack, `native\x64` is filled so later Visual Studio builds copy the same DLLs next to the EXE.
+
 ## How to build
 
 1. Open `USBCANTool.sln` in Visual Studio.
@@ -27,8 +53,8 @@ Windows app that:
 
 ## How to run
 
-1. Copy **`zlgcan.dll`** into the output folder
-   (`bin\x64\Debug\` or `bin\x86\Debug\` …).
+1. Copy **`zlgcan.dll`** into the output folder:
+   **x64** → `bin\x64\Debug\` (or Release). **Any CPU** (this project still targets x64) → `bin\Debug\`. **x86** → `bin\x86\Debug\`.
 2. Also copy the **`kerneldlls`** folder next to the EXE if your ZLG package requires it.
 3. Run the EXE.
 4. Set **RX** and **TX** rows independently: device type, USB **Idx**, **Ch**, protocol, bitrate (and **Data** baud for CAN FD). Same type+idx uses one adapter (two channels). Different type or idx opens two adapters.
@@ -62,5 +88,5 @@ USBCANTool/
 - Classic devices: `ZCAN_SetValue(handle, "n/baud_rate", …)` then `TYPE_CAN`.
 - USBCANFD devices: `can_type` is always `TYPE_CANFD`. Protocol CAN vs CAN FD is `n/protocol`. Baud is `n/canfd_abit_baud_rate` and, in CAN FD protocol, `n/canfd_dbit_baud_rate`. Clock is 60 MHz. **Term** is the internal 120 Ω resistor (`n/initenal_resistance`, after InitCAN). **ISO / Non-ISO** is `n/canfd_standard` (only when protocol is CAN FD).
 - RX and TX are configured one after the other (SetValue then InitCAN per channel) so each side gets its own bitrate. FD frames are sent with `ZCAN_TransmitFD` only when the TX side is CAN FD; otherwise they are truncated to classic 8-byte CAN.
-- Bridging runs on a background thread so a busy bus does not freeze the UI. The log keeps a rolling window (10k lines) and drops oldest pending lines if traffic is faster than the display. Many distinct CAN IDs are grouped in memory only for that window, so Group show cannot grow without bound.
+- Bridging uses separate RX and TX threads and a 16k-frame ring so a slow transmit does not stall receive. The status bar shows RX/TX counts, TX failures, ring overruns, and log drops. The packet list is a rolling 10k-line window.
 - If Open fails, check: driver installed, correct device type and USB index, matching DLL architecture, device not already opened by another program, and that the selected channel exists.

@@ -73,16 +73,15 @@ namespace USBCANTool
         public static bool IS_RTR(uint canId) => (canId & CAN_RTR_FLAG) != 0;
         public static bool IS_ERR(uint canId) => (canId & CAN_ERR_FLAG) != 0;
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct can_frame
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public unsafe struct can_frame
         {
             public uint can_id;
             public byte can_dlc;
             public byte __pad;
             public byte __res0;
             public byte __res1;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
-            public byte[] data;
+            public fixed byte data[8];
         }
 
         // Total size 32 bytes (can_type + canfd union size)
@@ -117,44 +116,67 @@ namespace USBCANTool
             public uint reserved;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct canfd_frame
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public unsafe struct canfd_frame
         {
             public uint can_id;
             public byte len;
             public byte flags;
             public byte __res0;
             public byte __res1;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = CANFD_MAX_DLEN)]
-            public byte[] data;
+            public fixed byte data[CANFD_MAX_DLEN];
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct ZCAN_Transmit_Data
+        public unsafe struct ZCAN_Transmit_Data
         {
             public can_frame frame;
             public uint transmit_type;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct ZCAN_Receive_Data
+        public unsafe struct ZCAN_Receive_Data
         {
             public can_frame frame;
             public ulong timestamp;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct ZCAN_TransmitFD_Data
+        public unsafe struct ZCAN_TransmitFD_Data
         {
             public canfd_frame frame;
             public uint transmit_type;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct ZCAN_ReceiveFD_Data
+        public unsafe struct ZCAN_ReceiveFD_Data
         {
             public canfd_frame frame;
             public ulong timestamp;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct ZCAN_CHANNEL_ERR_INFO
+        {
+            public uint error_code;
+            public byte passive_ErrData0;
+            public byte passive_ErrData1;
+            public byte passive_ErrData2;
+            public byte arLost_ErrData;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct ZCAN_CHANNEL_STATUS
+        {
+            public byte errInterrupt;
+            public byte regMode;
+            public byte regStatus;
+            public byte regALCapture;
+            public byte regECCapture;
+            public byte regEWLimit;
+            public byte regRECounter;
+            public byte regTECounter;
+            public uint Reserved;
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -543,18 +565,24 @@ namespace USBCANTool
         public static extern uint ZCAN_ClearBuffer(IntPtr channel_handle);
 
         [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern uint ZCAN_Transmit(IntPtr channel_handle, ref ZCAN_Transmit_Data pTransmit, uint len);
+        public static extern unsafe uint ZCAN_Transmit(IntPtr channel_handle, ZCAN_Transmit_Data* pTransmit, uint len);
 
         [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern uint ZCAN_Receive(IntPtr channel_handle, [In, Out] ZCAN_Receive_Data[] pReceive, uint len, int wait_time);
+        public static extern unsafe uint ZCAN_Receive(IntPtr channel_handle, ZCAN_Receive_Data* pReceive, uint len, int wait_time);
 
         [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern uint ZCAN_TransmitFD(IntPtr channel_handle, ref ZCAN_TransmitFD_Data pTransmit, uint len);
+        public static extern unsafe uint ZCAN_TransmitFD(IntPtr channel_handle, ZCAN_TransmitFD_Data* pTransmit, uint len);
 
         [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern uint ZCAN_ReceiveFD(IntPtr channel_handle, [In, Out] ZCAN_ReceiveFD_Data[] pReceive, uint len, int wait_time);
+        public static extern unsafe uint ZCAN_ReceiveFD(IntPtr channel_handle, ZCAN_ReceiveFD_Data* pReceive, uint len, int wait_time);
 
         [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern uint ZCAN_GetReceiveNum(IntPtr channel_handle, uint type);
+
+        [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern uint ZCAN_ReadChannelErrInfo(IntPtr channel_handle, ref ZCAN_CHANNEL_ERR_INFO pErrInfo);
+
+        [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern uint ZCAN_ReadChannelStatus(IntPtr channel_handle, ref ZCAN_CHANNEL_STATUS pCANStatus);
     }
 }

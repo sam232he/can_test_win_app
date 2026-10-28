@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
 namespace USBCANTool
 {
-    public partial class Form1 : Form
+    public unsafe partial class Form1 : Form
     {
         private IntPtr _rxDeviceHandle = IntPtr.Zero;
         private IntPtr _txDeviceHandle = IntPtr.Zero;
@@ -17,10 +19,10 @@ namespace USBCANTool
         private IntPtr _txChannelHandle = IntPtr.Zero;
         private uint _rxChannelIndex;
         private uint _txChannelIndex;
-        private bool _rxIsCanFdDevice;
-        private bool _txIsCanFdDevice;
-        private bool _rxProtocolFd;
-        private bool _txProtocolFd;
+        private volatile bool _rxIsCanFdDevice;
+        private volatile bool _txIsCanFdDevice;
+        private volatile bool _rxProtocolFd;
+        private volatile bool _txProtocolFd;
         private uint _lastRxDevType;
         private uint _lastTxDevType;
         private System.Windows.Forms.Timer _uiTimer;
@@ -29,16 +31,41 @@ namespace USBCANTool
         private readonly object _canLock = new object();
         private readonly object _rewriteLock = new object();
         private readonly object _pendingLock = new object();
-        private readonly Queue<CanPacket> _pending = new Queue<CanPacket>();
+        private readonly object _ringLock = new object();
+        private readonly Queue<LogItem> _pending = new Queue<LogItem>();
         private Thread _rxThread;
-        private volatile bool _rxRunning;
-        private volatile bool _bridgeTxFailed;
+        private Thread _txThread;
+        private volatile bool _bridgeRunning;
+        private volatile bool _txFailLatched;
         private DateTime _lastViewRebuild;
+        private DateTime _lastHealthPoll;
+        private string _healthText = "";
         private ZlgCanApi.ZCAN_Receive_Data[] _rxCanBuf;
         private ZlgCanApi.ZCAN_ReceiveFD_Data[] _rxFdBuf;
+        private ZlgCanApi.ZCAN_Transmit_Data[] _txCanBuf;
+        private ZlgCanApi.ZCAN_TransmitFD_Data[] _txFdBuf;
+        private GCHandle _rxCanPin;
+        private GCHandle _rxFdPin;
+        private GCHandle _txCanPin;
+        private GCHandle _txFdPin;
+        private BridgeFrame[] _ring;
+        private int _ringHead;
+        private int _ringTail;
+        private int _ringCount;
+        private readonly byte[] _rewriteScratch = new byte[8];
+        private long _cntRx;
+        private long _cntTx;
+        private long _cntTxFail;
+        private long _cntOverrun;
+        private long _cntLogDrop;
+        private long _cntRxEx;
         private const int RxBatch = 200;
+        private const int TxBatch = 64;
+        private const int RingSize = 16384;
         private const int MaxPending = 2000;
         private const int MaxDrainPerTick = 400;
+        private const int TxRetries = 3;
+        private const int ReceiveWaitMs = 4;
 
         private const int RewriteSlotCount = 10;
         private CheckBox[] _rewriteEnable;
@@ -107,9 +134,10 @@ namespace USBCANTool
             InitBaudList();
             InitDataBaudList();
             InitPacketView();
+            EnableListViewDoubleBuffer();
             InitRewriteSlots();
             ParseFilterIds();
-            InitRxBuffers();
+            InitNativeBuffers();
             _saveTimer = new System.Windows.Forms.Timer { Interval = 400 };
             _saveTimer.Tick += SaveTimer_Tick;
             cmbRxBaud.SelectedIndexChanged += SettingsChanged;
@@ -307,9 +335,8 @@ namespace USBCANTool
             ScheduleSave();
         }
 
-        private bool TryGetRewriteData(uint id, bool extended, out byte[] data)
+        private bool TryGetRewriteData(uint id, bool extended)
         {
-            data = null;
             lock (_rewriteLock)
             {
                 RewriteSlot[] slots = _rewriteSlots;
@@ -322,39 +349,26 @@ namespace USBCANTool
                         continue;
                     if (slot.Id != id || slot.Extended != extended)
                         continue;
-                    data = new byte[8];
-                    Array.Copy(slot.Data, data, 8);
+                    Array.Copy(slot.Data, _rewriteScratch, 8);
                     return true;
                 }
             }
             return false;
         }
 
-        private void TryRewriteCan(ref ZlgCanApi.can_frame frame)
+        private unsafe void TryRewrite(ref BridgeFrame frame)
         {
-            if (ZlgCanApi.IS_RTR(frame.can_id) || ZlgCanApi.IS_ERR(frame.can_id))
+            if (ZlgCanApi.IS_RTR(frame.CanId) || ZlgCanApi.IS_ERR(frame.CanId))
                 return;
-            byte[] data;
-            if (!TryGetRewriteData(ZlgCanApi.GET_ID(frame.can_id), ZlgCanApi.IS_EFF(frame.can_id), out data))
+            if (!TryGetRewriteData(ZlgCanApi.GET_ID(frame.CanId), ZlgCanApi.IS_EFF(frame.CanId)))
                 return;
-            if (frame.data == null || frame.data.Length < 8)
-                frame.data = new byte[8];
-            Array.Copy(data, frame.data, 8);
-            frame.can_dlc = 8;
-        }
-
-        private void TryRewriteFd(ref ZlgCanApi.canfd_frame frame)
-        {
-            if (ZlgCanApi.IS_RTR(frame.can_id) || ZlgCanApi.IS_ERR(frame.can_id))
-                return;
-            byte[] data;
-            if (!TryGetRewriteData(ZlgCanApi.GET_ID(frame.can_id), ZlgCanApi.IS_EFF(frame.can_id), out data))
-                return;
-            if (frame.data == null || frame.data.Length < ZlgCanApi.CANFD_MAX_DLEN)
-                frame.data = new byte[ZlgCanApi.CANFD_MAX_DLEN];
-            Array.Clear(frame.data, 0, frame.data.Length);
-            Array.Copy(data, frame.data, 8);
-            frame.len = 8;
+            BridgeFrame local = frame;
+            for (int i = 0; i < 8; i++)
+                local.Data[i] = _rewriteScratch[i];
+            for (int i = 8; i < 64; i++)
+                local.Data[i] = 0;
+            local.Len = 8;
+            frame = local;
         }
 
         private void UpdateUiState(bool open)
@@ -502,11 +516,14 @@ namespace USBCANTool
                 _txIsCanFdDevice = txFd;
                 _rxProtocolFd = rxProtoFd;
                 _txProtocolFd = txProtoFd;
-                _bridgeTxFailed = false;
+                _txFailLatched = false;
+                _cntRx = _cntTx = _cntTxFail = _cntOverrun = _cntLogDrop = _cntRxEx = 0;
                 lock (_pendingLock)
                     _pending.Clear();
+                ResetRing();
                 UpdateUiState(true);
-                StartRxThread();
+                try { ZlgCanApi.ZCAN_ClearBuffer(_rxChannelHandle); } catch { }
+                StartBridgeThreads();
                 _uiTimer.Start();
                 started = true;
                 string extra = baudOk ? "" : " Baud set failed; device may ignore bitrate.";
@@ -534,7 +551,7 @@ namespace USBCANTool
                 {
                     if (_uiTimer != null)
                         _uiTimer.Stop();
-                    StopRxThread();
+                    StopBridgeThreads();
                     CloseNative(false);
                     if (_isOpen)
                         UpdateUiState(false);
@@ -551,13 +568,10 @@ namespace USBCANTool
         {
             if (_uiTimer != null)
                 _uiTimer.Stop();
-            _rxRunning = false;
-            JoinRxThread(250);
+            StopBridgeThreads();
             lock (_pendingLock)
                 _pending.Clear();
             CloseNative(true);
-            JoinRxThread(1000);
-            _rxThread = null;
             UpdateUiState(false);
             SetIdle("Closed");
         }
@@ -708,113 +722,407 @@ namespace USBCANTool
                 try { ZlgCanApi.ZCAN_ResetCAN(handle); } catch { }
                 return false;
             }
-            try { ZlgCanApi.ZCAN_ClearBuffer(handle); } catch { }
             return true;
         }
 
-        private static CanPacket MakeCanPacket(string dir, uint channel, ZlgCanApi.can_frame frame, ulong ts, bool isFd, bool brs)
+        private void EnableListViewDoubleBuffer()
         {
-            return new CanPacket
+            try
             {
-                Time = DateTime.Now,
-                Dir = dir,
-                Channel = channel,
-                Id = ZlgCanApi.GET_ID(frame.can_id),
-                Extended = ZlgCanApi.IS_EFF(frame.can_id),
-                Rtr = ZlgCanApi.IS_RTR(frame.can_id),
-                IsFd = isFd,
-                Brs = brs,
-                Dlc = frame.can_dlc > 8 ? (byte)8 : frame.can_dlc,
-                Data = BytesToHex(frame.data, frame.can_dlc > 8 ? 8 : frame.can_dlc),
-                HwTimestamp = ts,
-                Count = 1
-            };
+                typeof(ListView).InvokeMember("DoubleBuffered",
+                    BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+                    null, lvPackets, new object[] { true });
+            }
+            catch
+            {
+            }
         }
 
-        private static CanPacket MakeFdPacket(string dir, uint channel, ZlgCanApi.canfd_frame frame, ulong ts)
-        {
-            return new CanPacket
-            {
-                Time = DateTime.Now,
-                Dir = dir,
-                Channel = channel,
-                Id = ZlgCanApi.GET_ID(frame.can_id),
-                Extended = ZlgCanApi.IS_EFF(frame.can_id),
-                Rtr = false,
-                IsFd = true,
-                Brs = (frame.flags & ZlgCanApi.CANFD_BRS) != 0,
-                Dlc = frame.len > 64 ? (byte)64 : frame.len,
-                Data = BytesToHex(frame.data, frame.len > 64 ? 64 : frame.len),
-                HwTimestamp = ts,
-                Count = 1
-            };
-        }
-
-        private void InitRxBuffers()
+        private void InitNativeBuffers()
         {
             _rxCanBuf = new ZlgCanApi.ZCAN_Receive_Data[RxBatch];
-            for (int i = 0; i < RxBatch; i++)
-                _rxCanBuf[i].frame.data = new byte[8];
             _rxFdBuf = new ZlgCanApi.ZCAN_ReceiveFD_Data[RxBatch];
-            for (int i = 0; i < RxBatch; i++)
-                _rxFdBuf[i].frame.data = new byte[ZlgCanApi.CANFD_MAX_DLEN];
+            _txCanBuf = new ZlgCanApi.ZCAN_Transmit_Data[TxBatch];
+            _txFdBuf = new ZlgCanApi.ZCAN_TransmitFD_Data[TxBatch];
+            _ring = new BridgeFrame[RingSize];
+            PinBuf(ref _rxCanPin, _rxCanBuf);
+            PinBuf(ref _rxFdPin, _rxFdBuf);
+            PinBuf(ref _txCanPin, _txCanBuf);
+            PinBuf(ref _txFdPin, _txFdBuf);
         }
 
-        private void StartRxThread()
+        private static void PinBuf(ref GCHandle handle, Array array)
         {
-            StopRxThread();
-            _rxRunning = true;
+            if (handle.IsAllocated)
+                handle.Free();
+            handle = GCHandle.Alloc(array, GCHandleType.Pinned);
+        }
+
+        private void FreePins()
+        {
+            if (_rxCanPin.IsAllocated) _rxCanPin.Free();
+            if (_rxFdPin.IsAllocated) _rxFdPin.Free();
+            if (_txCanPin.IsAllocated) _txCanPin.Free();
+            if (_txFdPin.IsAllocated) _txFdPin.Free();
+        }
+
+        private void ResetRing()
+        {
+            lock (_ringLock)
+            {
+                _ringHead = 0;
+                _ringTail = 0;
+                _ringCount = 0;
+            }
+        }
+
+        private void StartBridgeThreads()
+        {
+            StopBridgeThreads();
+            _bridgeRunning = true;
             _rxThread = new Thread(RxLoop)
             {
                 IsBackground = true,
-                Name = "CAN bridge",
+                Name = "CAN RX",
+                Priority = ThreadPriority.AboveNormal
+            };
+            _txThread = new Thread(TxLoop)
+            {
+                IsBackground = true,
+                Name = "CAN TX",
                 Priority = ThreadPriority.AboveNormal
             };
             _rxThread.Start();
+            _txThread.Start();
         }
 
-        private void StopRxThread()
+        private void StopBridgeThreads()
         {
-            _rxRunning = false;
-            JoinRxThread(1000);
+            _bridgeRunning = false;
+            JoinThread(_rxThread, 5000);
+            JoinThread(_txThread, 5000);
             _rxThread = null;
+            _txThread = null;
         }
 
-        private void JoinRxThread(int milliseconds)
+        private static void JoinThread(Thread thread, int milliseconds)
         {
-            Thread thread = _rxThread;
             if (thread != null && thread.IsAlive && thread != Thread.CurrentThread)
                 thread.Join(milliseconds);
         }
 
-        private void RxLoop()
+        private unsafe void RxLoop()
         {
-            while (_rxRunning)
+            while (_bridgeRunning)
             {
                 try
                 {
-                    IntPtr rx;
-                    IntPtr tx;
-                    lock (_canLock)
-                    {
-                        rx = _rxChannelHandle;
-                        tx = _txChannelHandle;
-                    }
-                    if (rx == IntPtr.Zero || tx == IntPtr.Zero)
-                    {
-                        Thread.Sleep(5);
-                        continue;
-                    }
-
-                    bool any = PollAndBridge(rx, tx);
-                    if (!any)
-                        Thread.Sleep(1);
+                    PollReceive();
                 }
                 catch
                 {
+                    Interlocked.Increment(ref _cntRxEx);
                     Thread.Sleep(5);
                 }
             }
+        }
+
+        private unsafe void PollReceive()
+        {
+            IntPtr rx;
+            lock (_canLock)
+                rx = _rxChannelHandle;
+            if (rx == IntPtr.Zero)
+            {
+                Thread.Sleep(5);
+                return;
+            }
+
+            uint got = 0;
+            lock (_canLock)
+            {
+                if (_rxChannelHandle == IntPtr.Zero)
+                    return;
+                got = ZlgCanApi.ZCAN_Receive(_rxChannelHandle, (ZlgCanApi.ZCAN_Receive_Data*)_rxCanPin.AddrOfPinnedObject(),
+                    (uint)RxBatch, ReceiveWaitMs);
+            }
+            for (uint i = 0; i < got; i++)
+            {
+                BridgeFrame frame;
+                FromReceive(((ZlgCanApi.ZCAN_Receive_Data*)_rxCanPin.AddrOfPinnedObject()) + i, out frame);
+                if (ZlgCanApi.IS_ERR(frame.CanId))
+                    continue;
+                Interlocked.Increment(ref _cntRx);
+                EnqueueLog(false, _rxChannelIndex, ref frame);
+                RingPush(ref frame);
+            }
+
+            if (!_rxIsCanFdDevice)
+                return;
+
+            uint fdGot = 0;
+            lock (_canLock)
+            {
+                if (_rxChannelHandle == IntPtr.Zero)
+                    return;
+                fdGot = ZlgCanApi.ZCAN_ReceiveFD(_rxChannelHandle, (ZlgCanApi.ZCAN_ReceiveFD_Data*)_rxFdPin.AddrOfPinnedObject(),
+                    (uint)RxBatch, 0);
+            }
+            for (uint i = 0; i < fdGot; i++)
+            {
+                BridgeFrame frame;
+                FromReceiveFd(((ZlgCanApi.ZCAN_ReceiveFD_Data*)_rxFdPin.AddrOfPinnedObject()) + i, out frame);
+                if (ZlgCanApi.IS_ERR(frame.CanId))
+                    continue;
+                Interlocked.Increment(ref _cntRx);
+                EnqueueLog(false, _rxChannelIndex, ref frame);
+                RingPush(ref frame);
+            }
+        }
+
+        private void TxLoop()
+        {
+            var batch = new BridgeFrame[TxBatch];
+            while (_bridgeRunning)
+            {
+                try
+                {
+                    int n = RingTake(batch);
+                    if (n == 0)
+                    {
+                        Thread.Sleep(1);
+                        continue;
+                    }
+                    for (int i = 0; i < n; i++)
+                    {
+                        TryRewrite(ref batch[i]);
+                        SanitizeTx(ref batch[i]);
+                    }
+                    SendBatch(batch, n);
+                }
+                catch
+                {
+                    Interlocked.Increment(ref _cntRxEx);
+                    Thread.Sleep(5);
+                }
+            }
+        }
+
+        private void RingPush(ref BridgeFrame frame)
+        {
+            lock (_ringLock)
+            {
+                if (_ringCount >= RingSize)
+                {
+                    Interlocked.Increment(ref _cntOverrun);
+                    return;
+                }
+                _ring[_ringHead] = frame;
+                _ringHead = (_ringHead + 1) % RingSize;
+                _ringCount++;
+            }
+        }
+
+        private int RingTake(BridgeFrame[] dest)
+        {
+            lock (_ringLock)
+            {
+                int n = Math.Min(dest.Length, _ringCount);
+                for (int i = 0; i < n; i++)
+                {
+                    dest[i] = _ring[_ringTail];
+                    _ringTail = (_ringTail + 1) % RingSize;
+                }
+                _ringCount -= n;
+                return n;
+            }
+        }
+
+        private unsafe void SendBatch(BridgeFrame[] batch, int n)
+        {
+            bool txFd = _txIsCanFdDevice && _txProtocolFd;
+            int i = 0;
+            while (i < n && _bridgeRunning)
+            {
+                if (txFd && batch[i].IsFd != 0)
+                {
+                    int run = 0;
+                    while (i + run < n && batch[i + run].IsFd != 0 && run < TxBatch)
+                    {
+                        ToTransmitFd(ref batch[i + run], ((ZlgCanApi.ZCAN_TransmitFD_Data*)_txFdPin.AddrOfPinnedObject()) + run);
+                        run++;
+                    }
+                    uint sent = TransmitFdRetry(run);
+                    LogTxRange(batch, i, (int)sent, true);
+                    i += run;
+                    if (sent < (uint)run)
+                    {
+                        Interlocked.Add(ref _cntTxFail, run - (int)sent);
+                        _txFailLatched = true;
+                    }
+                }
+                else
+                {
+                    int run = 0;
+                    while (i + run < n && !(txFd && batch[i + run].IsFd != 0) && run < TxBatch)
+                    {
+                        ToTransmitCan(ref batch[i + run], ((ZlgCanApi.ZCAN_Transmit_Data*)_txCanPin.AddrOfPinnedObject()) + run);
+                        run++;
+                    }
+                    uint sent = TransmitCanRetry(run);
+                    LogTxRange(batch, i, (int)sent, false);
+                    i += run;
+                    if (sent < (uint)run)
+                    {
+                        Interlocked.Add(ref _cntTxFail, run - (int)sent);
+                        _txFailLatched = true;
+                    }
+                }
+            }
+        }
+
+        private unsafe uint TransmitCanRetry(int count)
+        {
+            int offset = 0;
+            int left = count;
+            for (int attempt = 0; attempt < TxRetries && left > 0 && _bridgeRunning; attempt++)
+            {
+                uint sent;
+                lock (_canLock)
+                {
+                    if (_txChannelHandle == IntPtr.Zero)
+                        return (uint)(count - left);
+                    sent = ZlgCanApi.ZCAN_Transmit(_txChannelHandle,
+                        (ZlgCanApi.ZCAN_Transmit_Data*)(_txCanPin.AddrOfPinnedObject() + offset * Marshal.SizeOf(typeof(ZlgCanApi.ZCAN_Transmit_Data))),
+                        (uint)left);
+                }
+                if (sent == 0)
+                    continue;
+                offset += (int)sent;
+                left -= (int)sent;
+            }
+            return (uint)(count - left);
+        }
+
+        private unsafe uint TransmitFdRetry(int count)
+        {
+            int offset = 0;
+            int left = count;
+            for (int attempt = 0; attempt < TxRetries && left > 0 && _bridgeRunning; attempt++)
+            {
+                uint sent;
+                lock (_canLock)
+                {
+                    if (_txChannelHandle == IntPtr.Zero)
+                        return (uint)(count - left);
+                    sent = ZlgCanApi.ZCAN_TransmitFD(_txChannelHandle,
+                        (ZlgCanApi.ZCAN_TransmitFD_Data*)(_txFdPin.AddrOfPinnedObject() + offset * Marshal.SizeOf(typeof(ZlgCanApi.ZCAN_TransmitFD_Data))),
+                        (uint)left);
+                }
+                if (sent == 0)
+                    continue;
+                offset += (int)sent;
+                left -= (int)sent;
+            }
+            return (uint)(count - left);
+        }
+
+        private void LogTxRange(BridgeFrame[] batch, int start, int sent, bool fd)
+        {
+            for (int i = 0; i < sent; i++)
+            {
+                Interlocked.Increment(ref _cntTx);
+                EnqueueLog(true, _txChannelIndex, ref batch[start + i]);
+            }
+            if (sent > 0)
+                _txFailLatched = false;
+        }
+
+        private void EnqueueLog(bool tx, uint channel, ref BridgeFrame frame)
+        {
+            var item = new LogItem { Tx = tx, Channel = channel, Frame = frame };
+            lock (_pendingLock)
+            {
+                while (_pending.Count >= MaxPending)
+                {
+                    _pending.Dequeue();
+                    Interlocked.Increment(ref _cntLogDrop);
+                }
+                _pending.Enqueue(item);
+            }
+        }
+
+        private unsafe static void FromReceive(ZlgCanApi.ZCAN_Receive_Data* rx, out BridgeFrame frame)
+        {
+            BridgeFrame local = new BridgeFrame
+            {
+                CanId = rx->frame.can_id,
+                Len = rx->frame.can_dlc > 8 ? (byte)8 : rx->frame.can_dlc,
+                Flags = 0,
+                IsFd = 0,
+                Timestamp = rx->timestamp
+            };
+            for (int i = 0; i < 8; i++)
+                local.Data[i] = rx->frame.data[i];
+            frame = local;
+        }
+
+        private unsafe static void FromReceiveFd(ZlgCanApi.ZCAN_ReceiveFD_Data* rx, out BridgeFrame frame)
+        {
+            byte len = rx->frame.len > 64 ? (byte)64 : rx->frame.len;
+            BridgeFrame local = new BridgeFrame
+            {
+                CanId = rx->frame.can_id,
+                Len = len,
+                Flags = rx->frame.flags,
+                IsFd = 1,
+                Timestamp = rx->timestamp
+            };
+            for (int i = 0; i < 64; i++)
+                local.Data[i] = rx->frame.data[i];
+            frame = local;
+        }
+
+        private unsafe static void SanitizeTx(ref BridgeFrame frame)
+        {
+            if (frame.IsFd != 0)
+            {
+                frame.Flags = (byte)(frame.Flags & ZlgCanApi.CANFD_BRS);
+                if (frame.Len > 64)
+                    frame.Len = 64;
+            }
+            else
+            {
+                frame.Flags = 0;
+                if (frame.Len > 8)
+                    frame.Len = 8;
+            }
+        }
+
+        private unsafe static void ToTransmitCan(ref BridgeFrame src, ZlgCanApi.ZCAN_Transmit_Data* dest)
+        {
+            BridgeFrame local = src;
+            dest->transmit_type = 0;
+            dest->frame.can_id = local.CanId;
+            dest->frame.can_dlc = local.Len > 8 ? (byte)8 : local.Len;
+            dest->frame.__pad = 0;
+            dest->frame.__res0 = 0;
+            dest->frame.__res1 = 0;
+            for (int i = 0; i < 8; i++)
+                dest->frame.data[i] = local.Data[i];
+        }
+
+        private unsafe static void ToTransmitFd(ref BridgeFrame src, ZlgCanApi.ZCAN_TransmitFD_Data* dest)
+        {
+            BridgeFrame local = src;
+            dest->transmit_type = 0;
+            dest->frame.can_id = local.CanId;
+            dest->frame.len = local.Len > 64 ? (byte)64 : local.Len;
+            dest->frame.flags = (byte)(local.Flags & ZlgCanApi.CANFD_BRS);
+            dest->frame.__res0 = 0;
+            dest->frame.__res1 = 0;
+            for (int i = 0; i < 64; i++)
+                dest->frame.data[i] = local.Data[i];
         }
 
         private void UiTimer_Tick(object sender, EventArgs e)
@@ -823,168 +1131,92 @@ namespace USBCANTool
                 return;
 
             int drained = 0;
+            int pendingCount;
             lock (_pendingLock)
             {
-                while (_pending.Count > 0 && drained < MaxDrainPerTick)
+                pendingCount = _pending.Count;
+                int cap = pendingCount > MaxPending / 2 ? MaxDrainPerTick / 2 : MaxDrainPerTick;
+                while (_pending.Count > 0 && drained < cap)
                 {
-                    AddPacket(_pending.Dequeue());
+                    AddPacket(ToCanPacket(_pending.Dequeue()));
                     drained++;
                 }
             }
 
-            if (drained > 0)
+            DateTime now = DateTime.Now;
+            bool heavy = pendingCount > MaxPending / 2;
+            bool due = (now - _lastViewRebuild).TotalMilliseconds >= (heavy ? 100 : 50);
+            if (drained > 0 && due)
             {
+                _lastViewRebuild = now;
                 RebuildView();
-                if (_ledColor != Color.LimeGreen && !_bridgeTxFailed)
-                    SetOperating("Open RX→TX.");
             }
-
-            if (_bridgeTxFailed)
+            else if (drained > 0)
             {
-                _bridgeTxFailed = false;
-                SetFailed("Bridge transmit failed. Bus still open.");
-            }
-        }
-
-        private void EnqueuePacket(CanPacket packet)
-        {
-            lock (_pendingLock)
-            {
-                while (_pending.Count >= MaxPending)
-                    _pending.Dequeue();
-                _pending.Enqueue(packet);
-            }
-        }
-
-        private bool PollAndBridge(IntPtr src, IntPtr dest)
-        {
-            bool any = false;
-            uint count;
-            lock (_canLock)
-            {
-                if (src == IntPtr.Zero) return false;
-                count = ZlgCanApi.ZCAN_Receive(src, _rxCanBuf, (uint)RxBatch, 0);
-            }
-
-            for (uint i = 0; i < count; i++)
-            {
-                var f = _rxCanBuf[i].frame;
-                if (ZlgCanApi.IS_ERR(f.can_id))
-                    continue;
-                EnqueuePacket(MakeCanPacket("RX", _rxChannelIndex, f, _rxCanBuf[i].timestamp, false, false));
-                any = true;
-                TryRewriteCan(ref f);
-                if (!ForwardCan(dest, f))
-                    _bridgeTxFailed = true;
-                else
-                    EnqueuePacket(MakeCanPacket("TX", _txChannelIndex, f, 0, false, false));
-            }
-
-            if (!_rxIsCanFdDevice)
-                return any;
-
-            uint fdCount;
-            lock (_canLock)
-            {
-                if (src == IntPtr.Zero) return any;
-                fdCount = ZlgCanApi.ZCAN_ReceiveFD(src, _rxFdBuf, (uint)RxBatch, 0);
-            }
-
-            bool txFdFrames = _txIsCanFdDevice && _txProtocolFd;
-            for (uint i = 0; i < fdCount; i++)
-            {
-                var f = _rxFdBuf[i].frame;
-                if (ZlgCanApi.IS_ERR(f.can_id))
-                    continue;
-                if (f.len > ZlgCanApi.CANFD_MAX_DLEN)
-                    f.len = (byte)ZlgCanApi.CANFD_MAX_DLEN;
-                EnqueuePacket(MakeFdPacket("RX", _rxChannelIndex, f, _rxFdBuf[i].timestamp));
-                any = true;
-                TryRewriteFd(ref f);
-                if (txFdFrames)
-                {
-                    if (!ForwardFd(dest, f))
-                        _bridgeTxFailed = true;
-                    else
-                        EnqueuePacket(MakeFdPacket("TX", _txChannelIndex, f, 0));
-                }
+                if (HasActiveFilter())
+                    RebuildView();
                 else
                 {
-                    var classic = FdToClassic(f);
-                    if (!ForwardCan(dest, classic))
-                        _bridgeTxFailed = true;
-                    else
-                        EnqueuePacket(MakeCanPacket("TX", _txChannelIndex, classic, 0, false, false));
+                    lvPackets.VirtualListSize = chkGroup.Checked ? _groupView.Count : _packets.Count;
+                    lvPackets.Invalidate();
                 }
             }
 
-            return any;
+            PollChannelHealth(now);
+            UpdateStatusBar();
         }
 
-        private static ZlgCanApi.can_frame FdToClassic(ZlgCanApi.canfd_frame fd)
+        private void PollChannelHealth(DateTime now)
         {
-            byte n = fd.len;
-            if (n > 8)
-                n = 8;
-            var frame = new ZlgCanApi.can_frame
+            if ((now - _lastHealthPoll).TotalMilliseconds < 1000)
+                return;
+            _lastHealthPoll = now;
+            var err = new ZlgCanApi.ZCAN_CHANNEL_ERR_INFO();
+            var st = new ZlgCanApi.ZCAN_CHANNEL_STATUS();
+            uint rxOk = 0, txOk = 0;
+            lock (_canLock)
             {
-                can_id = fd.can_id & ~ZlgCanApi.CAN_ERR_FLAG,
-                can_dlc = n,
-                data = new byte[8]
-            };
-            if (fd.data != null && n > 0)
-                Array.Copy(fd.data, frame.data, Math.Min(n, fd.data.Length));
-            return frame;
-        }
-
-        private bool ForwardCan(IntPtr dest, ZlgCanApi.can_frame frame)
-        {
-            var tx = new ZlgCanApi.ZCAN_Transmit_Data { frame = frame, transmit_type = 0 };
-            if (tx.frame.data == null)
-            {
-                tx.frame.data = new byte[8];
+                if (_rxChannelHandle != IntPtr.Zero)
+                    rxOk = ZlgCanApi.ZCAN_ReadChannelStatus(_rxChannelHandle, ref st);
+                if (_txChannelHandle != IntPtr.Zero)
+                    txOk = ZlgCanApi.ZCAN_ReadChannelErrInfo(_txChannelHandle, ref err);
             }
+            if (rxOk == ZlgCanApi.STATUS_OK && st.regStatus != 0)
+                _healthText = " RX bus " + st.regStatus.ToString("X2");
+            else if (txOk == ZlgCanApi.STATUS_OK && err.error_code != 0)
+                _healthText = " TX err " + err.error_code.ToString("X");
             else
-            {
-                var copy = new byte[8];
-                Array.Copy(tx.frame.data, copy, Math.Min(8, tx.frame.data.Length));
-                tx.frame.data = copy;
-            }
-            try
-            {
-                lock (_canLock)
-                {
-                    if (dest == IntPtr.Zero)
-                        return false;
-                    return ZlgCanApi.ZCAN_Transmit(dest, ref tx, 1) == 1;
-                }
-            }
-            catch
-            {
-                return false;
-            }
+                _healthText = "";
         }
 
-        private bool ForwardFd(IntPtr dest, ZlgCanApi.canfd_frame frame)
+        private void UpdateStatusBar()
         {
-            var tx = new ZlgCanApi.ZCAN_TransmitFD_Data { frame = frame, transmit_type = 0 };
-            var copy = new byte[ZlgCanApi.CANFD_MAX_DLEN];
-            if (tx.frame.data != null)
-                Array.Copy(tx.frame.data, copy, Math.Min(ZlgCanApi.CANFD_MAX_DLEN, tx.frame.data.Length));
-            tx.frame.data = copy;
-            try
+            string counts = "RX " + Interlocked.Read(ref _cntRx) +
+                            " TX " + Interlocked.Read(ref _cntTx) +
+                            " TXfail " + Interlocked.Read(ref _cntTxFail) +
+                            " overrun " + Interlocked.Read(ref _cntOverrun) +
+                            " logdrop " + Interlocked.Read(ref _cntLogDrop);
+            long ex = Interlocked.Read(ref _cntRxEx);
+            if (ex > 0)
+                counts += " ex " + ex;
+            counts += _healthText;
+
+            if (_txFailLatched)
             {
-                lock (_canLock)
-                {
-                    if (dest == IntPtr.Zero)
-                        return false;
-                    return ZlgCanApi.ZCAN_TransmitFD(dest, ref tx, 1) == 1;
-                }
+                _ledColor = Color.Red;
+                pnlLed.Invalidate();
+                lblStatus.ForeColor = Color.Firebrick;
+                lblStatus.Text = "TX failed, dropping frames. " + counts;
+                return;
             }
-            catch
+
+            if (_ledColor != Color.LimeGreen)
             {
-                return false;
+                _ledColor = Color.LimeGreen;
+                pnlLed.Invalidate();
             }
+            lblStatus.ForeColor = Color.DarkGreen;
+            lblStatus.Text = "Open RX→TX. " + counts;
         }
 
         private void AddPacket(CanPacket packet)
@@ -1107,11 +1339,10 @@ namespace USBCANTool
         private void RebuildView()
         {
             _view.Clear();
-            _groupView.Clear();
 
             if (chkGroup.Checked)
             {
-                if (_groupsNeedSort || _groupView.Count == 0 || HasActiveFilter())
+                if (_groupsNeedSort || HasActiveFilter())
                 {
                     _groupView.Clear();
                     foreach (var kv in _groups)
@@ -1139,13 +1370,8 @@ namespace USBCANTool
             }
 
             lvPackets.Invalidate();
-            DateTime now = DateTime.Now;
-            if (lvPackets.VirtualListSize > 0 && !chkGroup.Checked &&
-                (now - _lastViewRebuild).TotalMilliseconds >= 80)
-            {
-                _lastViewRebuild = now;
+            if (lvPackets.VirtualListSize > 0 && !chkGroup.Checked)
                 lvPackets.EnsureVisible(lvPackets.VirtualListSize - 1);
-            }
         }
 
         private void lvPackets_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
@@ -1518,6 +1744,57 @@ namespace USBCANTool
             return sb.ToString();
         }
 
+        private unsafe CanPacket ToCanPacket(LogItem item)
+        {
+            BridgeFrame frame = item.Frame;
+            int len = frame.Len;
+            if (frame.IsFd != 0)
+            {
+                if (len > 64) len = 64;
+            }
+            else if (len > 8)
+            {
+                len = 8;
+            }
+            var data = new byte[len];
+            for (int i = 0; i < len; i++)
+                data[i] = frame.Data[i];
+            return new CanPacket
+            {
+                Time = DateTime.Now,
+                Dir = item.Tx ? "TX" : "RX",
+                Channel = item.Channel,
+                Id = ZlgCanApi.GET_ID(frame.CanId),
+                Extended = ZlgCanApi.IS_EFF(frame.CanId),
+                Rtr = ZlgCanApi.IS_RTR(frame.CanId),
+                IsFd = frame.IsFd != 0,
+                Brs = (frame.Flags & ZlgCanApi.CANFD_BRS) != 0,
+                Dlc = (byte)len,
+                Data = BytesToHex(data, len),
+                HwTimestamp = frame.Timestamp,
+                Count = 1
+            };
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        private unsafe struct BridgeFrame
+        {
+            public uint CanId;
+            public byte Len;
+            public byte Flags;
+            public byte IsFd;
+            public byte Pad;
+            public ulong Timestamp;
+            public fixed byte Data[64];
+        }
+
+        private struct LogItem
+        {
+            public bool Tx;
+            public uint Channel;
+            public BridgeFrame Frame;
+        }
+
         private sealed class RewriteSlot
         {
             public bool Enabled;
@@ -1794,6 +2071,7 @@ namespace USBCANTool
                 _saveTimer.Stop();
             SaveSettings();
             CloseDevice();
+            FreePins();
             base.OnFormClosing(e);
         }
     }
