@@ -7,3 +7,12 @@ C:\Users\allahmoradi\Downloads\USBCANTool\USBCANTool\obj\x64\Debug\USBCANTool.ex
 C:\Users\allahmoradi\Downloads\USBCANTool\USBCANTool\obj\x64\Debug\USBCANTool.pdb
 C:\Users\allahmoradi\Downloads\USBCANTool\USBCANTool\obj\x64\Debug\USBCANTool.Form1.resources
 C:\Users\allahmoradi\Downloads\USBCANTool\USBCANTool\obj\x64\Debug\USBCANTool.csproj.GenerateResource.cache
+D:\git repositories\can_test_win_app\USBCANTool\bin\x64\Debug\USBCANTool.exe.config
+D:\git repositories\can_test_win_app\USBCANTool\bin\x64\Debug\USBCANTool.exe
+D:\git repositories\can_test_win_app\USBCANTool\bin\x64\Debug\USBCANTool.pdb
+D:\git repositories\can_test_win_app\USBCANTool\obj\x64\Debug\USBCANTool.csproj.AssemblyReference.cache
+D:\git repositories\can_test_win_app\USBCANTool\obj\x64\Debug\USBCANTool.Form1.resources
+D:\git repositories\can_test_win_app\USBCANTool\obj\x64\Debug\USBCANTool.csproj.GenerateResource.cache
+D:\git repositories\can_test_win_app\USBCANTool\obj\x64\Debug\USBCANTool.csproj.CoreCompileInputs.cache
+D:\git repositories\can_test_win_app\USBCANTool\obj\x64\Debug\USBCANTool.exe
+D:\git repositories\can_test_win_app\USBCANTool\obj\x64\Debug\USBCANTool.pdb

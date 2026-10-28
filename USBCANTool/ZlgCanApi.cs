@@ -27,6 +27,11 @@ namespace USBCANTool
         public const uint ZCAN_USBCAN_2E_U = 21;
         public const uint ZCAN_USBCAN_4E_U = 31;
         public const uint ZCAN_USBCAN_8E_U = 34;
+        public const uint ZCAN_USBCANFD_200U = 41;
+        public const uint ZCAN_USBCANFD_100U = 42;
+        public const uint ZCAN_USBCANFD_MINI = 43;
+        public const uint ZCAN_USBCANFD_800U = 59;
+        public const uint ZCAN_USBCANFD_400U = 76;
 
         public const uint TYPE_CAN = 0;
         public const uint TYPE_CANFD = 1;
@@ -37,6 +42,18 @@ namespace USBCANTool
         public const uint CAN_SFF_MASK = 0x000007FF; // standard 11-bit
         public const uint CAN_EFF_MASK = 0x1FFFFFFF; // extended 29-bit
         public const uint CAN_ID_FLAG = CAN_EFF_MASK;
+        public const byte CANFD_BRS = 0x01;
+        public const byte CANFD_ESI = 0x02;
+        public const int CANFD_MAX_DLEN = 64;
+
+        public static bool IsCanFdDevice(uint deviceType)
+        {
+            return deviceType == ZCAN_USBCANFD_200U ||
+                   deviceType == ZCAN_USBCANFD_100U ||
+                   deviceType == ZCAN_USBCANFD_MINI ||
+                   deviceType == ZCAN_USBCANFD_800U ||
+                   deviceType == ZCAN_USBCANFD_400U;
+        }
 
         private static IntPtr _hModule = IntPtr.Zero;
         private static string _loadError = null;
@@ -54,6 +71,7 @@ namespace USBCANTool
             canId & (IS_EFF(canId) ? CAN_EFF_MASK : CAN_SFF_MASK);
         public static bool IS_EFF(uint canId) => (canId & CAN_EFF_FLAG) != 0;
         public static bool IS_RTR(uint canId) => (canId & CAN_RTR_FLAG) != 0;
+        public static bool IS_ERR(uint canId) => (canId & CAN_ERR_FLAG) != 0;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct can_frame
@@ -84,17 +102,58 @@ namespace USBCANTool
             public uint pad3;
         }
 
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct ZCAN_CHANNEL_INIT_CONFIG_CANFD
+        {
+            public uint can_type;
+            public uint acc_code;
+            public uint acc_mask;
+            public uint abit_timing;
+            public uint dbit_timing;
+            public uint brp;
+            public byte filter;
+            public byte mode;
+            public ushort pad;
+            public uint reserved;
+        }
+
         [StructLayout(LayoutKind.Sequential)]
+        public struct canfd_frame
+        {
+            public uint can_id;
+            public byte len;
+            public byte flags;
+            public byte __res0;
+            public byte __res1;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = CANFD_MAX_DLEN)]
+            public byte[] data;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct ZCAN_Transmit_Data
         {
             public can_frame frame;
             public uint transmit_type;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct ZCAN_Receive_Data
         {
             public can_frame frame;
+            public ulong timestamp;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct ZCAN_TransmitFD_Data
+        {
+            public canfd_frame frame;
+            public uint transmit_type;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct ZCAN_ReceiveFD_Data
+        {
+            public canfd_frame frame;
             public ulong timestamp;
         }
 
@@ -471,6 +530,9 @@ namespace USBCANTool
         [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern IntPtr ZCAN_InitCAN(IntPtr device_handle, uint can_index, ref ZCAN_CHANNEL_INIT_CONFIG pInitConfig);
 
+        [DllImport("zlgcan.dll", EntryPoint = "ZCAN_InitCAN", CallingConvention = CallingConvention.StdCall)]
+        public static extern IntPtr ZCAN_InitCAN(IntPtr device_handle, uint can_index, ref ZCAN_CHANNEL_INIT_CONFIG_CANFD pInitConfig);
+
         [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern uint ZCAN_StartCAN(IntPtr channel_handle);
 
@@ -485,6 +547,12 @@ namespace USBCANTool
 
         [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern uint ZCAN_Receive(IntPtr channel_handle, [In, Out] ZCAN_Receive_Data[] pReceive, uint len, int wait_time);
+
+        [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern uint ZCAN_TransmitFD(IntPtr channel_handle, ref ZCAN_TransmitFD_Data pTransmit, uint len);
+
+        [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
+        public static extern uint ZCAN_ReceiveFD(IntPtr channel_handle, [In, Out] ZCAN_ReceiveFD_Data[] pReceive, uint len, int wait_time);
 
         [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
         public static extern uint ZCAN_GetReceiveNum(IntPtr channel_handle, uint type);

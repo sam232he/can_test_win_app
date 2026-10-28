@@ -18,30 +18,36 @@ namespace USBCANTool
         private void InitializeComponent()
         {
             this.grpDevice = new System.Windows.Forms.GroupBox();
+            this.lblColType = new System.Windows.Forms.Label();
+            this.lblColIdx = new System.Windows.Forms.Label();
+            this.lblColCh = new System.Windows.Forms.Label();
+            this.lblColProtocol = new System.Windows.Forms.Label();
+            this.lblColBaud = new System.Windows.Forms.Label();
+            this.lblColData = new System.Windows.Forms.Label();
+            this.lblRx = new System.Windows.Forms.Label();
+            this.cmbRxDevice = new System.Windows.Forms.ComboBox();
+            this.numRxIndex = new System.Windows.Forms.NumericUpDown();
+            this.numRxChannel = new System.Windows.Forms.NumericUpDown();
+            this.cmbRxProtocol = new System.Windows.Forms.ComboBox();
+            this.cmbRxBaud = new System.Windows.Forms.ComboBox();
+            this.cmbRxDataBaud = new System.Windows.Forms.ComboBox();
+            this.chkRxTerm = new System.Windows.Forms.CheckBox();
+            this.cmbRxIso = new System.Windows.Forms.ComboBox();
+            this.lblTx = new System.Windows.Forms.Label();
+            this.cmbTxDevice = new System.Windows.Forms.ComboBox();
+            this.numTxIndex = new System.Windows.Forms.NumericUpDown();
+            this.numTxChannel = new System.Windows.Forms.NumericUpDown();
+            this.cmbTxProtocol = new System.Windows.Forms.ComboBox();
+            this.cmbTxBaud = new System.Windows.Forms.ComboBox();
+            this.cmbTxDataBaud = new System.Windows.Forms.ComboBox();
+            this.chkTxTerm = new System.Windows.Forms.CheckBox();
+            this.cmbTxIso = new System.Windows.Forms.ComboBox();
+            this.lblColTerm = new System.Windows.Forms.Label();
+            this.lblColIso = new System.Windows.Forms.Label();
             this.pnlLed = new System.Windows.Forms.Panel();
-            this.numChannel = new System.Windows.Forms.NumericUpDown();
-            this.lblChannel = new System.Windows.Forms.Label();
-            this.numDeviceIndex = new System.Windows.Forms.NumericUpDown();
-            this.lblIndex = new System.Windows.Forms.Label();
-            this.cmbDeviceType = new System.Windows.Forms.ComboBox();
-            this.lblType = new System.Windows.Forms.Label();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
-            this.lblBaud = new System.Windows.Forms.Label();
-            this.cmbBaud = new System.Windows.Forms.ComboBox();
-            this.grpSend = new System.Windows.Forms.GroupBox();
-            this.chkRtr = new System.Windows.Forms.CheckBox();
-            this.chkExtended = new System.Windows.Forms.CheckBox();
-            this.btnSend = new System.Windows.Forms.Button();
-            this.chkPeriodic = new System.Windows.Forms.CheckBox();
-            this.numPeriod = new System.Windows.Forms.NumericUpDown();
-            this.lblPeriod = new System.Windows.Forms.Label();
-            this.txtData = new System.Windows.Forms.TextBox();
-            this.lblData = new System.Windows.Forms.Label();
-            this.numDlc = new System.Windows.Forms.NumericUpDown();
-            this.lblDlc = new System.Windows.Forms.Label();
-            this.txtId = new System.Windows.Forms.TextBox();
-            this.lblId = new System.Windows.Forms.Label();
+            this.grpRewrite = new System.Windows.Forms.GroupBox();
             this.grpRx = new System.Windows.Forms.GroupBox();
             this.lblFilter = new System.Windows.Forms.Label();
             this.txtFilterId = new System.Windows.Forms.TextBox();
@@ -52,282 +58,334 @@ namespace USBCANTool
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.grpDevice.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numChannel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numDeviceIndex)).BeginInit();
-            this.grpSend.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDlc)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPeriod)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRxIndex)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRxChannel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTxIndex)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTxChannel)).BeginInit();
+            this.grpRewrite.SuspendLayout();
             this.grpRx.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpDevice
             // 
+            this.grpDevice.Controls.Add(this.lblColType);
+            this.grpDevice.Controls.Add(this.lblColIdx);
+            this.grpDevice.Controls.Add(this.lblColCh);
+            this.grpDevice.Controls.Add(this.lblColProtocol);
+            this.grpDevice.Controls.Add(this.lblColBaud);
+            this.grpDevice.Controls.Add(this.lblColData);
+            this.grpDevice.Controls.Add(this.lblRx);
+            this.grpDevice.Controls.Add(this.cmbRxDevice);
+            this.grpDevice.Controls.Add(this.numRxIndex);
+            this.grpDevice.Controls.Add(this.numRxChannel);
+            this.grpDevice.Controls.Add(this.cmbRxProtocol);
+            this.grpDevice.Controls.Add(this.cmbRxBaud);
+            this.grpDevice.Controls.Add(this.cmbRxDataBaud);
+            this.grpDevice.Controls.Add(this.chkRxTerm);
+            this.grpDevice.Controls.Add(this.cmbRxIso);
+            this.grpDevice.Controls.Add(this.lblTx);
+            this.grpDevice.Controls.Add(this.cmbTxDevice);
+            this.grpDevice.Controls.Add(this.numTxIndex);
+            this.grpDevice.Controls.Add(this.numTxChannel);
+            this.grpDevice.Controls.Add(this.cmbTxProtocol);
+            this.grpDevice.Controls.Add(this.cmbTxBaud);
+            this.grpDevice.Controls.Add(this.cmbTxDataBaud);
+            this.grpDevice.Controls.Add(this.chkTxTerm);
+            this.grpDevice.Controls.Add(this.cmbTxIso);
+            this.grpDevice.Controls.Add(this.lblColTerm);
+            this.grpDevice.Controls.Add(this.lblColIso);
             this.grpDevice.Controls.Add(this.pnlLed);
-            this.grpDevice.Controls.Add(this.cmbBaud);
-            this.grpDevice.Controls.Add(this.lblBaud);
-            this.grpDevice.Controls.Add(this.numChannel);
-            this.grpDevice.Controls.Add(this.lblChannel);
-            this.grpDevice.Controls.Add(this.numDeviceIndex);
-            this.grpDevice.Controls.Add(this.lblIndex);
-            this.grpDevice.Controls.Add(this.cmbDeviceType);
-            this.grpDevice.Controls.Add(this.lblType);
             this.grpDevice.Controls.Add(this.btnClose);
             this.grpDevice.Controls.Add(this.btnOpen);
             this.grpDevice.Location = new System.Drawing.Point(12, 12);
             this.grpDevice.Name = "grpDevice";
-            this.grpDevice.Size = new System.Drawing.Size(760, 80);
+            this.grpDevice.Size = new System.Drawing.Size(880, 140);
             this.grpDevice.TabIndex = 0;
             this.grpDevice.TabStop = false;
-            this.grpDevice.Text = "Device";
+            this.grpDevice.Text = "RX / TX";
+            // 
+            // lblColType
+            // 
+            this.lblColType.AutoSize = true;
+            this.lblColType.Location = new System.Drawing.Point(40, 18);
+            this.lblColType.Name = "lblColType";
+            this.lblColType.Size = new System.Drawing.Size(29, 12);
+            this.lblColType.TabIndex = 0;
+            this.lblColType.Text = "Type";
+            // 
+            // lblColIdx
+            // 
+            this.lblColIdx.AutoSize = true;
+            this.lblColIdx.Location = new System.Drawing.Point(238, 18);
+            this.lblColIdx.Name = "lblColIdx";
+            this.lblColIdx.Size = new System.Drawing.Size(23, 12);
+            this.lblColIdx.TabIndex = 1;
+            this.lblColIdx.Text = "Idx";
+            // 
+            // lblColCh
+            // 
+            this.lblColCh.AutoSize = true;
+            this.lblColCh.Location = new System.Drawing.Point(280, 18);
+            this.lblColCh.Name = "lblColCh";
+            this.lblColCh.Size = new System.Drawing.Size(17, 12);
+            this.lblColCh.TabIndex = 2;
+            this.lblColCh.Text = "Ch";
+            // 
+            // lblColProtocol
+            // 
+            this.lblColProtocol.AutoSize = true;
+            this.lblColProtocol.Location = new System.Drawing.Point(322, 18);
+            this.lblColProtocol.Name = "lblColProtocol";
+            this.lblColProtocol.Size = new System.Drawing.Size(53, 12);
+            this.lblColProtocol.TabIndex = 3;
+            this.lblColProtocol.Text = "Protocol";
+            // 
+            // lblColBaud
+            // 
+            this.lblColBaud.AutoSize = true;
+            this.lblColBaud.Location = new System.Drawing.Point(406, 18);
+            this.lblColBaud.Name = "lblColBaud";
+            this.lblColBaud.Size = new System.Drawing.Size(41, 12);
+            this.lblColBaud.TabIndex = 4;
+            this.lblColBaud.Text = "Bitrate";
+            // 
+            // lblColData
+            // 
+            this.lblColData.AutoSize = true;
+            this.lblColData.Location = new System.Drawing.Point(530, 18);
+            this.lblColData.Name = "lblColData";
+            this.lblColData.Size = new System.Drawing.Size(29, 12);
+            this.lblColData.TabIndex = 5;
+            this.lblColData.Text = "Data";
+            // 
+            // lblRx
+            // 
+            this.lblRx.AutoSize = true;
+            this.lblRx.Location = new System.Drawing.Point(12, 40);
+            this.lblRx.Name = "lblRx";
+            this.lblRx.Size = new System.Drawing.Size(17, 12);
+            this.lblRx.TabIndex = 6;
+            this.lblRx.Text = "RX";
+            // 
+            // cmbRxDevice
+            // 
+            this.cmbRxDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRxDevice.FormattingEnabled = true;
+            this.cmbRxDevice.Location = new System.Drawing.Point(40, 36);
+            this.cmbRxDevice.Name = "cmbRxDevice";
+            this.cmbRxDevice.Size = new System.Drawing.Size(192, 20);
+            this.cmbRxDevice.TabIndex = 7;
+            this.cmbRxDevice.SelectedIndexChanged += new System.EventHandler(this.RxDeviceOrProtocolChanged);
+            // 
+            // numRxIndex
+            // 
+            this.numRxIndex.Location = new System.Drawing.Point(238, 36);
+            this.numRxIndex.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            this.numRxIndex.Name = "numRxIndex";
+            this.numRxIndex.Size = new System.Drawing.Size(36, 21);
+            this.numRxIndex.TabIndex = 8;
+            // 
+            // numRxChannel
+            // 
+            this.numRxChannel.Location = new System.Drawing.Point(280, 36);
+            this.numRxChannel.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.numRxChannel.Name = "numRxChannel";
+            this.numRxChannel.Size = new System.Drawing.Size(36, 21);
+            this.numRxChannel.TabIndex = 9;
+            // 
+            // cmbRxProtocol
+            // 
+            this.cmbRxProtocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRxProtocol.FormattingEnabled = true;
+            this.cmbRxProtocol.Location = new System.Drawing.Point(322, 36);
+            this.cmbRxProtocol.Name = "cmbRxProtocol";
+            this.cmbRxProtocol.Size = new System.Drawing.Size(78, 20);
+            this.cmbRxProtocol.TabIndex = 10;
+            this.cmbRxProtocol.SelectedIndexChanged += new System.EventHandler(this.RxDeviceOrProtocolChanged);
+            // 
+            // cmbRxBaud
+            // 
+            this.cmbRxBaud.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRxBaud.FormattingEnabled = true;
+            this.cmbRxBaud.Location = new System.Drawing.Point(406, 36);
+            this.cmbRxBaud.Name = "cmbRxBaud";
+            this.cmbRxBaud.Size = new System.Drawing.Size(118, 20);
+            this.cmbRxBaud.TabIndex = 11;
+            // 
+            // cmbRxDataBaud
+            // 
+            this.cmbRxDataBaud.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRxDataBaud.FormattingEnabled = true;
+            this.cmbRxDataBaud.Location = new System.Drawing.Point(530, 36);
+            this.cmbRxDataBaud.Name = "cmbRxDataBaud";
+            this.cmbRxDataBaud.Size = new System.Drawing.Size(118, 20);
+            this.cmbRxDataBaud.TabIndex = 12;
+            // 
+            // chkRxTerm
+            // 
+            this.chkRxTerm.Checked = true;
+            this.chkRxTerm.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRxTerm.Location = new System.Drawing.Point(658, 38);
+            this.chkRxTerm.Name = "chkRxTerm";
+            this.chkRxTerm.Size = new System.Drawing.Size(20, 20);
+            this.chkRxTerm.TabIndex = 13;
+            this.chkRxTerm.UseVisualStyleBackColor = true;
+            // 
+            // cmbRxIso
+            // 
+            this.cmbRxIso.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRxIso.FormattingEnabled = true;
+            this.cmbRxIso.Items.AddRange(new object[] {
+            "ISO",
+            "Non-ISO"});
+            this.cmbRxIso.Location = new System.Drawing.Point(708, 36);
+            this.cmbRxIso.Name = "cmbRxIso";
+            this.cmbRxIso.Size = new System.Drawing.Size(78, 20);
+            this.cmbRxIso.TabIndex = 14;
+            this.cmbRxIso.SelectedIndex = 0;
+            // 
+            // lblTx
+            // 
+            this.lblTx.AutoSize = true;
+            this.lblTx.Location = new System.Drawing.Point(12, 68);
+            this.lblTx.Name = "lblTx";
+            this.lblTx.Size = new System.Drawing.Size(17, 12);
+            this.lblTx.TabIndex = 13;
+            this.lblTx.Text = "TX";
+            // 
+            // cmbTxDevice
+            // 
+            this.cmbTxDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTxDevice.FormattingEnabled = true;
+            this.cmbTxDevice.Location = new System.Drawing.Point(40, 64);
+            this.cmbTxDevice.Name = "cmbTxDevice";
+            this.cmbTxDevice.Size = new System.Drawing.Size(192, 20);
+            this.cmbTxDevice.TabIndex = 14;
+            this.cmbTxDevice.SelectedIndexChanged += new System.EventHandler(this.TxDeviceOrProtocolChanged);
+            // 
+            // numTxIndex
+            // 
+            this.numTxIndex.Location = new System.Drawing.Point(238, 64);
+            this.numTxIndex.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
+            this.numTxIndex.Name = "numTxIndex";
+            this.numTxIndex.Size = new System.Drawing.Size(36, 21);
+            this.numTxIndex.TabIndex = 15;
+            // 
+            // numTxChannel
+            // 
+            this.numTxChannel.Location = new System.Drawing.Point(280, 64);
+            this.numTxChannel.Maximum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.numTxChannel.Name = "numTxChannel";
+            this.numTxChannel.Size = new System.Drawing.Size(36, 21);
+            this.numTxChannel.TabIndex = 16;
+            this.numTxChannel.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // cmbTxProtocol
+            // 
+            this.cmbTxProtocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTxProtocol.FormattingEnabled = true;
+            this.cmbTxProtocol.Location = new System.Drawing.Point(322, 64);
+            this.cmbTxProtocol.Name = "cmbTxProtocol";
+            this.cmbTxProtocol.Size = new System.Drawing.Size(78, 20);
+            this.cmbTxProtocol.TabIndex = 17;
+            this.cmbTxProtocol.SelectedIndexChanged += new System.EventHandler(this.TxDeviceOrProtocolChanged);
+            // 
+            // cmbTxBaud
+            // 
+            this.cmbTxBaud.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTxBaud.FormattingEnabled = true;
+            this.cmbTxBaud.Location = new System.Drawing.Point(406, 64);
+            this.cmbTxBaud.Name = "cmbTxBaud";
+            this.cmbTxBaud.Size = new System.Drawing.Size(118, 20);
+            this.cmbTxBaud.TabIndex = 18;
+            // 
+            // cmbTxDataBaud
+            // 
+            this.cmbTxDataBaud.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTxDataBaud.FormattingEnabled = true;
+            this.cmbTxDataBaud.Location = new System.Drawing.Point(530, 64);
+            this.cmbTxDataBaud.Name = "cmbTxDataBaud";
+            this.cmbTxDataBaud.Size = new System.Drawing.Size(118, 20);
+            this.cmbTxDataBaud.TabIndex = 19;
+            // 
+            // chkTxTerm
+            // 
+            this.chkTxTerm.Checked = true;
+            this.chkTxTerm.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkTxTerm.Location = new System.Drawing.Point(658, 66);
+            this.chkTxTerm.Name = "chkTxTerm";
+            this.chkTxTerm.Size = new System.Drawing.Size(20, 20);
+            this.chkTxTerm.TabIndex = 20;
+            this.chkTxTerm.UseVisualStyleBackColor = true;
+            // 
+            // cmbTxIso
+            // 
+            this.cmbTxIso.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbTxIso.FormattingEnabled = true;
+            this.cmbTxIso.Items.AddRange(new object[] {
+            "ISO",
+            "Non-ISO"});
+            this.cmbTxIso.Location = new System.Drawing.Point(708, 64);
+            this.cmbTxIso.Name = "cmbTxIso";
+            this.cmbTxIso.Size = new System.Drawing.Size(78, 20);
+            this.cmbTxIso.TabIndex = 21;
+            this.cmbTxIso.SelectedIndex = 0;
+            // 
+            // lblColTerm
+            // 
+            this.lblColTerm.AutoSize = true;
+            this.lblColTerm.Location = new System.Drawing.Point(654, 18);
+            this.lblColTerm.Name = "lblColTerm";
+            this.lblColTerm.Size = new System.Drawing.Size(29, 12);
+            this.lblColTerm.TabIndex = 22;
+            this.lblColTerm.Text = "Term";
+            // 
+            // lblColIso
+            // 
+            this.lblColIso.AutoSize = true;
+            this.lblColIso.Location = new System.Drawing.Point(708, 18);
+            this.lblColIso.Name = "lblColIso";
+            this.lblColIso.Size = new System.Drawing.Size(23, 12);
+            this.lblColIso.TabIndex = 23;
+            this.lblColIso.Text = "ISO";
             // 
             // pnlLed
             // 
-            this.pnlLed.Location = new System.Drawing.Point(522, 34);
+            this.pnlLed.Location = new System.Drawing.Point(40, 100);
             this.pnlLed.Name = "pnlLed";
             this.pnlLed.Size = new System.Drawing.Size(20, 20);
-            this.pnlLed.TabIndex = 10;
+            this.pnlLed.TabIndex = 20;
             this.pnlLed.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlLed_Paint);
-            // 
-            // numChannel
-            // 
-            this.numChannel.Location = new System.Drawing.Point(268, 32);
-            this.numChannel.Maximum = new decimal(new int[] { 2, 0, 0, 0 });
-            this.numChannel.Name = "numChannel";
-            this.numChannel.Size = new System.Drawing.Size(40, 21);
-            this.numChannel.TabIndex = 7;
-            // 
-            // lblChannel
-            // 
-            this.lblChannel.AutoSize = true;
-            this.lblChannel.Location = new System.Drawing.Point(248, 35);
-            this.lblChannel.Name = "lblChannel";
-            this.lblChannel.Size = new System.Drawing.Size(17, 12);
-            this.lblChannel.TabIndex = 6;
-            this.lblChannel.Text = "Ch";
-            // 
-            // numDeviceIndex
-            // 
-            this.numDeviceIndex.Location = new System.Drawing.Point(200, 32);
-            this.numDeviceIndex.Maximum = new decimal(new int[] { 10, 0, 0, 0 });
-            this.numDeviceIndex.Name = "numDeviceIndex";
-            this.numDeviceIndex.Size = new System.Drawing.Size(40, 21);
-            this.numDeviceIndex.TabIndex = 5;
-            // 
-            // lblIndex
-            // 
-            this.lblIndex.AutoSize = true;
-            this.lblIndex.Location = new System.Drawing.Point(176, 35);
-            this.lblIndex.Name = "lblIndex";
-            this.lblIndex.Size = new System.Drawing.Size(23, 12);
-            this.lblIndex.TabIndex = 4;
-            this.lblIndex.Text = "Idx";
-            // 
-            // cmbDeviceType
-            // 
-            this.cmbDeviceType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbDeviceType.FormattingEnabled = true;
-            this.cmbDeviceType.Items.AddRange(new object[] {
-            "USBCAN1 (3)",
-            "USBCAN2 (4)",
-            "USBCAN-E-U (20)",
-            "USBCAN-2E-U (21)",
-            "USBCAN-4E-U (31)",
-            "USBCAN-8E-U (34)"});
-            this.cmbDeviceType.Location = new System.Drawing.Point(42, 32);
-            this.cmbDeviceType.Name = "cmbDeviceType";
-            this.cmbDeviceType.Size = new System.Drawing.Size(128, 20);
-            this.cmbDeviceType.TabIndex = 3;
-            this.cmbDeviceType.SelectedIndex = 1;
-            // 
-            // lblType
-            // 
-            this.lblType.AutoSize = true;
-            this.lblType.Location = new System.Drawing.Point(12, 35);
-            this.lblType.Name = "lblType";
-            this.lblType.Size = new System.Drawing.Size(29, 12);
-            this.lblType.TabIndex = 2;
-            this.lblType.Text = "Type";
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(655, 28);
+            this.btnClose.Location = new System.Drawing.Point(655, 96);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(90, 28);
-            this.btnClose.TabIndex = 1;
+            this.btnClose.TabIndex = 22;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // btnOpen
             // 
-            this.btnOpen.Location = new System.Drawing.Point(555, 28);
+            this.btnOpen.Location = new System.Drawing.Point(555, 96);
             this.btnOpen.Name = "btnOpen";
             this.btnOpen.Size = new System.Drawing.Size(90, 28);
-            this.btnOpen.TabIndex = 0;
+            this.btnOpen.TabIndex = 21;
             this.btnOpen.Text = "Open";
             this.btnOpen.UseVisualStyleBackColor = true;
             this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
             // 
-            // lblBaud
+            // grpRewrite
             // 
-            this.lblBaud.AutoSize = true;
-            this.lblBaud.Location = new System.Drawing.Point(316, 35);
-            this.lblBaud.Name = "lblBaud";
-            this.lblBaud.Size = new System.Drawing.Size(41, 12);
-            this.lblBaud.TabIndex = 8;
-            this.lblBaud.Text = "Bitrate";
-            // 
-            // cmbBaud
-            // 
-            this.cmbBaud.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbBaud.FormattingEnabled = true;
-            this.cmbBaud.Location = new System.Drawing.Point(360, 32);
-            this.cmbBaud.Name = "cmbBaud";
-            this.cmbBaud.Size = new System.Drawing.Size(150, 20);
-            this.cmbBaud.TabIndex = 9;
-            // 
-            // grpSend
-            // 
-            this.grpSend.Controls.Add(this.lblPeriod);
-            this.grpSend.Controls.Add(this.numPeriod);
-            this.grpSend.Controls.Add(this.chkPeriodic);
-            this.grpSend.Controls.Add(this.chkRtr);
-            this.grpSend.Controls.Add(this.chkExtended);
-            this.grpSend.Controls.Add(this.btnSend);
-            this.grpSend.Controls.Add(this.txtData);
-            this.grpSend.Controls.Add(this.lblData);
-            this.grpSend.Controls.Add(this.numDlc);
-            this.grpSend.Controls.Add(this.lblDlc);
-            this.grpSend.Controls.Add(this.txtId);
-            this.grpSend.Controls.Add(this.lblId);
-            this.grpSend.Location = new System.Drawing.Point(12, 100);
-            this.grpSend.Name = "grpSend";
-            this.grpSend.Size = new System.Drawing.Size(760, 90);
-            this.grpSend.TabIndex = 1;
-            this.grpSend.TabStop = false;
-            this.grpSend.Text = "Transmit";
-            // 
-            // chkRtr
-            // 
-            this.chkRtr.AutoSize = true;
-            this.chkRtr.Location = new System.Drawing.Point(280, 30);
-            this.chkRtr.Name = "chkRtr";
-            this.chkRtr.Size = new System.Drawing.Size(42, 16);
-            this.chkRtr.TabIndex = 8;
-            this.chkRtr.Text = "RTR";
-            this.chkRtr.UseVisualStyleBackColor = true;
-            // 
-            // chkExtended
-            // 
-            this.chkExtended.AutoSize = true;
-            this.chkExtended.Location = new System.Drawing.Point(200, 30);
-            this.chkExtended.Name = "chkExtended";
-            this.chkExtended.Size = new System.Drawing.Size(72, 16);
-            this.chkExtended.TabIndex = 7;
-            this.chkExtended.Text = "Extended";
-            this.chkExtended.UseVisualStyleBackColor = true;
-            this.chkExtended.CheckedChanged += new System.EventHandler(this.chkExtended_CheckedChanged);
-            // 
-            // btnSend
-            // 
-            this.btnSend.Location = new System.Drawing.Point(650, 35);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(90, 35);
-            this.btnSend.TabIndex = 6;
-            this.btnSend.Text = "Send";
-            this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-            // 
-            // chkPeriodic
-            // 
-            this.chkPeriodic.AutoSize = true;
-            this.chkPeriodic.Location = new System.Drawing.Point(490, 57);
-            this.chkPeriodic.Name = "chkPeriodic";
-            this.chkPeriodic.Size = new System.Drawing.Size(66, 16);
-            this.chkPeriodic.TabIndex = 9;
-            this.chkPeriodic.Text = "Periodic";
-            this.chkPeriodic.UseVisualStyleBackColor = true;
-            this.chkPeriodic.CheckedChanged += new System.EventHandler(this.chkPeriodic_CheckedChanged);
-            // 
-            // numPeriod
-            // 
-            this.numPeriod.Location = new System.Drawing.Point(560, 54);
-            this.numPeriod.Maximum = new decimal(new int[] { 60000, 0, 0, 0 });
-            this.numPeriod.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            this.numPeriod.Name = "numPeriod";
-            this.numPeriod.Size = new System.Drawing.Size(55, 21);
-            this.numPeriod.TabIndex = 10;
-            this.numPeriod.Value = new decimal(new int[] { 100, 0, 0, 0 });
-            this.numPeriod.ValueChanged += new System.EventHandler(this.numPeriod_ValueChanged);
-            // 
-            // lblPeriod
-            // 
-            this.lblPeriod.AutoSize = true;
-            this.lblPeriod.Location = new System.Drawing.Point(618, 58);
-            this.lblPeriod.Name = "lblPeriod";
-            this.lblPeriod.Size = new System.Drawing.Size(17, 12);
-            this.lblPeriod.TabIndex = 11;
-            this.lblPeriod.Text = "ms";
-            // 
-            // txtData
-            // 
-            this.txtData.Font = new System.Drawing.Font("Consolas", 9F);
-            this.txtData.Location = new System.Drawing.Point(80, 55);
-            this.txtData.Name = "txtData";
-            this.txtData.Size = new System.Drawing.Size(400, 22);
-            this.txtData.TabIndex = 5;
-            this.txtData.Text = "01 02 03 04 05 06 07 08";
-            this.txtData.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtData_KeyPress);
-            this.txtData.TextChanged += new System.EventHandler(this.txtData_TextChanged);
-            // 
-            // lblData
-            // 
-            this.lblData.AutoSize = true;
-            this.lblData.Location = new System.Drawing.Point(15, 58);
-            this.lblData.Name = "lblData";
-            this.lblData.Size = new System.Drawing.Size(59, 12);
-            this.lblData.TabIndex = 4;
-            this.lblData.Text = "Data (hex)";
-            // 
-            // numDlc
-            // 
-            this.numDlc.Location = new System.Drawing.Point(400, 28);
-            this.numDlc.Maximum = new decimal(new int[] { 8, 0, 0, 0 });
-            this.numDlc.Name = "numDlc";
-            this.numDlc.Size = new System.Drawing.Size(50, 21);
-            this.numDlc.TabIndex = 3;
-            this.numDlc.Value = new decimal(new int[] { 8, 0, 0, 0 });
-            // 
-            // lblDlc
-            // 
-            this.lblDlc.AutoSize = true;
-            this.lblDlc.Location = new System.Drawing.Point(360, 32);
-            this.lblDlc.Name = "lblDlc";
-            this.lblDlc.Size = new System.Drawing.Size(23, 12);
-            this.lblDlc.TabIndex = 2;
-            this.lblDlc.Text = "DLC";
-            // 
-            // txtId
-            // 
-            this.txtId.Font = new System.Drawing.Font("Consolas", 9F);
-            this.txtId.Location = new System.Drawing.Point(80, 28);
-            this.txtId.MaxLength = 3;
-            this.txtId.Name = "txtId";
-            this.txtId.Size = new System.Drawing.Size(100, 22);
-            this.txtId.TabIndex = 1;
-            this.txtId.Text = "100";
-            this.txtId.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtId_KeyPress);
-            this.txtId.TextChanged += new System.EventHandler(this.txtId_TextChanged);
-            // 
-            // lblId
-            // 
-            this.lblId.AutoSize = true;
-            this.lblId.Location = new System.Drawing.Point(15, 32);
-            this.lblId.Name = "lblId";
-            this.lblId.Size = new System.Drawing.Size(59, 12);
-            this.lblId.TabIndex = 0;
-            this.lblId.Text = "ID (11-bit)";
+            this.grpRewrite.Location = new System.Drawing.Point(12, 158);
+            this.grpRewrite.Name = "grpRewrite";
+            this.grpRewrite.Size = new System.Drawing.Size(880, 170);
+            this.grpRewrite.TabIndex = 1;
+            this.grpRewrite.TabStop = false;
+            this.grpRewrite.Text = "Rewrite";
             // 
             // grpRx
             // 
@@ -337,9 +395,9 @@ namespace USBCANTool
             this.grpRx.Controls.Add(this.cmbFilterDir);
             this.grpRx.Controls.Add(this.txtFilterId);
             this.grpRx.Controls.Add(this.lblFilter);
-            this.grpRx.Location = new System.Drawing.Point(12, 196);
+            this.grpRx.Location = new System.Drawing.Point(12, 334);
             this.grpRx.Name = "grpRx";
-            this.grpRx.Size = new System.Drawing.Size(760, 328);
+            this.grpRx.Size = new System.Drawing.Size(880, 328);
             this.grpRx.TabIndex = 2;
             this.grpRx.TabStop = false;
             this.grpRx.Text = "Packets";
@@ -390,7 +448,7 @@ namespace USBCANTool
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(650, 18);
+            this.btnClear.Location = new System.Drawing.Point(770, 18);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(90, 26);
             this.btnClear.TabIndex = 4;
@@ -406,7 +464,7 @@ namespace USBCANTool
             this.lvPackets.HideSelection = false;
             this.lvPackets.Location = new System.Drawing.Point(15, 50);
             this.lvPackets.Name = "lvPackets";
-            this.lvPackets.Size = new System.Drawing.Size(725, 262);
+            this.lvPackets.Size = new System.Drawing.Size(845, 262);
             this.lvPackets.TabIndex = 5;
             this.lvPackets.UseCompatibleStateImageBehavior = false;
             this.lvPackets.View = System.Windows.Forms.View.Details;
@@ -417,16 +475,16 @@ namespace USBCANTool
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 539);
+            this.statusStrip.Location = new System.Drawing.Point(0, 677);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(784, 22);
+            this.statusStrip.Size = new System.Drawing.Size(904, 22);
             this.statusStrip.TabIndex = 3;
             this.statusStrip.Text = "statusStrip";
             // 
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(769, 17);
+            this.lblStatus.Size = new System.Drawing.Size(889, 17);
             this.lblStatus.Spring = true;
             this.lblStatus.Text = "Idle";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -435,10 +493,10 @@ namespace USBCANTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ClientSize = new System.Drawing.Size(904, 699);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.grpRx);
-            this.Controls.Add(this.grpSend);
+            this.Controls.Add(this.grpRewrite);
             this.Controls.Add(this.grpDevice);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -447,12 +505,12 @@ namespace USBCANTool
             this.Text = "USBCAN Tool";
             this.grpDevice.ResumeLayout(false);
             this.grpDevice.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numChannel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numDeviceIndex)).EndInit();
-            this.grpSend.ResumeLayout(false);
-            this.grpSend.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numDlc)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPeriod)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRxIndex)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numRxChannel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTxIndex)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numTxChannel)).EndInit();
+            this.grpRewrite.ResumeLayout(false);
+            this.grpRewrite.PerformLayout();
             this.grpRx.ResumeLayout(false);
             this.grpRx.PerformLayout();
             this.statusStrip.ResumeLayout(false);
@@ -464,30 +522,36 @@ namespace USBCANTool
         #endregion
 
         private System.Windows.Forms.GroupBox grpDevice;
+        private System.Windows.Forms.Label lblColType;
+        private System.Windows.Forms.Label lblColIdx;
+        private System.Windows.Forms.Label lblColCh;
+        private System.Windows.Forms.Label lblColProtocol;
+        private System.Windows.Forms.Label lblColBaud;
+        private System.Windows.Forms.Label lblColData;
+        private System.Windows.Forms.Label lblRx;
+        private System.Windows.Forms.ComboBox cmbRxDevice;
+        private System.Windows.Forms.NumericUpDown numRxIndex;
+        private System.Windows.Forms.NumericUpDown numRxChannel;
+        private System.Windows.Forms.ComboBox cmbRxProtocol;
+        private System.Windows.Forms.ComboBox cmbRxBaud;
+        private System.Windows.Forms.ComboBox cmbRxDataBaud;
+        private System.Windows.Forms.CheckBox chkRxTerm;
+        private System.Windows.Forms.ComboBox cmbRxIso;
+        private System.Windows.Forms.Label lblTx;
+        private System.Windows.Forms.ComboBox cmbTxDevice;
+        private System.Windows.Forms.NumericUpDown numTxIndex;
+        private System.Windows.Forms.NumericUpDown numTxChannel;
+        private System.Windows.Forms.ComboBox cmbTxProtocol;
+        private System.Windows.Forms.ComboBox cmbTxBaud;
+        private System.Windows.Forms.ComboBox cmbTxDataBaud;
+        private System.Windows.Forms.CheckBox chkTxTerm;
+        private System.Windows.Forms.ComboBox cmbTxIso;
+        private System.Windows.Forms.Label lblColTerm;
+        private System.Windows.Forms.Label lblColIso;
         private System.Windows.Forms.Panel pnlLed;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnOpen;
-        private System.Windows.Forms.ComboBox cmbDeviceType;
-        private System.Windows.Forms.Label lblType;
-        private System.Windows.Forms.NumericUpDown numDeviceIndex;
-        private System.Windows.Forms.Label lblIndex;
-        private System.Windows.Forms.NumericUpDown numChannel;
-        private System.Windows.Forms.Label lblChannel;
-        private System.Windows.Forms.Label lblBaud;
-        private System.Windows.Forms.ComboBox cmbBaud;
-        private System.Windows.Forms.GroupBox grpSend;
-        private System.Windows.Forms.TextBox txtId;
-        private System.Windows.Forms.Label lblId;
-        private System.Windows.Forms.NumericUpDown numDlc;
-        private System.Windows.Forms.Label lblDlc;
-        private System.Windows.Forms.TextBox txtData;
-        private System.Windows.Forms.Label lblData;
-        private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.CheckBox chkPeriodic;
-        private System.Windows.Forms.NumericUpDown numPeriod;
-        private System.Windows.Forms.Label lblPeriod;
-        private System.Windows.Forms.CheckBox chkExtended;
-        private System.Windows.Forms.CheckBox chkRtr;
+        private System.Windows.Forms.GroupBox grpRewrite;
         private System.Windows.Forms.GroupBox grpRx;
         private System.Windows.Forms.Label lblFilter;
         private System.Windows.Forms.TextBox txtFilterId;

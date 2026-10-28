@@ -1,20 +1,17 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\allahmoradi\\Downloads\\USBCANTool\\",
+  "WorkspaceRootPath": "D:\\git repositories\\can_test_win_app\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|USBCANTool\\USBCANTool.csproj|c:\\users\\allahmoradi\\downloads\\usbcantool\\usbcantool\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|USBCANTool\\USBCANTool.csproj|d:\\git repositories\\can_test_win_app\\usbcantool\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|USBCANTool\\USBCANTool.csproj|solutionrelative:usbcantool\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|USBCANTool\\USBCANTool.csproj|c:\\users\\allahmoradi\\downloads\\usbcantool\\usbcantool\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|USBCANTool\\USBCANTool.csproj|D:\\git repositories\\can_test_win_app\\usbcantool\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|USBCANTool\\USBCANTool.csproj|solutionrelative:usbcantool\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|USBCANTool||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}|USBCANTool\\USBCANTool.csproj|c:\\users\\allahmoradi\\downloads\\usbcantool\\usbcantool\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|5e9a8ac2-4f34-4521-858f-4c248ba31532"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,11 +27,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Form1.cs",
-              "DocumentMoniker": "C:\\Users\\allahmoradi\\Downloads\\USBCANTool\\USBCANTool\\Form1.cs",
+              "DocumentMoniker": "D:\\git repositories\\can_test_win_app\\USBCANTool\\Form1.cs",
               "RelativeDocumentMoniker": "USBCANTool\\Form1.cs",
-              "ToolTip": "C:\\Users\\allahmoradi\\Downloads\\USBCANTool\\USBCANTool\\Form1.cs",
+              "ToolTip": "D:\\git repositories\\can_test_win_app\\USBCANTool\\Form1.cs",
               "RelativeToolTip": "USBCANTool\\Form1.cs",
-              "ViewState": "AgIAAGIDAAAAAAAAAAAYwF0DAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAGwDAAAAAAAAAAAYwHYDAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-27T12:34:06.603Z",
               "EditorCaption": ""
@@ -43,25 +40,22 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "Form1.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\allahmoradi\\Downloads\\USBCANTool\\USBCANTool\\Form1.cs",
+              "DocumentMoniker": "D:\\git repositories\\can_test_win_app\\USBCANTool\\Form1.cs",
               "RelativeDocumentMoniker": "USBCANTool\\Form1.cs",
               "ToolTip": "C:\\Users\\allahmoradi\\Downloads\\USBCANTool\\USBCANTool\\Form1.cs [Design]",
-              "RelativeToolTip": "USBCANTool\\Form1.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-27T12:34:02.528Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-10-27T12:34:02.528Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
               "Title": "USBCANTool",
-              "DocumentMoniker": "C:\\Users\\allahmoradi\\Downloads\\USBCANTool\\USBCANTool\\USBCANTool.csproj",
+              "DocumentMoniker": "D:\\git repositories\\can_test_win_app\\USBCANTool\\USBCANTool.csproj",
               "RelativeDocumentMoniker": "USBCANTool\\USBCANTool.csproj",
-              "ToolTip": "C:\\Users\\allahmoradi\\Downloads\\USBCANTool\\USBCANTool\\USBCANTool.csproj",
+              "ToolTip": "D:\\git repositories\\can_test_win_app\\USBCANTool\\USBCANTool.csproj",
               "RelativeToolTip": "USBCANTool\\USBCANTool.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-10-27T09:40:11.583Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-27T09:40:11.583Z"
             }
           ]
         }

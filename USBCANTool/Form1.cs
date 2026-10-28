@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,19 +11,45 @@ namespace USBCANTool
 {
     public partial class Form1 : Form
     {
-        private IntPtr _deviceHandle = IntPtr.Zero;
-        private IntPtr _channelHandle = IntPtr.Zero;
-        private System.Windows.Forms.Timer _rxTimer;
+        private IntPtr _rxDeviceHandle = IntPtr.Zero;
+        private IntPtr _txDeviceHandle = IntPtr.Zero;
+        private IntPtr _rxChannelHandle = IntPtr.Zero;
+        private IntPtr _txChannelHandle = IntPtr.Zero;
+        private uint _rxChannelIndex;
+        private uint _txChannelIndex;
+        private bool _rxIsCanFdDevice;
+        private bool _txIsCanFdDevice;
+        private bool _rxProtocolFd;
+        private bool _txProtocolFd;
+        private uint _lastRxDevType;
+        private uint _lastTxDevType;
+        private System.Windows.Forms.Timer _uiTimer;
         private bool _isOpen;
-        private Thread _txThread;
-        private volatile bool _periodicRunning;
-        private volatile int _periodMs = 100;
-        private DateTime _lastTxViewRebuild;
         private Color _ledColor = Color.Gray;
         private readonly object _canLock = new object();
-        private readonly object _txFrameLock = new object();
-        private ZlgCanApi.can_frame _txFrame;
-        private bool _txFrameValid;
+        private readonly object _rewriteLock = new object();
+        private readonly object _pendingLock = new object();
+        private readonly Queue<CanPacket> _pending = new Queue<CanPacket>();
+        private Thread _rxThread;
+        private volatile bool _rxRunning;
+        private volatile bool _bridgeTxFailed;
+        private DateTime _lastViewRebuild;
+        private ZlgCanApi.ZCAN_Receive_Data[] _rxCanBuf;
+        private ZlgCanApi.ZCAN_ReceiveFD_Data[] _rxFdBuf;
+        private const int RxBatch = 200;
+        private const int MaxPending = 2000;
+        private const int MaxDrainPerTick = 400;
+
+        private const int RewriteSlotCount = 10;
+        private CheckBox[] _rewriteEnable;
+        private ComboBox[] _rewriteFrame;
+        private TextBox[] _rewriteId;
+        private TextBox[] _rewriteData;
+        private RewriteSlot[] _rewriteSlots = new RewriteSlot[RewriteSlotCount];
+        private bool _formattingRewrite;
+        private bool _updatingUi;
+        private bool _loadingSettings;
+        private System.Windows.Forms.Timer _saveTimer;
 
         private readonly List<CanPacket> _packets = new List<CanPacket>();
         private readonly List<CanPacket> _view = new List<CanPacket>();
@@ -35,6 +59,8 @@ namespace USBCANTool
         private bool _filterIdInvalid;
 
         private const int MaxPackets = 10000;
+        private const int PacketTrimChunk = 2000;
+        private bool _groupsNeedSort;
         private const uint DefaultDeviceType = ZlgCanApi.ZCAN_USBCAN2;
         private const string DefaultBaud = "500000";
 
@@ -51,16 +77,57 @@ namespace USBCANTool
             new BaudOption("10 kbit/s", "10000"),
         };
 
+        private static readonly BaudOption[] FdBaudRates =
+        {
+            new BaudOption("1000 kbit/s", "1000000"),
+            new BaudOption("800 kbit/s", "800000"),
+            new BaudOption("500 kbit/s", "500000"),
+            new BaudOption("250 kbit/s", "250000"),
+            new BaudOption("125 kbit/s", "125000"),
+            new BaudOption("100 kbit/s", "100000"),
+            new BaudOption("50 kbit/s", "50000"),
+        };
+
+        private static readonly BaudOption[] DataBaudRates =
+        {
+            new BaudOption("5 Mbit/s", "5000000"),
+            new BaudOption("4 Mbit/s", "4000000"),
+            new BaudOption("2 Mbit/s", "2000000"),
+            new BaudOption("1 Mbit/s", "1000000"),
+            new BaudOption("800 kbit/s", "800000"),
+            new BaudOption("500 kbit/s", "500000"),
+            new BaudOption("250 kbit/s", "250000"),
+            new BaudOption("125 kbit/s", "125000"),
+        };
+
         public Form1()
         {
             InitializeComponent();
+            InitDeviceList();
             InitBaudList();
+            InitDataBaudList();
             InitPacketView();
+            InitRewriteSlots();
             ParseFilterIds();
-            _rxTimer = new System.Windows.Forms.Timer { Interval = 50 };
-            _rxTimer.Tick += RxTimer_Tick;
+            InitRxBuffers();
+            _saveTimer = new System.Windows.Forms.Timer { Interval = 400 };
+            _saveTimer.Tick += SaveTimer_Tick;
+            cmbRxBaud.SelectedIndexChanged += SettingsChanged;
+            cmbRxDataBaud.SelectedIndexChanged += SettingsChanged;
+            cmbTxBaud.SelectedIndexChanged += SettingsChanged;
+            cmbTxDataBaud.SelectedIndexChanged += SettingsChanged;
+            numRxIndex.ValueChanged += SettingsChanged;
+            numTxIndex.ValueChanged += SettingsChanged;
+            numRxChannel.ValueChanged += SettingsChanged;
+            numTxChannel.ValueChanged += SettingsChanged;
+            chkRxTerm.CheckedChanged += SettingsChanged;
+            chkTxTerm.CheckedChanged += SettingsChanged;
+            cmbRxIso.SelectedIndexChanged += SettingsChanged;
+            cmbTxIso.SelectedIndexChanged += SettingsChanged;
+            LoadSettings();
+            _uiTimer = new System.Windows.Forms.Timer { Interval = 50 };
+            _uiTimer.Tick += UiTimer_Tick;
             UpdateUiState(false);
-            ApplyCanIdFormat();
 
             if (!ZlgCanApi.DllFileExists)
                 SetFailed("zlgcan.dll missing. Put it next to USBCANTool.exe.");
@@ -75,12 +142,219 @@ namespace USBCANTool
             lvPackets.Columns.Clear();
             lvPackets.Columns.Add("Time", 100);
             lvPackets.Columns.Add("Dir", 40);
+            lvPackets.Columns.Add("Ch", 35);
             lvPackets.Columns.Add("ID", 90);
-            lvPackets.Columns.Add("Type", 70);
+            lvPackets.Columns.Add("Type", 80);
             lvPackets.Columns.Add("DLC", 40);
             lvPackets.Columns.Add("Data", 220);
             lvPackets.Columns.Add("Count", 55);
             lvPackets.Columns.Add("HW ts", 80);
+        }
+
+        private void InitRewriteSlots()
+        {
+            _rewriteEnable = new CheckBox[RewriteSlotCount];
+            _rewriteFrame = new ComboBox[RewriteSlotCount];
+            _rewriteId = new TextBox[RewriteSlotCount];
+            _rewriteData = new TextBox[RewriteSlotCount];
+
+            var font = new Font("Consolas", 9F);
+            grpRewrite.Controls.Add(MakeHeader(12, 16, "En"));
+            grpRewrite.Controls.Add(MakeHeader(40, 16, "ID"));
+            grpRewrite.Controls.Add(MakeHeader(112, 16, "Fmt"));
+            grpRewrite.Controls.Add(MakeHeader(170, 16, "Data (8 bytes)"));
+            grpRewrite.Controls.Add(MakeHeader(392, 16, "En"));
+            grpRewrite.Controls.Add(MakeHeader(420, 16, "ID"));
+            grpRewrite.Controls.Add(MakeHeader(492, 16, "Fmt"));
+            grpRewrite.Controls.Add(MakeHeader(550, 16, "Data (8 bytes)"));
+
+            for (int i = 0; i < RewriteSlotCount; i++)
+            {
+                int col = i / 5;
+                int row = i % 5;
+                int x = 12 + col * 380;
+                int y = 34 + row * 26;
+
+                var chk = new CheckBox
+                {
+                    Location = new Point(x, y + 2),
+                    Size = new Size(22, 20),
+                    TabIndex = 20 + i * 4
+                };
+                chk.CheckedChanged += RewriteSlotChanged;
+                _rewriteEnable[i] = chk;
+                grpRewrite.Controls.Add(chk);
+
+                var txtId = new TextBox
+                {
+                    Font = font,
+                    Location = new Point(x + 28, y),
+                    MaxLength = 3,
+                    Size = new Size(70, 22),
+                    TabIndex = 21 + i * 4,
+                    Tag = i
+                };
+                txtId.KeyPress += HexKeyPress;
+                txtId.TextChanged += RewriteIdChanged;
+                _rewriteId[i] = txtId;
+                grpRewrite.Controls.Add(txtId);
+
+                var cmbFrame = new ComboBox
+                {
+                    DropDownStyle = ComboBoxStyle.DropDownList,
+                    Location = new Point(x + 102, y),
+                    Size = new Size(58, 20),
+                    TabIndex = 22 + i * 4,
+                    Tag = i
+                };
+                cmbFrame.Items.Add("STD");
+                cmbFrame.Items.Add("EXT");
+                cmbFrame.SelectedIndex = 0;
+                cmbFrame.SelectedIndexChanged += RewriteFrameChanged;
+                _rewriteFrame[i] = cmbFrame;
+                grpRewrite.Controls.Add(cmbFrame);
+
+                var txtData = new TextBox
+                {
+                    Font = font,
+                    Location = new Point(x + 164, y),
+                    Size = new Size(200, 22),
+                    TabIndex = 23 + i * 4,
+                    Text = "00 00 00 00 00 00 00 00"
+                };
+                txtData.KeyPress += HexKeyPress;
+                txtData.TextChanged += RewriteDataChanged;
+                _rewriteData[i] = txtData;
+                grpRewrite.Controls.Add(txtData);
+            }
+
+            RebuildRewriteSlots();
+        }
+
+        private static Label MakeHeader(int x, int y, string text)
+        {
+            return new Label
+            {
+                AutoSize = true,
+                Location = new Point(x, y),
+                Text = text
+            };
+        }
+
+        private void RewriteSlotChanged(object sender, EventArgs e)
+        {
+            RebuildRewriteSlots();
+        }
+
+        private void RewriteFrameChanged(object sender, EventArgs e)
+        {
+            var cmb = sender as ComboBox;
+            if (cmb == null || !(cmb.Tag is int))
+                return;
+            int index = (int)cmb.Tag;
+            if (_rewriteId != null && index >= 0 && index < _rewriteId.Length && _rewriteId[index] != null)
+                ClampRewriteId(_rewriteId[index]);
+            RebuildRewriteSlots();
+        }
+
+        private void RewriteIdChanged(object sender, EventArgs e)
+        {
+            var box = sender as TextBox;
+            if (box == null)
+                return;
+            ClampRewriteId(box);
+            RebuildRewriteSlots();
+        }
+
+        private void RewriteDataChanged(object sender, EventArgs e)
+        {
+            var box = sender as TextBox;
+            if (box == null)
+                return;
+            FormatRewriteData(box);
+            RebuildRewriteSlots();
+        }
+
+        private void RebuildRewriteSlots()
+        {
+            var next = new RewriteSlot[RewriteSlotCount];
+            for (int i = 0; i < RewriteSlotCount; i++)
+            {
+                var slot = new RewriteSlot { Data = new byte[8] };
+                if (_rewriteEnable != null && _rewriteEnable[i] != null)
+                    slot.Enabled = _rewriteEnable[i].Checked;
+
+                bool extended = _rewriteFrame != null && _rewriteFrame[i] != null &&
+                    _rewriteFrame[i].SelectedIndex == 1;
+                slot.Extended = extended;
+                uint maxId = extended ? ZlgCanApi.CAN_EFF_MASK : ZlgCanApi.CAN_SFF_MASK;
+                uint id;
+                if (_rewriteId != null && _rewriteId[i] != null &&
+                    TryParseCanId(_rewriteId[i].Text, maxId, out id) &&
+                    !string.IsNullOrWhiteSpace(_rewriteId[i].Text))
+                {
+                    slot.HasId = true;
+                    slot.Id = id;
+                }
+
+                byte[] data = ParseDataBytes(_rewriteData != null && _rewriteData[i] != null ? _rewriteData[i].Text : "");
+                Array.Copy(data, slot.Data, Math.Min(8, data.Length));
+                next[i] = slot;
+            }
+
+            lock (_rewriteLock)
+                _rewriteSlots = next;
+            ScheduleSave();
+        }
+
+        private bool TryGetRewriteData(uint id, bool extended, out byte[] data)
+        {
+            data = null;
+            lock (_rewriteLock)
+            {
+                RewriteSlot[] slots = _rewriteSlots;
+                if (slots == null)
+                    return false;
+                for (int i = 0; i < slots.Length; i++)
+                {
+                    RewriteSlot slot = slots[i];
+                    if (slot == null || !slot.Enabled || !slot.HasId)
+                        continue;
+                    if (slot.Id != id || slot.Extended != extended)
+                        continue;
+                    data = new byte[8];
+                    Array.Copy(slot.Data, data, 8);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private void TryRewriteCan(ref ZlgCanApi.can_frame frame)
+        {
+            if (ZlgCanApi.IS_RTR(frame.can_id) || ZlgCanApi.IS_ERR(frame.can_id))
+                return;
+            byte[] data;
+            if (!TryGetRewriteData(ZlgCanApi.GET_ID(frame.can_id), ZlgCanApi.IS_EFF(frame.can_id), out data))
+                return;
+            if (frame.data == null || frame.data.Length < 8)
+                frame.data = new byte[8];
+            Array.Copy(data, frame.data, 8);
+            frame.can_dlc = 8;
+        }
+
+        private void TryRewriteFd(ref ZlgCanApi.canfd_frame frame)
+        {
+            if (ZlgCanApi.IS_RTR(frame.can_id) || ZlgCanApi.IS_ERR(frame.can_id))
+                return;
+            byte[] data;
+            if (!TryGetRewriteData(ZlgCanApi.GET_ID(frame.can_id), ZlgCanApi.IS_EFF(frame.can_id), out data))
+                return;
+            if (frame.data == null || frame.data.Length < ZlgCanApi.CANFD_MAX_DLEN)
+                frame.data = new byte[ZlgCanApi.CANFD_MAX_DLEN];
+            Array.Clear(frame.data, 0, frame.data.Length);
+            Array.Copy(data, frame.data, 8);
+            frame.len = 8;
         }
 
         private void UpdateUiState(bool open)
@@ -88,14 +362,15 @@ namespace USBCANTool
             _isOpen = open;
             btnOpen.Enabled = !open;
             btnClose.Enabled = open;
-            btnSend.Enabled = open;
-            cmbDeviceType.Enabled = !open;
-            numDeviceIndex.Enabled = !open;
-            numChannel.Enabled = !open;
-            cmbBaud.Enabled = !open;
-            if (!open)
-                StopPeriodic();
-            UpdateSendButton();
+            cmbRxDevice.Enabled = !open;
+            cmbTxDevice.Enabled = !open;
+            numRxIndex.Enabled = !open;
+            numTxIndex.Enabled = !open;
+            numRxChannel.Enabled = !open;
+            numTxChannel.Enabled = !open;
+            cmbRxBaud.Enabled = !open;
+            cmbTxBaud.Enabled = !open;
+            ApplyProtocolUi();
         }
 
         private void SetIdle(string text)
@@ -134,6 +409,7 @@ namespace USBCANTool
 
         private void btnOpen_Click(object sender, EventArgs e)
         {
+            bool started = false;
             try
             {
                 if (!ZlgCanApi.EnsureLoaded())
@@ -143,58 +419,101 @@ namespace USBCANTool
                     return;
                 }
 
-                uint devType = GetSelectedDeviceType();
-                uint devIndex = (uint)Math.Min(numDeviceIndex.Value, numDeviceIndex.Maximum);
-                uint channel = (uint)Math.Min(numChannel.Value, numChannel.Maximum);
-
-                _deviceHandle = ZlgCanApi.ZCAN_OpenDevice(devType, devIndex, 0);
-                if (_deviceHandle == IntPtr.Zero || (int)_deviceHandle == ZlgCanApi.INVALID_DEVICE_HANDLE)
+                uint rxType = GetSelectedDeviceType(cmbRxDevice);
+                uint txType = GetSelectedDeviceType(cmbTxDevice);
+                uint rxIndex = (uint)numRxIndex.Value;
+                uint txIndex = (uint)numTxIndex.Value;
+                uint rxCh = (uint)numRxChannel.Value;
+                uint txCh = (uint)numTxChannel.Value;
+                bool sameDevice = rxType == txType && rxIndex == txIndex;
+                if (sameDevice && rxCh == txCh)
                 {
-                    SetFailed("Open failed: ZCAN_OpenDevice. Plug in USB, install driver, close other CAN software.");
+                    SetFailed("RX and TX cannot be the same channel on the same device.");
                     return;
                 }
 
-                string baud = GetSelectedBaud();
-                string path = channel + "/baud_rate";
-                bool baudOk = ZlgCanApi.ZCAN_SetValue(_deviceHandle, path, baud) == ZlgCanApi.STATUS_OK;
+                bool rxFd = ZlgCanApi.IsCanFdDevice(rxType);
+                bool txFd = ZlgCanApi.IsCanFdDevice(txType);
+                bool rxProtoFd = rxFd && cmbRxProtocol.SelectedIndex == 1;
+                bool txProtoFd = txFd && cmbTxProtocol.SelectedIndex == 1;
+                string rxBaud = GetSelectedBaud(cmbRxBaud);
+                string txBaud = GetSelectedBaud(cmbTxBaud);
+                string rxDataBaud = GetSelectedBaud(cmbRxDataBaud, "2000000");
+                string txDataBaud = GetSelectedBaud(cmbTxDataBaud, "2000000");
 
-                var cfg = new ZlgCanApi.ZCAN_CHANNEL_INIT_CONFIG
+                string error;
+                if (!TryOpenDevice(rxType, rxIndex, out _rxDeviceHandle, out error))
                 {
-                    can_type = ZlgCanApi.TYPE_CAN,
-                    acc_code = 0,
-                    acc_mask = 0xFFFFFFFF,
-                    reserved = 0,
-                    filter = 0,
-                    timing0 = 0,
-                    timing1 = 0,
-                    mode = 0,
-                    pad1 = 0,
-                    pad2 = 0,
-                    pad3 = 0
-                };
-
-                _channelHandle = ZlgCanApi.ZCAN_InitCAN(_deviceHandle, channel, ref cfg);
-                if (_channelHandle == IntPtr.Zero || (int)_channelHandle == ZlgCanApi.INVALID_CHANNEL_HANDLE)
-                {
-                    ZlgCanApi.ZCAN_CloseDevice(_deviceHandle);
-                    _deviceHandle = IntPtr.Zero;
-                    SetFailed("Open failed: ZCAN_InitCAN.");
+                    SetFailed(error);
                     return;
                 }
 
-                if (ZlgCanApi.ZCAN_StartCAN(_channelHandle) != ZlgCanApi.STATUS_OK)
+                if (sameDevice)
+                    _txDeviceHandle = _rxDeviceHandle;
+                else if (!TryOpenDevice(txType, txIndex, out _txDeviceHandle, out error))
                 {
-                    ZlgCanApi.ZCAN_CloseDevice(_deviceHandle);
-                    _deviceHandle = IntPtr.Zero;
-                    _channelHandle = IntPtr.Zero;
-                    SetFailed("Open failed: ZCAN_StartCAN.");
+                    CloseNative(false);
+                    SetFailed(error);
                     return;
                 }
 
+                if (!ChannelExists(_rxDeviceHandle, rxCh) || !ChannelExists(_txDeviceHandle, txCh))
+                {
+                    CloseNative(false);
+                    SetFailed("Open failed: selected channel does not exist on that device.");
+                    return;
+                }
+
+                bool baudOk = ApplyChannelPreInit(_rxDeviceHandle, rxCh, rxFd, rxProtoFd, rxBaud, rxDataBaud,
+                    cmbRxIso.SelectedIndex == 1);
+                if (!TryInitChannel(_rxDeviceHandle, rxCh, rxFd, out _rxChannelHandle, out error))
+                {
+                    CloseNative(false);
+                    SetFailed(error);
+                    return;
+                }
+                ApplyChannelPostInit(_rxDeviceHandle, rxCh, rxFd, chkRxTerm.Checked);
+                if (!TryStartChannel(_rxChannelHandle, rxCh, out error))
+                {
+                    CloseNative(false);
+                    SetFailed(error);
+                    return;
+                }
+
+                baudOk = ApplyChannelPreInit(_txDeviceHandle, txCh, txFd, txProtoFd, txBaud, txDataBaud,
+                    cmbTxIso.SelectedIndex == 1) && baudOk;
+                if (!TryInitChannel(_txDeviceHandle, txCh, txFd, out _txChannelHandle, out error))
+                {
+                    CloseNative(false);
+                    SetFailed(error);
+                    return;
+                }
+                ApplyChannelPostInit(_txDeviceHandle, txCh, txFd, chkTxTerm.Checked);
+                if (!TryStartChannel(_txChannelHandle, txCh, out error))
+                {
+                    CloseNative(false);
+                    SetFailed(error);
+                    return;
+                }
+
+                _rxChannelIndex = rxCh;
+                _txChannelIndex = txCh;
+                _rxIsCanFdDevice = rxFd;
+                _txIsCanFdDevice = txFd;
+                _rxProtocolFd = rxProtoFd;
+                _txProtocolFd = txProtoFd;
+                _bridgeTxFailed = false;
+                lock (_pendingLock)
+                    _pending.Clear();
                 UpdateUiState(true);
-                _rxTimer.Start();
+                StartRxThread();
+                _uiTimer.Start();
+                started = true;
                 string extra = baudOk ? "" : " Baud set failed; device may ignore bitrate.";
-                SetOperating("Open and operating. " + baud + " bps, channel " + channel + "." + extra);
+                string rxProto = rxProtoFd ? "CAN FD" : "CAN";
+                string txProto = txProtoFd ? "CAN FD" : "CAN";
+                SetOperating("Open RX→TX. RX " + rxProto + " " + rxBaud + " CH" + rxCh +
+                             " / TX " + txProto + " " + txBaud + " CH" + txCh + "." + extra);
             }
             catch (DllNotFoundException ex)
             {
@@ -209,6 +528,18 @@ namespace USBCANTool
             {
                 SetFailed(ex.GetType().Name + ": " + ex.Message);
             }
+            finally
+            {
+                if (!started)
+                {
+                    if (_uiTimer != null)
+                        _uiTimer.Stop();
+                    StopRxThread();
+                    CloseNative(false);
+                    if (_isOpen)
+                        UpdateUiState(false);
+                }
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -218,364 +549,454 @@ namespace USBCANTool
 
         private void CloseDevice()
         {
-            StopPeriodic();
-            if (_rxTimer != null)
-                _rxTimer.Stop();
-            lock (_canLock)
-            {
-                if (_channelHandle != IntPtr.Zero)
-                {
-                    try { ZlgCanApi.ZCAN_ResetCAN(_channelHandle); } catch { }
-                    _channelHandle = IntPtr.Zero;
-                }
-                if (_deviceHandle != IntPtr.Zero)
-                {
-                    try { ZlgCanApi.ZCAN_CloseDevice(_deviceHandle); } catch { }
-                    _deviceHandle = IntPtr.Zero;
-                }
-            }
+            if (_uiTimer != null)
+                _uiTimer.Stop();
+            _rxRunning = false;
+            JoinRxThread(250);
+            lock (_pendingLock)
+                _pending.Clear();
+            CloseNative(true);
+            JoinRxThread(1000);
+            _rxThread = null;
             UpdateUiState(false);
             SetIdle("Closed");
         }
 
-        private void btnSend_Click(object sender, EventArgs e)
+        private void CloseNative(bool updateFields)
         {
-            if (!_isOpen || _channelHandle == IntPtr.Zero) return;
-
-            if (_periodicRunning)
+            lock (_canLock)
             {
-                StopPeriodic();
-                SetOperating("Periodic transmit stopped.");
-                return;
-            }
-
-            if (chkPeriodic.Checked)
-            {
-                if (!RefreshTxTemplate())
-                    return;
-                _periodMs = Math.Max(1, (int)numPeriod.Value);
-                _periodicRunning = true;
-                _txThread = new Thread(PeriodicTxLoop)
+                ResetChannel(ref _rxChannelHandle);
+                ResetChannel(ref _txChannelHandle);
+                if (_txDeviceHandle != IntPtr.Zero && _txDeviceHandle != _rxDeviceHandle)
                 {
-                    IsBackground = true,
-                    Name = "CAN periodic TX",
-                    Priority = ThreadPriority.AboveNormal
-                };
-                _txThread.Start();
-                UpdateSendButton();
-                SetOperating("Periodic transmit every " + _periodMs + " ms.");
-                return;
-            }
-
-            TransmitOnce(true);
-        }
-
-        private void chkPeriodic_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!chkPeriodic.Checked)
-                StopPeriodic();
-            UpdateSendButton();
-        }
-
-        private void numPeriod_ValueChanged(object sender, EventArgs e)
-        {
-            _periodMs = Math.Max(1, (int)numPeriod.Value);
-        }
-
-        private void StopPeriodic()
-        {
-            _periodicRunning = false;
-            Thread thread = _txThread;
-            if (thread != null && thread.IsAlive && thread != Thread.CurrentThread)
-                thread.Join(1000);
-            _txThread = null;
-            UpdateSendButton();
-        }
-
-        private void PeriodicTxLoop()
-        {
-            timeBeginPeriod(1);
-            try
-            {
-                var clock = Stopwatch.StartNew();
-                long nextTicks = 0;
-                while (_periodicRunning)
+                    try { ZlgCanApi.ZCAN_CloseDevice(_txDeviceHandle); } catch { }
+                }
+                _txDeviceHandle = IntPtr.Zero;
+                if (_rxDeviceHandle != IntPtr.Zero)
                 {
-                    WaitUntil(clock, nextTicks);
-                    if (!_periodicRunning)
-                        break;
-
-                    if (!TransmitSnapshot())
-                    {
-                        try
-                        {
-                            BeginInvoke(new Action(() =>
-                            {
-                                StopPeriodic();
-                                SetFailed("Periodic transmit stopped: send failed.");
-                            }));
-                        }
-                        catch { }
-                        break;
-                    }
-
-                    long periodTicks = Math.Max(1, _periodMs) * Stopwatch.Frequency / 1000L;
-                    nextTicks += periodTicks;
-                    long now = clock.ElapsedTicks;
-                    if (now > nextTicks)
-                    {
-                        long missed = ((now - nextTicks) / periodTicks) + 1;
-                        nextTicks += missed * periodTicks;
-                    }
+                    try { ZlgCanApi.ZCAN_CloseDevice(_rxDeviceHandle); } catch { }
+                    _rxDeviceHandle = IntPtr.Zero;
                 }
             }
-            finally
+            if (updateFields)
             {
-                timeEndPeriod(1);
+                _rxIsCanFdDevice = false;
+                _txIsCanFdDevice = false;
+                _rxProtocolFd = false;
+                _txProtocolFd = false;
             }
         }
 
-        private static void WaitUntil(Stopwatch clock, long targetTicks)
+        private static void ResetChannel(ref IntPtr handle)
         {
-            while (true)
-            {
-                long remaining = targetTicks - clock.ElapsedTicks;
-                if (remaining <= 0)
-                    return;
-
-                double remainMs = 1000.0 * remaining / Stopwatch.Frequency;
-                if (remainMs > 2.0)
-                    Thread.Sleep(1);
-                else
-                    Thread.SpinWait(80);
-            }
-        }
-
-        private void UpdateSendButton()
-        {
-            if (btnSend == null)
+            if (handle == IntPtr.Zero)
                 return;
-            if (_periodicRunning)
-                btnSend.Text = "Stop";
-            else if (chkPeriodic.Checked)
-                btnSend.Text = "Start";
-            else
-                btnSend.Text = "Send";
+            try { ZlgCanApi.ZCAN_ResetCAN(handle); } catch { }
+            handle = IntPtr.Zero;
         }
 
-        private bool TransmitOnce(bool refreshView)
+        private static bool TryOpenDevice(uint type, uint index, out IntPtr handle, out string error)
         {
-            if (!RefreshTxTemplate())
-                return false;
-            if (!TransmitSnapshot())
-                return false;
-            RebuildView();
-            if (!_periodicRunning)
-                SetOperating("Open and operating.");
-            return true;
-        }
-
-        private bool RefreshTxTemplate()
-        {
-            string error;
-            ZlgCanApi.can_frame frame;
-            if (!TryBuildTxFrame(out frame, out error))
+            handle = ZlgCanApi.ZCAN_OpenDevice(type, index, 0);
+            if (handle == IntPtr.Zero)
             {
-                SetFailed(error);
+                handle = IntPtr.Zero;
+                error = "Open failed: ZCAN_OpenDevice type " + type + " idx " + index +
+                        ". Plug in USB, install driver, close other CAN software.";
                 return false;
             }
-            lock (_txFrameLock)
-            {
-                _txFrame = frame;
-                _txFrameValid = true;
-            }
-            return true;
-        }
-
-        private bool TryBuildTxFrame(out ZlgCanApi.can_frame frame, out string error)
-        {
-            frame = new ZlgCanApi.can_frame { data = new byte[8] };
             error = null;
-            try
+            return true;
+        }
+
+        private static bool ChannelExists(IntPtr device, uint channel)
+        {
+            var info = new ZlgCanApi.ZCAN_DEVICE_INFO
             {
-                bool extended = chkExtended.Checked;
-                uint maxId = extended ? ZlgCanApi.CAN_EFF_MASK : ZlgCanApi.CAN_SFF_MASK;
-                uint id;
-                if (!TryParseCanId(txtId.Text, maxId, out id))
-                {
-                    error = extended
-                        ? "Send failed: extended ID must be hex 0-1FFFFFFF."
-                        : "Send failed: standard ID must be hex 0-7FF.";
-                    return false;
-                }
-
-                byte[] data = ParseDataBytes(txtData.Text);
-                if (data.Length > 8)
-                {
-                    error = "Send failed: data longer than 8 bytes.";
-                    return false;
-                }
-
-                byte dlc = (byte)(numDlc.Value > 0 ? (int)numDlc.Value : data.Length);
-                if (dlc > 8) dlc = 8;
-
-                frame.can_id = ZlgCanApi.MAKE_CAN_ID(id, extended, rtr: chkRtr.Checked, err: false);
-                frame.can_dlc = dlc;
-                Array.Copy(data, frame.data, Math.Min(data.Length, 8));
+                str_Serial_Num = new byte[20],
+                str_hw_Type = new byte[40],
+                reserved = new ushort[4]
+            };
+            if (ZlgCanApi.ZCAN_GetDeviceInf(device, ref info) != ZlgCanApi.STATUS_OK)
                 return true;
-            }
-            catch (Exception ex)
+            return info.can_Num > channel;
+        }
+
+        private static bool ApplyChannelPreInit(IntPtr device, uint index, bool fdDevice, bool protocolFd,
+            string baud, string dataBaud, bool nonIso)
+        {
+            string n = index.ToString();
+            if (fdDevice)
             {
-                error = "Send error: " + ex.Message;
+                ZlgCanApi.ZCAN_SetValue(device, n + "/clock", "60000000");
+                bool ok = ZlgCanApi.ZCAN_SetValue(device, n + "/protocol", protocolFd ? "1" : "0") == ZlgCanApi.STATUS_OK;
+                if (protocolFd)
+                    ZlgCanApi.ZCAN_SetValue(device, n + "/canfd_standard", nonIso ? "1" : "0");
+                ok = ZlgCanApi.ZCAN_SetValue(device, n + "/canfd_abit_baud_rate", baud) == ZlgCanApi.STATUS_OK && ok;
+                if (protocolFd)
+                    ok = ZlgCanApi.ZCAN_SetValue(device, n + "/canfd_dbit_baud_rate", dataBaud) == ZlgCanApi.STATUS_OK && ok;
+                else
+                    ZlgCanApi.ZCAN_SetValue(device, n + "/canfd_dbit_baud_rate", baud);
+                return ok;
+            }
+            return ZlgCanApi.ZCAN_SetValue(device, n + "/baud_rate", baud) == ZlgCanApi.STATUS_OK;
+        }
+
+        private static void ApplyChannelPostInit(IntPtr device, uint index, bool fdDevice, bool terminatorOn)
+        {
+            if (!fdDevice)
+                return;
+            ZlgCanApi.ZCAN_SetValue(device, index + "/initenal_resistance", terminatorOn ? "1" : "0");
+        }
+
+        private static bool TryInitChannel(IntPtr device, uint index, bool fdDevice, out IntPtr handle, out string error)
+        {
+            handle = IntPtr.Zero;
+            error = null;
+            if (fdDevice)
+            {
+                var cfg = new ZlgCanApi.ZCAN_CHANNEL_INIT_CONFIG_CANFD
+                {
+                    can_type = ZlgCanApi.TYPE_CANFD,
+                    acc_code = 0,
+                    acc_mask = 0xFFFFFFFF,
+                    abit_timing = 0,
+                    dbit_timing = 0,
+                    brp = 0,
+                    filter = 0,
+                    mode = 0,
+                    pad = 0,
+                    reserved = 0
+                };
+                handle = ZlgCanApi.ZCAN_InitCAN(device, index, ref cfg);
+            }
+            else
+            {
+                var cfg = new ZlgCanApi.ZCAN_CHANNEL_INIT_CONFIG
+                {
+                    can_type = ZlgCanApi.TYPE_CAN,
+                    acc_code = 0,
+                    acc_mask = 0xFFFFFFFF,
+                    reserved = 0,
+                    filter = 0,
+                    timing0 = 0,
+                    timing1 = 0,
+                    mode = 0,
+                    pad1 = 0,
+                    pad2 = 0,
+                    pad3 = 0
+                };
+                handle = ZlgCanApi.ZCAN_InitCAN(device, index, ref cfg);
+            }
+
+            if (handle == IntPtr.Zero)
+            {
+                error = "Open failed: ZCAN_InitCAN channel " + index + ".";
+                handle = IntPtr.Zero;
                 return false;
+            }
+            return true;
+        }
+
+        private static bool TryStartChannel(IntPtr handle, uint index, out string error)
+        {
+            error = null;
+            if (ZlgCanApi.ZCAN_StartCAN(handle) != ZlgCanApi.STATUS_OK)
+            {
+                error = "Open failed: ZCAN_StartCAN channel " + index + ".";
+                try { ZlgCanApi.ZCAN_ResetCAN(handle); } catch { }
+                return false;
+            }
+            try { ZlgCanApi.ZCAN_ClearBuffer(handle); } catch { }
+            return true;
+        }
+
+        private static CanPacket MakeCanPacket(string dir, uint channel, ZlgCanApi.can_frame frame, ulong ts, bool isFd, bool brs)
+        {
+            return new CanPacket
+            {
+                Time = DateTime.Now,
+                Dir = dir,
+                Channel = channel,
+                Id = ZlgCanApi.GET_ID(frame.can_id),
+                Extended = ZlgCanApi.IS_EFF(frame.can_id),
+                Rtr = ZlgCanApi.IS_RTR(frame.can_id),
+                IsFd = isFd,
+                Brs = brs,
+                Dlc = frame.can_dlc > 8 ? (byte)8 : frame.can_dlc,
+                Data = BytesToHex(frame.data, frame.can_dlc > 8 ? 8 : frame.can_dlc),
+                HwTimestamp = ts,
+                Count = 1
+            };
+        }
+
+        private static CanPacket MakeFdPacket(string dir, uint channel, ZlgCanApi.canfd_frame frame, ulong ts)
+        {
+            return new CanPacket
+            {
+                Time = DateTime.Now,
+                Dir = dir,
+                Channel = channel,
+                Id = ZlgCanApi.GET_ID(frame.can_id),
+                Extended = ZlgCanApi.IS_EFF(frame.can_id),
+                Rtr = false,
+                IsFd = true,
+                Brs = (frame.flags & ZlgCanApi.CANFD_BRS) != 0,
+                Dlc = frame.len > 64 ? (byte)64 : frame.len,
+                Data = BytesToHex(frame.data, frame.len > 64 ? 64 : frame.len),
+                HwTimestamp = ts,
+                Count = 1
+            };
+        }
+
+        private void InitRxBuffers()
+        {
+            _rxCanBuf = new ZlgCanApi.ZCAN_Receive_Data[RxBatch];
+            for (int i = 0; i < RxBatch; i++)
+                _rxCanBuf[i].frame.data = new byte[8];
+            _rxFdBuf = new ZlgCanApi.ZCAN_ReceiveFD_Data[RxBatch];
+            for (int i = 0; i < RxBatch; i++)
+                _rxFdBuf[i].frame.data = new byte[ZlgCanApi.CANFD_MAX_DLEN];
+        }
+
+        private void StartRxThread()
+        {
+            StopRxThread();
+            _rxRunning = true;
+            _rxThread = new Thread(RxLoop)
+            {
+                IsBackground = true,
+                Name = "CAN bridge",
+                Priority = ThreadPriority.AboveNormal
+            };
+            _rxThread.Start();
+        }
+
+        private void StopRxThread()
+        {
+            _rxRunning = false;
+            JoinRxThread(1000);
+            _rxThread = null;
+        }
+
+        private void JoinRxThread(int milliseconds)
+        {
+            Thread thread = _rxThread;
+            if (thread != null && thread.IsAlive && thread != Thread.CurrentThread)
+                thread.Join(milliseconds);
+        }
+
+        private void RxLoop()
+        {
+            while (_rxRunning)
+            {
+                try
+                {
+                    IntPtr rx;
+                    IntPtr tx;
+                    lock (_canLock)
+                    {
+                        rx = _rxChannelHandle;
+                        tx = _txChannelHandle;
+                    }
+                    if (rx == IntPtr.Zero || tx == IntPtr.Zero)
+                    {
+                        Thread.Sleep(5);
+                        continue;
+                    }
+
+                    bool any = PollAndBridge(rx, tx);
+                    if (!any)
+                        Thread.Sleep(1);
+                }
+                catch
+                {
+                    Thread.Sleep(5);
+                }
             }
         }
 
-        private bool TransmitSnapshot()
+        private void UiTimer_Tick(object sender, EventArgs e)
         {
-            ZlgCanApi.can_frame frame;
-            lock (_txFrameLock)
+            if (!_isOpen)
+                return;
+
+            int drained = 0;
+            lock (_pendingLock)
             {
-                if (!_txFrameValid)
-                    return false;
-                frame = _txFrame;
-                frame.data = new byte[8];
-                if (_txFrame.data != null)
-                    Array.Copy(_txFrame.data, frame.data, Math.Min(8, _txFrame.data.Length));
+                while (_pending.Count > 0 && drained < MaxDrainPerTick)
+                {
+                    AddPacket(_pending.Dequeue());
+                    drained++;
+                }
             }
 
-            var tx = new ZlgCanApi.ZCAN_Transmit_Data
+            if (drained > 0)
             {
-                frame = frame,
-                transmit_type = 0
-            };
+                RebuildView();
+                if (_ledColor != Color.LimeGreen && !_bridgeTxFailed)
+                    SetOperating("Open RX→TX.");
+            }
 
-            uint sent;
+            if (_bridgeTxFailed)
+            {
+                _bridgeTxFailed = false;
+                SetFailed("Bridge transmit failed. Bus still open.");
+            }
+        }
+
+        private void EnqueuePacket(CanPacket packet)
+        {
+            lock (_pendingLock)
+            {
+                while (_pending.Count >= MaxPending)
+                    _pending.Dequeue();
+                _pending.Enqueue(packet);
+            }
+        }
+
+        private bool PollAndBridge(IntPtr src, IntPtr dest)
+        {
+            bool any = false;
+            uint count;
+            lock (_canLock)
+            {
+                if (src == IntPtr.Zero) return false;
+                count = ZlgCanApi.ZCAN_Receive(src, _rxCanBuf, (uint)RxBatch, 0);
+            }
+
+            for (uint i = 0; i < count; i++)
+            {
+                var f = _rxCanBuf[i].frame;
+                if (ZlgCanApi.IS_ERR(f.can_id))
+                    continue;
+                EnqueuePacket(MakeCanPacket("RX", _rxChannelIndex, f, _rxCanBuf[i].timestamp, false, false));
+                any = true;
+                TryRewriteCan(ref f);
+                if (!ForwardCan(dest, f))
+                    _bridgeTxFailed = true;
+                else
+                    EnqueuePacket(MakeCanPacket("TX", _txChannelIndex, f, 0, false, false));
+            }
+
+            if (!_rxIsCanFdDevice)
+                return any;
+
+            uint fdCount;
+            lock (_canLock)
+            {
+                if (src == IntPtr.Zero) return any;
+                fdCount = ZlgCanApi.ZCAN_ReceiveFD(src, _rxFdBuf, (uint)RxBatch, 0);
+            }
+
+            bool txFdFrames = _txIsCanFdDevice && _txProtocolFd;
+            for (uint i = 0; i < fdCount; i++)
+            {
+                var f = _rxFdBuf[i].frame;
+                if (ZlgCanApi.IS_ERR(f.can_id))
+                    continue;
+                if (f.len > ZlgCanApi.CANFD_MAX_DLEN)
+                    f.len = (byte)ZlgCanApi.CANFD_MAX_DLEN;
+                EnqueuePacket(MakeFdPacket("RX", _rxChannelIndex, f, _rxFdBuf[i].timestamp));
+                any = true;
+                TryRewriteFd(ref f);
+                if (txFdFrames)
+                {
+                    if (!ForwardFd(dest, f))
+                        _bridgeTxFailed = true;
+                    else
+                        EnqueuePacket(MakeFdPacket("TX", _txChannelIndex, f, 0));
+                }
+                else
+                {
+                    var classic = FdToClassic(f);
+                    if (!ForwardCan(dest, classic))
+                        _bridgeTxFailed = true;
+                    else
+                        EnqueuePacket(MakeCanPacket("TX", _txChannelIndex, classic, 0, false, false));
+                }
+            }
+
+            return any;
+        }
+
+        private static ZlgCanApi.can_frame FdToClassic(ZlgCanApi.canfd_frame fd)
+        {
+            byte n = fd.len;
+            if (n > 8)
+                n = 8;
+            var frame = new ZlgCanApi.can_frame
+            {
+                can_id = fd.can_id & ~ZlgCanApi.CAN_ERR_FLAG,
+                can_dlc = n,
+                data = new byte[8]
+            };
+            if (fd.data != null && n > 0)
+                Array.Copy(fd.data, frame.data, Math.Min(n, fd.data.Length));
+            return frame;
+        }
+
+        private bool ForwardCan(IntPtr dest, ZlgCanApi.can_frame frame)
+        {
+            var tx = new ZlgCanApi.ZCAN_Transmit_Data { frame = frame, transmit_type = 0 };
+            if (tx.frame.data == null)
+            {
+                tx.frame.data = new byte[8];
+            }
+            else
+            {
+                var copy = new byte[8];
+                Array.Copy(tx.frame.data, copy, Math.Min(8, tx.frame.data.Length));
+                tx.frame.data = copy;
+            }
             try
             {
                 lock (_canLock)
                 {
-                    if (_channelHandle == IntPtr.Zero)
+                    if (dest == IntPtr.Zero)
                         return false;
-                    sent = ZlgCanApi.ZCAN_Transmit(_channelHandle, ref tx, 1);
+                    return ZlgCanApi.ZCAN_Transmit(dest, ref tx, 1) == 1;
                 }
             }
             catch
             {
                 return false;
             }
-
-            if (sent != 1)
-            {
-                if (InvokeRequired)
-                    return false;
-                SetFailed("Transmit failed (returned " + sent + ").");
-                return false;
-            }
-
-            var packet = new CanPacket
-            {
-                Time = DateTime.Now,
-                Dir = "TX",
-                Id = ZlgCanApi.GET_ID(frame.can_id),
-                Extended = ZlgCanApi.IS_EFF(frame.can_id),
-                Rtr = ZlgCanApi.IS_RTR(frame.can_id),
-                Dlc = frame.can_dlc,
-                Data = BytesToHex(frame.data, frame.can_dlc),
-                HwTimestamp = 0,
-                Count = 1
-            };
-
-            if (InvokeRequired)
-            {
-                try
-                {
-                    BeginInvoke(new Action(() => LogTxPacket(packet)));
-                }
-                catch { }
-            }
-            else
-            {
-                LogTxPacket(packet);
-            }
-            return true;
         }
 
-        private void LogTxPacket(CanPacket packet)
+        private bool ForwardFd(IntPtr dest, ZlgCanApi.canfd_frame frame)
         {
-            AddPacket(packet);
-            if ((DateTime.Now - _lastTxViewRebuild).TotalMilliseconds >= 80)
-            {
-                _lastTxViewRebuild = DateTime.Now;
-                RebuildView();
-            }
-        }
-
-        private void RxTimer_Tick(object sender, EventArgs e)
-        {
-            if (!_isOpen || _channelHandle == IntPtr.Zero) return;
-
-            if (_periodicRunning)
-            {
-                ZlgCanApi.can_frame liveFrame;
-                string unused;
-                if (TryBuildTxFrame(out liveFrame, out unused))
-                {
-                    lock (_txFrameLock)
-                    {
-                        _txFrame = liveFrame;
-                        _txFrameValid = true;
-                    }
-                }
-            }
-
+            var tx = new ZlgCanApi.ZCAN_TransmitFD_Data { frame = frame, transmit_type = 0 };
+            var copy = new byte[ZlgCanApi.CANFD_MAX_DLEN];
+            if (tx.frame.data != null)
+                Array.Copy(tx.frame.data, copy, Math.Min(ZlgCanApi.CANFD_MAX_DLEN, tx.frame.data.Length));
+            tx.frame.data = copy;
             try
             {
-                const int max = 100;
-                var buf = new ZlgCanApi.ZCAN_Receive_Data[max];
-                for (int i = 0; i < max; i++)
-                    buf[i].frame.data = new byte[8];
-
-                uint count;
                 lock (_canLock)
                 {
-                    if (_channelHandle == IntPtr.Zero) return;
-                    count = ZlgCanApi.ZCAN_Receive(_channelHandle, buf, (uint)max, 0);
+                    if (dest == IntPtr.Zero)
+                        return false;
+                    return ZlgCanApi.ZCAN_TransmitFD(dest, ref tx, 1) == 1;
                 }
-                if (count == 0) return;
-
-                for (uint i = 0; i < count; i++)
-                {
-                    var f = buf[i].frame;
-                    AddPacket(new CanPacket
-                    {
-                        Time = DateTime.Now,
-                        Dir = "RX",
-                        Id = ZlgCanApi.GET_ID(f.can_id),
-                        Extended = ZlgCanApi.IS_EFF(f.can_id),
-                        Rtr = ZlgCanApi.IS_RTR(f.can_id),
-                        Dlc = f.can_dlc,
-                        Data = BytesToHex(f.data, f.can_dlc),
-                        HwTimestamp = buf[i].timestamp,
-                        Count = 1
-                    });
-                }
-                RebuildView();
-                if (_isOpen && _ledColor != Color.LimeGreen)
-                    SetOperating("Open and operating.");
             }
-            catch (Exception ex)
+            catch
             {
-                SetFailed("Receive failed: " + ex.Message);
+                return false;
             }
         }
 
         private void AddPacket(CanPacket packet)
         {
             _packets.Add(packet);
+            UpdateGroup(packet);
             if (_packets.Count > MaxPackets)
-                _packets.RemoveRange(0, _packets.Count - MaxPackets);
+                TrimPackets();
+        }
 
+        private void UpdateGroup(CanPacket packet)
+        {
             string key = packet.GroupKey;
             CanPacket grouped;
             if (_groups.TryGetValue(key, out grouped))
@@ -585,18 +1006,57 @@ namespace USBCANTool
                 grouped.Data = packet.Data;
                 grouped.HwTimestamp = packet.HwTimestamp;
                 grouped.Count++;
-            }
-            else
-            {
-                _groups[key] = packet.Clone();
+                return;
             }
 
+            _groups[key] = packet.Clone();
+            _groupsNeedSort = true;
+        }
+
+        private void TrimPackets()
+        {
+            int keep = MaxPackets - PacketTrimChunk;
+            if (keep < 1)
+                keep = MaxPackets;
+            int drop = _packets.Count - keep;
+            if (drop <= 0)
+                return;
+            _packets.RemoveRange(0, drop);
+            RebuildGroupsFromPackets();
+        }
+
+        private void RebuildGroupsFromPackets()
+        {
+            _groups.Clear();
+            for (int i = 0; i < _packets.Count; i++)
+            {
+                CanPacket packet = _packets[i];
+                string key = packet.GroupKey;
+                CanPacket grouped;
+                if (_groups.TryGetValue(key, out grouped))
+                {
+                    grouped.Time = packet.Time;
+                    grouped.Dlc = packet.Dlc;
+                    grouped.Data = packet.Data;
+                    grouped.HwTimestamp = packet.HwTimestamp;
+                    grouped.Count++;
+                }
+                else
+                {
+                    var clone = packet.Clone();
+                    clone.Count = 1;
+                    _groups[key] = clone;
+                }
+            }
+            _groupsNeedSort = true;
         }
 
         private void FilterChanged(object sender, EventArgs e)
         {
             ParseFilterIds();
+            _groupsNeedSort = true;
             RebuildView();
+            ScheduleSave();
         }
 
         private void ParseFilterIds()
@@ -639,6 +1099,11 @@ namespace USBCANTool
             return true;
         }
 
+        private bool HasActiveFilter()
+        {
+            return _filterIdInvalid || _filterIds != null || cmbFilterDir.SelectedIndex != 0;
+        }
+
         private void RebuildView()
         {
             _view.Clear();
@@ -646,15 +1111,20 @@ namespace USBCANTool
 
             if (chkGroup.Checked)
             {
-                foreach (var kv in _groups)
+                if (_groupsNeedSort || _groupView.Count == 0 || HasActiveFilter())
                 {
-                    if (PassesFilter(kv.Value))
-                        _groupView.Add(kv.Value);
+                    _groupView.Clear();
+                    foreach (var kv in _groups)
+                    {
+                        if (PassesFilter(kv.Value))
+                            _groupView.Add(kv.Value);
+                    }
+                    _groupView.Sort((a, b) => a.Id.CompareTo(b.Id));
+                    _groupsNeedSort = false;
                 }
-                _groupView.Sort((a, b) => a.Id.CompareTo(b.Id));
                 lvPackets.VirtualListSize = _groupView.Count;
             }
-            else
+            else if (HasActiveFilter())
             {
                 for (int i = 0; i < _packets.Count; i++)
                 {
@@ -663,12 +1133,18 @@ namespace USBCANTool
                 }
                 lvPackets.VirtualListSize = _view.Count;
             }
-
-            lvPackets.Refresh();
-            if (lvPackets.VirtualListSize > 0 && !chkGroup.Checked)
+            else
             {
-                int last = lvPackets.VirtualListSize - 1;
-                lvPackets.EnsureVisible(last);
+                lvPackets.VirtualListSize = _packets.Count;
+            }
+
+            lvPackets.Invalidate();
+            DateTime now = DateTime.Now;
+            if (lvPackets.VirtualListSize > 0 && !chkGroup.Checked &&
+                (now - _lastViewRebuild).TotalMilliseconds >= 80)
+            {
+                _lastViewRebuild = now;
+                lvPackets.EnsureVisible(lvPackets.VirtualListSize - 1);
             }
         }
 
@@ -684,7 +1160,7 @@ namespace USBCANTool
                 }
                 p = _groupView[e.ItemIndex];
             }
-            else
+            else if (HasActiveFilter())
             {
                 if (e.ItemIndex < 0 || e.ItemIndex >= _view.Count)
                 {
@@ -693,11 +1169,26 @@ namespace USBCANTool
                 }
                 p = _view[e.ItemIndex];
             }
+            else
+            {
+                if (e.ItemIndex < 0 || e.ItemIndex >= _packets.Count)
+                {
+                    e.Item = new ListViewItem("");
+                    return;
+                }
+                p = _packets[e.ItemIndex];
+            }
 
             var item = new ListViewItem(p.Time.ToString("HH:mm:ss.fff"));
             item.SubItems.Add(p.Dir);
+            item.SubItems.Add(p.Channel.ToString());
             item.SubItems.Add("0x" + p.Id.ToString("X"));
-            item.SubItems.Add((p.Extended ? "EXT" : "STD") + (p.Rtr ? " RTR" : ""));
+            string type;
+            if (p.IsFd)
+                type = (p.Extended ? "FD EXT" : "FD") + (p.Brs ? " BRS" : "");
+            else
+                type = (p.Extended ? "EXT" : "STD") + (p.Rtr ? " RTR" : "");
+            item.SubItems.Add(type);
             item.SubItems.Add(p.Dlc.ToString());
             item.SubItems.Add(p.Data);
             item.SubItems.Add(p.Count.ToString());
@@ -711,67 +1202,226 @@ namespace USBCANTool
             _groups.Clear();
             _view.Clear();
             _groupView.Clear();
+            _groupsNeedSort = true;
             lvPackets.VirtualListSize = 0;
             lvPackets.Refresh();
         }
 
         private void InitBaudList()
         {
-            cmbBaud.Items.Clear();
-            cmbBaud.Items.AddRange(BaudRates);
-            int defaultIndex = 2;
-            for (int i = 0; i < BaudRates.Length; i++)
+            FillBaud(cmbRxBaud, BaudRates, DefaultBaud);
+            FillBaud(cmbTxBaud, BaudRates, DefaultBaud);
+        }
+
+        private void InitDataBaudList()
+        {
+            FillBaud(cmbRxDataBaud, DataBaudRates, "2000000");
+            FillBaud(cmbTxDataBaud, DataBaudRates, "2000000");
+        }
+
+        private static void FillBaud(ComboBox combo, BaudOption[] options, string defaultValue)
+        {
+            combo.Items.Clear();
+            combo.Items.AddRange(options);
+            int defaultIndex = -1;
+            int fallbackIndex = 0;
+            for (int i = 0; i < options.Length; i++)
             {
-                if (BaudRates[i].Value == DefaultBaud)
-                {
+                if (options[i].Value == defaultValue)
                     defaultIndex = i;
-                    break;
-                }
+                if (options[i].Value == DefaultBaud)
+                    fallbackIndex = i;
             }
-            cmbBaud.SelectedIndex = defaultIndex;
+            if (defaultIndex < 0)
+                defaultIndex = fallbackIndex;
+            combo.SelectedIndex = defaultIndex;
         }
 
-        private string GetSelectedBaud()
+        private void RefreshArbBaud(ComboBox cmbDevice, ComboBox cmbBaud)
         {
-            var option = cmbBaud.SelectedItem as BaudOption;
-            return option != null ? option.Value : DefaultBaud;
+            bool fd = ZlgCanApi.IsCanFdDevice(GetSelectedDeviceType(cmbDevice));
+            FillBaud(cmbBaud, fd ? FdBaudRates : BaudRates, GetSelectedBaud(cmbBaud));
         }
 
-        private uint GetSelectedDeviceType()
+        private void InitDeviceList()
         {
-            switch (cmbDeviceType.SelectedIndex)
+            _updatingUi = true;
+            FillDeviceCombo(cmbRxDevice);
+            FillDeviceCombo(cmbTxDevice);
+            FillProtocol(cmbRxProtocol);
+            FillProtocol(cmbTxProtocol);
+            cmbRxDevice.SelectedIndex = 0;
+            cmbTxDevice.SelectedIndex = 0;
+            cmbRxProtocol.SelectedIndex = 0;
+            cmbTxProtocol.SelectedIndex = 0;
+            _lastRxDevType = GetSelectedDeviceType(cmbRxDevice);
+            _lastTxDevType = GetSelectedDeviceType(cmbTxDevice);
+            ClampChannel(numRxChannel, _lastRxDevType);
+            ClampChannel(numTxChannel, _lastTxDevType);
+            _updatingUi = false;
+        }
+
+        private static void FillDeviceCombo(ComboBox combo)
+        {
+            combo.Items.Clear();
+            combo.Items.Add(new DeviceTypeItem("USBCAN2 (4)", ZlgCanApi.ZCAN_USBCAN2));
+            combo.Items.Add(new DeviceTypeItem("USBCANFD-100U (42)", ZlgCanApi.ZCAN_USBCANFD_100U));
+            combo.Items.Add(new DeviceTypeItem("USBCANFD-200U (41)", ZlgCanApi.ZCAN_USBCANFD_200U));
+        }
+
+        private static void FillProtocol(ComboBox combo)
+        {
+            combo.Items.Clear();
+            combo.Items.Add("CAN");
+            combo.Items.Add("CAN FD");
+        }
+
+        private static string GetSelectedBaud(ComboBox combo)
+        {
+            return GetSelectedBaud(combo, DefaultBaud);
+        }
+
+        private static string GetSelectedBaud(ComboBox combo, string fallback)
+        {
+            var option = combo.SelectedItem as BaudOption;
+            return option != null ? option.Value : fallback;
+        }
+
+        private static uint GetSelectedDeviceType(ComboBox combo)
+        {
+            var item = combo.SelectedItem as DeviceTypeItem;
+            return item != null ? item.Type : DefaultDeviceType;
+        }
+
+        private void RxDeviceOrProtocolChanged(object sender, EventArgs e)
+        {
+            OnSideDeviceOrProtocolChanged(cmbRxDevice, cmbRxProtocol, numRxChannel, ref _lastRxDevType);
+        }
+
+        private void TxDeviceOrProtocolChanged(object sender, EventArgs e)
+        {
+            OnSideDeviceOrProtocolChanged(cmbTxDevice, cmbTxProtocol, numTxChannel, ref _lastTxDevType);
+        }
+
+        private void OnSideDeviceOrProtocolChanged(ComboBox cmbDevice, ComboBox cmbProtocol, NumericUpDown numCh, ref uint lastType)
+        {
+            if (_updatingUi || cmbDevice.Items.Count == 0 || cmbProtocol.Items.Count == 0)
+                return;
+
+            uint type = GetSelectedDeviceType(cmbDevice);
+            bool fdDevice = ZlgCanApi.IsCanFdDevice(type);
+            _updatingUi = true;
+            if (!fdDevice)
+                cmbProtocol.SelectedIndex = 0;
+            else if (!ZlgCanApi.IsCanFdDevice(lastType))
+                cmbProtocol.SelectedIndex = 1;
+            lastType = type;
+            ClampChannel(numCh, type);
+            if (cmbDevice == cmbRxDevice)
+                RefreshArbBaud(cmbRxDevice, cmbRxBaud);
+            else
+                RefreshArbBaud(cmbTxDevice, cmbTxBaud);
+            _updatingUi = false;
+            if (!_isOpen)
+                ApplyProtocolUi();
+            ScheduleSave();
+        }
+
+        private static decimal ChannelMax(uint type)
+        {
+            return type == ZlgCanApi.ZCAN_USBCANFD_100U ? 0 : 1;
+        }
+
+        private static void ClampChannel(NumericUpDown num, uint type)
+        {
+            num.Maximum = ChannelMax(type);
+            if (num.Value > num.Maximum)
+                num.Value = num.Maximum;
+        }
+
+        private void ApplyProtocolUi()
+        {
+            uint rxType = GetSelectedDeviceType(cmbRxDevice);
+            uint txType = GetSelectedDeviceType(cmbTxDevice);
+            bool rxFd = ZlgCanApi.IsCanFdDevice(rxType);
+            bool txFd = ZlgCanApi.IsCanFdDevice(txType);
+            bool rxProtoFd = _isOpen ? _rxProtocolFd : (rxFd && cmbRxProtocol.SelectedIndex == 1);
+            bool txProtoFd = _isOpen ? _txProtocolFd : (txFd && cmbTxProtocol.SelectedIndex == 1);
+            if (!_isOpen)
             {
-                case 0: return ZlgCanApi.ZCAN_USBCAN1;
-                case 1: return ZlgCanApi.ZCAN_USBCAN2;
-                case 2: return ZlgCanApi.ZCAN_USBCAN_E_U;
-                case 3: return ZlgCanApi.ZCAN_USBCAN_2E_U;
-                case 4: return ZlgCanApi.ZCAN_USBCAN_4E_U;
-                case 5: return ZlgCanApi.ZCAN_USBCAN_8E_U;
-                default: return DefaultDeviceType;
+                cmbRxProtocol.Enabled = rxFd;
+                cmbTxProtocol.Enabled = txFd;
             }
+            else
+            {
+                cmbRxProtocol.Enabled = false;
+                cmbTxProtocol.Enabled = false;
+            }
+            cmbRxDataBaud.Enabled = !_isOpen && rxProtoFd;
+            cmbTxDataBaud.Enabled = !_isOpen && txProtoFd;
+            chkRxTerm.Enabled = !_isOpen && rxFd;
+            chkTxTerm.Enabled = !_isOpen && txFd;
+            cmbRxIso.Enabled = !_isOpen && rxProtoFd;
+            cmbTxIso.Enabled = !_isOpen && txProtoFd;
+            lblColBaud.Text = (rxProtoFd || txProtoFd) ? "Arb" : "Bitrate";
         }
 
-        private bool _clampingId;
-        private bool _formattingData;
-
-        private void txtData_KeyPress(object sender, KeyPressEventArgs e)
+        private static void HexKeyPress(object sender, KeyPressEventArgs e)
         {
             if (char.IsControl(e.KeyChar)) return;
             if (Uri.IsHexDigit(e.KeyChar)) return;
             e.Handled = true;
         }
 
-        private void txtData_TextChanged(object sender, EventArgs e)
+        private uint RewriteMaxId(TextBox box)
         {
-            FormatDataText();
+            int index = box.Tag is int ? (int)box.Tag : -1;
+            bool extended = index >= 0 && _rewriteFrame != null && index < _rewriteFrame.Length &&
+                _rewriteFrame[index] != null && _rewriteFrame[index].SelectedIndex == 1;
+            box.MaxLength = extended ? 8 : 3;
+            return extended ? ZlgCanApi.CAN_EFF_MASK : ZlgCanApi.CAN_SFF_MASK;
         }
 
-        private void FormatDataText()
+        private void ClampRewriteId(TextBox box)
         {
-            if (_formattingData) return;
+            if (_formattingRewrite) return;
 
-            string raw = txtData.Text ?? "";
-            int caret = txtData.SelectionStart;
+            uint maxId = RewriteMaxId(box);
+            string raw = box.Text ?? "";
+            var cleaned = new StringBuilder(raw.Length);
+            foreach (char c in raw)
+            {
+                if (Uri.IsHexDigit(c))
+                    cleaned.Append(c);
+            }
+
+            uint value = 0;
+            if (cleaned.Length > 0)
+            {
+                if (!uint.TryParse(cleaned.ToString(), NumberStyles.HexNumber, null, out value))
+                    value = maxId;
+            }
+
+            if (value > maxId)
+                value = maxId;
+
+            string formatted = cleaned.Length == 0 ? "" : value.ToString("X");
+            if (box.Text == formatted)
+                return;
+
+            int caret = box.SelectionStart;
+            _formattingRewrite = true;
+            box.Text = formatted;
+            box.SelectionStart = Math.Min(caret, box.Text.Length);
+            _formattingRewrite = false;
+        }
+
+        private void FormatRewriteData(TextBox box)
+        {
+            if (_formattingRewrite) return;
+
+            string raw = box.Text ?? "";
+            int caret = box.SelectionStart;
             int hexBeforeCaret = 0;
             for (int i = 0; i < caret && i < raw.Length; i++)
             {
@@ -798,7 +1448,7 @@ namespace USBCANTool
             }
 
             string result = formatted.ToString();
-            if (txtData.Text == result)
+            if (box.Text == result)
                 return;
 
             int newCaret = result.Length;
@@ -816,71 +1466,10 @@ namespace USBCANTool
                 }
             }
 
-            _formattingData = true;
-            txtData.Text = result;
-            txtData.SelectionStart = Math.Min(newCaret, txtData.Text.Length);
-            _formattingData = false;
-        }
-
-        private uint MaxCanId =>
-            chkExtended.Checked ? ZlgCanApi.CAN_EFF_MASK : ZlgCanApi.CAN_SFF_MASK;
-
-        private void chkExtended_CheckedChanged(object sender, EventArgs e)
-        {
-            ApplyCanIdFormat();
-        }
-
-        private void txtId_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (char.IsControl(e.KeyChar)) return;
-            if (Uri.IsHexDigit(e.KeyChar)) return;
-            e.Handled = true;
-        }
-
-        private void txtId_TextChanged(object sender, EventArgs e)
-        {
-            ClampCanIdText();
-        }
-
-        private void ApplyCanIdFormat()
-        {
-            bool extended = chkExtended.Checked;
-            txtId.MaxLength = extended ? 8 : 3;
-            lblId.Text = extended ? "ID (29-bit)" : "ID (11-bit)";
-            ClampCanIdText();
-        }
-
-        private void ClampCanIdText()
-        {
-            if (_clampingId) return;
-
-            string raw = txtId.Text ?? "";
-            var cleaned = new StringBuilder(raw.Length);
-            foreach (char c in raw)
-            {
-                if (Uri.IsHexDigit(c))
-                    cleaned.Append(c);
-            }
-
-            uint value = 0;
-            if (cleaned.Length > 0)
-            {
-                if (!uint.TryParse(cleaned.ToString(), NumberStyles.HexNumber, null, out value))
-                    value = MaxCanId;
-            }
-
-            if (value > MaxCanId)
-                value = MaxCanId;
-
-            string formatted = cleaned.Length == 0 ? "" : value.ToString("X");
-            if (txtId.Text == formatted)
-                return;
-
-            int caret = txtId.SelectionStart;
-            _clampingId = true;
-            txtId.Text = formatted;
-            txtId.SelectionStart = Math.Min(caret, txtId.Text.Length);
-            _clampingId = false;
+            _formattingRewrite = true;
+            box.Text = result;
+            box.SelectionStart = Math.Min(newCaret, box.Text.Length);
+            _formattingRewrite = false;
         }
 
         private static bool TryParseCanId(string s, uint maxId, out uint id)
@@ -929,11 +1518,14 @@ namespace USBCANTool
             return sb.ToString();
         }
 
-        [DllImport("winmm.dll")]
-        private static extern uint timeBeginPeriod(uint uMilliseconds);
-
-        [DllImport("winmm.dll")]
-        private static extern uint timeEndPeriod(uint uMilliseconds);
+        private sealed class RewriteSlot
+        {
+            public bool Enabled;
+            public bool HasId;
+            public bool Extended;
+            public uint Id;
+            public byte[] Data;
+        }
 
         private sealed class BaudOption
         {
@@ -952,13 +1544,33 @@ namespace USBCANTool
             }
         }
 
+        private sealed class DeviceTypeItem
+        {
+            public string Text { get; }
+            public uint Type { get; }
+
+            public DeviceTypeItem(string text, uint type)
+            {
+                Text = text;
+                Type = type;
+            }
+
+            public override string ToString()
+            {
+                return Text;
+            }
+        }
+
         private sealed class CanPacket
         {
             public DateTime Time;
             public string Dir;
+            public uint Channel;
             public uint Id;
             public bool Extended;
             public bool Rtr;
+            public bool IsFd;
+            public bool Brs;
             public byte Dlc;
             public string Data;
             public ulong HwTimestamp;
@@ -966,7 +1578,7 @@ namespace USBCANTool
 
             public string GroupKey
             {
-                get { return Dir + "|" + Id + "|" + Extended + "|" + Rtr; }
+                get { return Dir + "|" + Channel + "|" + Id + "|" + Extended + "|" + Rtr + "|" + IsFd + "|" + Brs; }
             }
 
             public CanPacket Clone()
@@ -975,9 +1587,12 @@ namespace USBCANTool
                 {
                     Time = Time,
                     Dir = Dir,
+                    Channel = Channel,
                     Id = Id,
                     Extended = Extended,
                     Rtr = Rtr,
+                    IsFd = IsFd,
+                    Brs = Brs,
                     Dlc = Dlc,
                     Data = Data,
                     HwTimestamp = HwTimestamp,
@@ -986,8 +1601,198 @@ namespace USBCANTool
             }
         }
 
+        private void SettingsChanged(object sender, EventArgs e)
+        {
+            ScheduleSave();
+        }
+
+        private void SaveTimer_Tick(object sender, EventArgs e)
+        {
+            _saveTimer.Stop();
+            SaveSettings();
+        }
+
+        private void ScheduleSave()
+        {
+            if (_loadingSettings || _saveTimer == null)
+                return;
+            _saveTimer.Stop();
+            _saveTimer.Start();
+        }
+
+        private void LoadSettings()
+        {
+            SavedSettings saved = AppSettings.Load();
+            if (saved == null)
+                return;
+
+            _loadingSettings = true;
+            _updatingUi = true;
+            try
+            {
+                uint rxType = saved.RxDeviceType != 0 ? saved.RxDeviceType : saved.DeviceType;
+                uint txType = saved.TxDeviceType != 0 ? saved.TxDeviceType : saved.DeviceType;
+                SelectDeviceType(cmbRxDevice, rxType);
+                SelectDeviceType(cmbTxDevice, txType);
+                _lastRxDevType = GetSelectedDeviceType(cmbRxDevice);
+                _lastTxDevType = GetSelectedDeviceType(cmbTxDevice);
+                ClampChannel(numRxChannel, _lastRxDevType);
+                ClampChannel(numTxChannel, _lastTxDevType);
+
+                SetNumeric(numRxIndex, saved.RxDeviceType != 0 ? saved.RxDeviceIndex : saved.DeviceIndex);
+                SetNumeric(numTxIndex, saved.TxDeviceType != 0 ? saved.TxDeviceIndex : saved.DeviceIndex);
+                SetNumeric(numRxChannel, saved.RxDeviceType != 0 ? saved.RxChannel : 0);
+                SetNumeric(numTxChannel, saved.TxDeviceType != 0 ? saved.TxChannel : 1);
+
+                cmbRxProtocol.SelectedIndex = ZlgCanApi.IsCanFdDevice(_lastRxDevType) &&
+                    (saved.RxDeviceType != 0 ? saved.RxProtocolFd : saved.ProtocolFd) ? 1 : 0;
+                cmbTxProtocol.SelectedIndex = ZlgCanApi.IsCanFdDevice(_lastTxDevType) &&
+                    (saved.TxDeviceType != 0 ? saved.TxProtocolFd : saved.ProtocolFd) ? 1 : 0;
+
+                SelectBaud(cmbRxBaud, FirstNonEmpty(saved.RxBaud, saved.Baud), DefaultBaud);
+                SelectBaud(cmbTxBaud, FirstNonEmpty(saved.TxBaud, saved.Baud), DefaultBaud);
+                SelectBaud(cmbRxDataBaud, FirstNonEmpty(saved.RxDataBaud, saved.DataBaud), "2000000");
+                SelectBaud(cmbTxDataBaud, FirstNonEmpty(saved.TxDataBaud, saved.DataBaud), "2000000");
+
+                chkRxTerm.Checked = saved.RxTerm;
+                chkTxTerm.Checked = saved.TxTerm;
+                cmbRxIso.SelectedIndex = saved.RxNonIso ? 1 : 0;
+                cmbTxIso.SelectedIndex = saved.TxNonIso ? 1 : 0;
+
+                txtFilterId.Text = saved.FilterId ?? "";
+                if (saved.FilterDir >= 0 && saved.FilterDir < cmbFilterDir.Items.Count)
+                    cmbFilterDir.SelectedIndex = saved.FilterDir;
+                chkGroup.Checked = saved.GroupShow;
+
+                if (saved.Slots != null)
+                {
+                    int n = Math.Min(RewriteSlotCount, saved.Slots.Length);
+                    for (int i = 0; i < n; i++)
+                    {
+                        SavedSlot slot = saved.Slots[i];
+                        if (slot == null)
+                            continue;
+                        if (_rewriteFrame[i] != null)
+                            _rewriteFrame[i].SelectedIndex = slot.Extended ? 1 : 0;
+                        if (_rewriteId[i] != null)
+                            _rewriteId[i].Text = slot.Id ?? "";
+                        if (_rewriteData[i] != null)
+                            _rewriteData[i].Text = string.IsNullOrWhiteSpace(slot.Data)
+                                ? "00 00 00 00 00 00 00 00"
+                                : slot.Data;
+                        if (_rewriteEnable[i] != null)
+                            _rewriteEnable[i].Checked = slot.Enabled;
+                    }
+                }
+            }
+            finally
+            {
+                _updatingUi = false;
+                _loadingSettings = false;
+            }
+
+            RefreshArbBaud(cmbRxDevice, cmbRxBaud);
+            RefreshArbBaud(cmbTxDevice, cmbTxBaud);
+            ApplyProtocolUi();
+            ParseFilterIds();
+            RebuildRewriteSlots();
+        }
+
+        private static void SelectDeviceType(ComboBox combo, uint type)
+        {
+            for (int i = 0; i < combo.Items.Count; i++)
+            {
+                var item = combo.Items[i] as DeviceTypeItem;
+                if (item != null && item.Type == type)
+                {
+                    combo.SelectedIndex = i;
+                    return;
+                }
+            }
+        }
+
+        private static void SetNumeric(NumericUpDown num, int value)
+        {
+            decimal v = value;
+            if (v < num.Minimum)
+                v = num.Minimum;
+            if (v > num.Maximum)
+                v = num.Maximum;
+            num.Value = v;
+        }
+
+        private static string FirstNonEmpty(string a, string b)
+        {
+            return string.IsNullOrEmpty(a) ? b : a;
+        }
+
+        private static void SelectBaud(ComboBox combo, string value, string fallback)
+        {
+            string want = string.IsNullOrEmpty(value) ? fallback : value;
+            for (int i = 0; i < combo.Items.Count; i++)
+            {
+                var option = combo.Items[i] as BaudOption;
+                if (option != null && option.Value == want)
+                {
+                    combo.SelectedIndex = i;
+                    return;
+                }
+            }
+        }
+
+        private void SaveSettings()
+        {
+            if (_loadingSettings)
+                return;
+
+            var saved = new SavedSettings
+            {
+                DeviceType = GetSelectedDeviceType(cmbRxDevice),
+                DeviceIndex = (int)numRxIndex.Value,
+                ProtocolFd = cmbRxProtocol.SelectedIndex == 1,
+                Baud = GetSelectedBaud(cmbRxBaud),
+                DataBaud = GetSelectedBaud(cmbRxDataBaud, "2000000"),
+                RxDeviceType = GetSelectedDeviceType(cmbRxDevice),
+                TxDeviceType = GetSelectedDeviceType(cmbTxDevice),
+                RxDeviceIndex = (int)numRxIndex.Value,
+                TxDeviceIndex = (int)numTxIndex.Value,
+                RxChannel = (int)numRxChannel.Value,
+                TxChannel = (int)numTxChannel.Value,
+                RxProtocolFd = cmbRxProtocol.SelectedIndex == 1,
+                TxProtocolFd = cmbTxProtocol.SelectedIndex == 1,
+                RxBaud = GetSelectedBaud(cmbRxBaud),
+                TxBaud = GetSelectedBaud(cmbTxBaud),
+                RxDataBaud = GetSelectedBaud(cmbRxDataBaud, "2000000"),
+                TxDataBaud = GetSelectedBaud(cmbTxDataBaud, "2000000"),
+                RxTerm = chkRxTerm.Checked,
+                TxTerm = chkTxTerm.Checked,
+                RxNonIso = cmbRxIso.SelectedIndex == 1,
+                TxNonIso = cmbTxIso.SelectedIndex == 1,
+                FilterId = txtFilterId.Text,
+                FilterDir = cmbFilterDir.SelectedIndex,
+                GroupShow = chkGroup.Checked,
+                Slots = new SavedSlot[RewriteSlotCount]
+            };
+
+            for (int i = 0; i < RewriteSlotCount; i++)
+            {
+                saved.Slots[i] = new SavedSlot
+                {
+                    Enabled = _rewriteEnable != null && _rewriteEnable[i] != null && _rewriteEnable[i].Checked,
+                    Extended = _rewriteFrame != null && _rewriteFrame[i] != null && _rewriteFrame[i].SelectedIndex == 1,
+                    Id = _rewriteId != null && _rewriteId[i] != null ? _rewriteId[i].Text : "",
+                    Data = _rewriteData != null && _rewriteData[i] != null ? _rewriteData[i].Text : ""
+                };
+            }
+
+            AppSettings.Save(saved);
+        }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
+            if (_saveTimer != null)
+                _saveTimer.Stop();
+            SaveSettings();
             CloseDevice();
             base.OnFormClosing(e);
         }
