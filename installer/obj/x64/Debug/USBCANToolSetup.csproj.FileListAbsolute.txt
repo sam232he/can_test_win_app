@@ -1,0 +1,6 @@
+D:\git repositories\can_test_win_app\dist\USBCANToolSetup.exe
+D:\git repositories\can_test_win_app\dist\USBCANToolSetup.pdb
+D:\git repositories\can_test_win_app\installer\obj\x64\Debug\USBCANToolSetup.csproj.AssemblyReference.cache
+D:\git repositories\can_test_win_app\installer\obj\x64\Debug\USBCANToolSetup.csproj.CoreCompileInputs.cache
+D:\git repositories\can_test_win_app\installer\obj\x64\Debug\USBCANToolSetup.exe
+D:\git repositories\can_test_win_app\installer\obj\x64\Debug\USBCANToolSetup.pdb
