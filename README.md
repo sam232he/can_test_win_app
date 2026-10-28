@@ -3,10 +3,10 @@
 Windows app that:
 
 1. Opens **RX** and **TX** separately (two USB adapters, or two channels on one adapter)
-2. Software-forwards every RX frame to TX (rewrite slots apply only to the forwarded copy)
-3. Optionally **rewrites payload** for up to 10 CAN IDs (enable checkbox, ID, 8-byte data)
+2. Software-forwards allowed RX IDs to TX (Set/Unset replace payload only on the forwarded copy)
+3. Up to 10 ID slots: **checkbox** = allow that ID on RX; **Set/Unset** = replace forwarded data with the 8 typed bytes (Unset forwards original RX data)
 4. Logs traffic with channel, direction, and CAN / CAN FD type
-5. Remembers RX/TX device, baud, protocol, filters, and rewrite slots after close (`%AppData%\USBCANTool\settings.xml`)
+5. Remembers RX/TX device, baud, protocol, list filters, and ID slots (allow + Set/Unset) after close (`%AppData%\USBCANTool\settings.xml`)
 
 ## Requirements
 
@@ -59,9 +59,9 @@ The packer looks for `zlgcan.dll` in `native\x64`, then `ZLG_CAN_SDK`, then the 
 3. Run the EXE.
 4. Set **RX** and **TX** rows independently: device type, USB **Idx**, **Ch**, protocol, bitrate (and **Data** baud for CAN FD). Same type+idx uses one adapter (two channels). Different type or idx opens two adapters.
 5. **Protocol**: CAN or CAN FD (CAN FD only on USBCANFD devices). USBCANFD-100U is 1 channel (`Ch` = 0). On FD hardware use **Term** for the internal resistor and **ISO / Non-ISO** when protocol is CAN FD.
-6. Optionally fill **Rewrite** slots: tick **En**, enter hex **ID**, choose **STD** (11-bit) or **EXT** (29-bit), enter 8 data bytes. Empty or unchecked slots are ignored. STD and EXT with the same number are different IDs.
-7. Click **Open**. Frames received on RX are sent on TX (one way).
-8. If a received ID matches an enabled slot, the **forwarded** frame uses your 8 bytes (`DLC = 8`). The RX log still shows the original data; TX shows the rewritten bytes.
+6. Fill **IDs** slots: hex **ID**, **STD** (11-bit) or **EXT** (29-bit), 8 data bytes. Tick **En** to allow that ID on RX (empty/invalid ID is ignored). With nothing ticked, Open receives nothing. **Set** latches rewrite of the forwarded payload to your 8 bytes (`DLC = 8`); **Unset** forwards the original RX data again. STD and EXT with the same number are different IDs.
+7. Click **Open**. Allowed RX IDs are sent on TX (one way). USBCANFD also programs a hardware allow-list on RX; USBCAN2 uses the software allow-list only (the USB adapter still sees the bus).
+8. The RX log still shows original data; TX shows rewritten bytes when Set is latched.
 9. Received and forwarded frames appear in the packet list (`Ch` is the hardware channel on that side).
 
 One-channel cards (USBCANFD-100U) work as RX **or** TX. Two-channel cards can be one adapter with RX Ch=0 and TX Ch=1.

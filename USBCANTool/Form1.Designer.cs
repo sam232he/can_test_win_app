@@ -385,7 +385,7 @@ namespace USBCANTool
             this.grpRewrite.Size = new System.Drawing.Size(880, 170);
             this.grpRewrite.TabIndex = 1;
             this.grpRewrite.TabStop = false;
-            this.grpRewrite.Text = "Rewrite";
+            this.grpRewrite.Text = "IDs (filter / replace)";
             // 
             // grpRx
             // 

@@ -72,6 +72,8 @@ namespace USBCANTool
         private ComboBox[] _rewriteFrame;
         private TextBox[] _rewriteId;
         private TextBox[] _rewriteData;
+        private Button[] _rewriteSetBtn;
+        private bool[] _rewriteOn = new bool[RewriteSlotCount];
         private RewriteSlot[] _rewriteSlots = new RewriteSlot[RewriteSlotCount];
         private bool _formattingRewrite;
         private bool _updatingUi;
@@ -185,16 +187,19 @@ namespace USBCANTool
             _rewriteFrame = new ComboBox[RewriteSlotCount];
             _rewriteId = new TextBox[RewriteSlotCount];
             _rewriteData = new TextBox[RewriteSlotCount];
+            _rewriteSetBtn = new Button[RewriteSlotCount];
 
             var font = new Font("Consolas", 9F);
             grpRewrite.Controls.Add(MakeHeader(12, 16, "En"));
             grpRewrite.Controls.Add(MakeHeader(40, 16, "ID"));
             grpRewrite.Controls.Add(MakeHeader(112, 16, "Fmt"));
             grpRewrite.Controls.Add(MakeHeader(170, 16, "Data (8 bytes)"));
+            grpRewrite.Controls.Add(MakeHeader(322, 16, "Set"));
             grpRewrite.Controls.Add(MakeHeader(392, 16, "En"));
             grpRewrite.Controls.Add(MakeHeader(420, 16, "ID"));
             grpRewrite.Controls.Add(MakeHeader(492, 16, "Fmt"));
             grpRewrite.Controls.Add(MakeHeader(550, 16, "Data (8 bytes)"));
+            grpRewrite.Controls.Add(MakeHeader(702, 16, "Set"));
 
             for (int i = 0; i < RewriteSlotCount; i++)
             {
@@ -207,7 +212,7 @@ namespace USBCANTool
                 {
                     Location = new Point(x, y + 2),
                     Size = new Size(22, 20),
-                    TabIndex = 20 + i * 4
+                    TabIndex = 20 + i * 5
                 };
                 chk.CheckedChanged += RewriteSlotChanged;
                 _rewriteEnable[i] = chk;
@@ -219,7 +224,7 @@ namespace USBCANTool
                     Location = new Point(x + 28, y),
                     MaxLength = 3,
                     Size = new Size(70, 22),
-                    TabIndex = 21 + i * 4,
+                    TabIndex = 21 + i * 5,
                     Tag = i
                 };
                 txtId.KeyPress += HexKeyPress;
@@ -232,7 +237,7 @@ namespace USBCANTool
                     DropDownStyle = ComboBoxStyle.DropDownList,
                     Location = new Point(x + 102, y),
                     Size = new Size(58, 20),
-                    TabIndex = 22 + i * 4,
+                    TabIndex = 22 + i * 5,
                     Tag = i
                 };
                 cmbFrame.Items.Add("STD");
@@ -246,14 +251,28 @@ namespace USBCANTool
                 {
                     Font = font,
                     Location = new Point(x + 164, y),
-                    Size = new Size(200, 22),
-                    TabIndex = 23 + i * 4,
+                    Size = new Size(150, 22),
+                    TabIndex = 23 + i * 5,
                     Text = "00 00 00 00 00 00 00 00"
                 };
                 txtData.KeyPress += HexKeyPress;
                 txtData.TextChanged += RewriteDataChanged;
                 _rewriteData[i] = txtData;
                 grpRewrite.Controls.Add(txtData);
+
+                var btnSet = new Button
+                {
+                    Location = new Point(x + 318, y),
+                    Size = new Size(54, 22),
+                    TabIndex = 24 + i * 5,
+                    Tag = i,
+                    FlatStyle = FlatStyle.Flat,
+                    Text = "Set"
+                };
+                btnSet.Click += RewriteSetClicked;
+                _rewriteSetBtn[i] = btnSet;
+                StyleSetButton(i);
+                grpRewrite.Controls.Add(btnSet);
             }
 
             RebuildRewriteSlots();
@@ -272,6 +291,7 @@ namespace USBCANTool
         private void RewriteSlotChanged(object sender, EventArgs e)
         {
             RebuildRewriteSlots();
+            ApplyRxHardwareFilterIfOpen();
         }
 
         private void RewriteFrameChanged(object sender, EventArgs e)
@@ -283,6 +303,7 @@ namespace USBCANTool
             if (_rewriteId != null && index >= 0 && index < _rewriteId.Length && _rewriteId[index] != null)
                 ClampRewriteId(_rewriteId[index]);
             RebuildRewriteSlots();
+            ApplyRxHardwareFilterIfOpen();
         }
 
         private void RewriteIdChanged(object sender, EventArgs e)
@@ -292,6 +313,7 @@ namespace USBCANTool
                 return;
             ClampRewriteId(box);
             RebuildRewriteSlots();
+            ApplyRxHardwareFilterIfOpen();
         }
 
         private void RewriteDataChanged(object sender, EventArgs e)
@@ -303,6 +325,33 @@ namespace USBCANTool
             RebuildRewriteSlots();
         }
 
+        private void RewriteSetClicked(object sender, EventArgs e)
+        {
+            var btn = sender as Button;
+            if (btn == null || !(btn.Tag is int))
+                return;
+            int index = (int)btn.Tag;
+            if (index < 0 || index >= RewriteSlotCount)
+                return;
+            _rewriteOn[index] = !_rewriteOn[index];
+            StyleSetButton(index);
+            RebuildRewriteSlots();
+        }
+
+        private void StyleSetButton(int index)
+        {
+            if (_rewriteSetBtn == null || index < 0 || index >= _rewriteSetBtn.Length)
+                return;
+            Button btn = _rewriteSetBtn[index];
+            if (btn == null)
+                return;
+            bool on = _rewriteOn != null && index < _rewriteOn.Length && _rewriteOn[index];
+            btn.Text = on ? "Unset" : "Set";
+            btn.BackColor = on ? Color.SteelBlue : SystemColors.Control;
+            btn.ForeColor = on ? Color.White : SystemColors.ControlText;
+            btn.UseVisualStyleBackColor = !on;
+        }
+
         private void RebuildRewriteSlots()
         {
             var next = new RewriteSlot[RewriteSlotCount];
@@ -310,7 +359,9 @@ namespace USBCANTool
             {
                 var slot = new RewriteSlot { Data = new byte[8] };
                 if (_rewriteEnable != null && _rewriteEnable[i] != null)
-                    slot.Enabled = _rewriteEnable[i].Checked;
+                    slot.FilterOn = _rewriteEnable[i].Checked;
+                if (_rewriteOn != null && i < _rewriteOn.Length)
+                    slot.RewriteOn = _rewriteOn[i];
 
                 bool extended = _rewriteFrame != null && _rewriteFrame[i] != null &&
                     _rewriteFrame[i].SelectedIndex == 1;
@@ -345,12 +396,33 @@ namespace USBCANTool
                 for (int i = 0; i < slots.Length; i++)
                 {
                     RewriteSlot slot = slots[i];
-                    if (slot == null || !slot.Enabled || !slot.HasId)
+                    if (slot == null || !slot.RewriteOn || !slot.HasId)
                         continue;
                     if (slot.Id != id || slot.Extended != extended)
                         continue;
                     Array.Copy(slot.Data, _rewriteScratch, 8);
                     return true;
+                }
+            }
+            return false;
+        }
+
+        private bool IsRxAllowed(ref BridgeFrame frame)
+        {
+            uint id = ZlgCanApi.GET_ID(frame.CanId);
+            bool extended = ZlgCanApi.IS_EFF(frame.CanId);
+            lock (_rewriteLock)
+            {
+                RewriteSlot[] slots = _rewriteSlots;
+                if (slots == null)
+                    return false;
+                for (int i = 0; i < slots.Length; i++)
+                {
+                    RewriteSlot slot = slots[i];
+                    if (slot == null || !slot.FilterOn || !slot.HasId)
+                        continue;
+                    if (slot.Id == id && slot.Extended == extended)
+                        return true;
                 }
             }
             return false;
@@ -522,6 +594,7 @@ namespace USBCANTool
                     _pending.Clear();
                 ResetRing();
                 UpdateUiState(true);
+                ApplyRxHardwareFilter();
                 try { ZlgCanApi.ZCAN_ClearBuffer(_rxChannelHandle); } catch { }
                 StartBridgeThreads();
                 _uiTimer.Start();
@@ -662,6 +735,78 @@ namespace USBCANTool
             if (!fdDevice)
                 return;
             ZlgCanApi.ZCAN_SetValue(device, index + "/initenal_resistance", terminatorOn ? "1" : "0");
+        }
+
+        private void ApplyRxHardwareFilterIfOpen()
+        {
+            if (!_isOpen || _loadingSettings || _updatingUi)
+                return;
+            ApplyRxHardwareFilter();
+        }
+
+        private void ApplyRxHardwareFilter()
+        {
+            if (!_rxIsCanFdDevice)
+                return;
+
+            var std = new List<uint>();
+            var ext = new List<uint>();
+            var seen = new HashSet<ulong>();
+            lock (_rewriteLock)
+            {
+                RewriteSlot[] slots = _rewriteSlots;
+                if (slots != null)
+                {
+                    for (int i = 0; i < slots.Length; i++)
+                    {
+                        RewriteSlot slot = slots[i];
+                        if (slot == null || !slot.FilterOn || !slot.HasId)
+                            continue;
+                        ulong key = ((ulong)(slot.Extended ? 1 : 0) << 32) | slot.Id;
+                        if (!seen.Add(key))
+                            continue;
+                        if (slot.Extended)
+                            ext.Add(slot.Id);
+                        else
+                            std.Add(slot.Id);
+                    }
+                }
+            }
+
+            lock (_canLock)
+            {
+                if (_rxDeviceHandle == IntPtr.Zero)
+                    return;
+                string n = _rxChannelIndex.ToString();
+                TrySetRxFilter(_rxDeviceHandle, n + "/filter_clear", "0");
+                AddHwFilterRanges(_rxDeviceHandle, n, "0", std);
+                AddHwFilterRanges(_rxDeviceHandle, n, "1", ext);
+            }
+        }
+
+        private static void AddHwFilterRanges(IntPtr device, string n, string mode, List<uint> ids)
+        {
+            if (ids == null || ids.Count == 0)
+                return;
+            TrySetRxFilter(device, n + "/filter_mode", mode);
+            for (int i = 0; i < ids.Count; i++)
+            {
+                string hex = ids[i].ToString("X");
+                TrySetRxFilter(device, n + "/filter_start", hex);
+                TrySetRxFilter(device, n + "/filter_end", hex);
+                TrySetRxFilter(device, n + "/filter_ack", "0");
+            }
+        }
+
+        private static void TrySetRxFilter(IntPtr device, string path, string value)
+        {
+            try
+            {
+                ZlgCanApi.ZCAN_SetValue(device, path, value);
+            }
+            catch
+            {
+            }
         }
 
         private static bool TryInitChannel(IntPtr device, uint index, bool fdDevice, out IntPtr handle, out string error)
@@ -850,7 +995,7 @@ namespace USBCANTool
             {
                 BridgeFrame frame;
                 FromReceive(((ZlgCanApi.ZCAN_Receive_Data*)_rxCanPin.AddrOfPinnedObject()) + i, out frame);
-                if (ZlgCanApi.IS_ERR(frame.CanId))
+                if (ZlgCanApi.IS_ERR(frame.CanId) || !IsRxAllowed(ref frame))
                     continue;
                 Interlocked.Increment(ref _cntRx);
                 EnqueueLog(false, _rxChannelIndex, ref frame);
@@ -872,7 +1017,7 @@ namespace USBCANTool
             {
                 BridgeFrame frame;
                 FromReceiveFd(((ZlgCanApi.ZCAN_ReceiveFD_Data*)_rxFdPin.AddrOfPinnedObject()) + i, out frame);
-                if (ZlgCanApi.IS_ERR(frame.CanId))
+                if (ZlgCanApi.IS_ERR(frame.CanId) || !IsRxAllowed(ref frame))
                     continue;
                 Interlocked.Increment(ref _cntRx);
                 EnqueueLog(false, _rxChannelIndex, ref frame);
@@ -1797,7 +1942,8 @@ namespace USBCANTool
 
         private sealed class RewriteSlot
         {
-            public bool Enabled;
+            public bool FilterOn;
+            public bool RewriteOn;
             public bool HasId;
             public bool Extended;
             public uint Id;
@@ -1959,6 +2105,8 @@ namespace USBCANTool
                                 : slot.Data;
                         if (_rewriteEnable[i] != null)
                             _rewriteEnable[i].Checked = slot.Enabled;
+                        _rewriteOn[i] = slot.RewriteOn;
+                        StyleSetButton(i);
                     }
                 }
             }
@@ -2056,6 +2204,7 @@ namespace USBCANTool
                 saved.Slots[i] = new SavedSlot
                 {
                     Enabled = _rewriteEnable != null && _rewriteEnable[i] != null && _rewriteEnable[i].Checked,
+                    RewriteOn = _rewriteOn != null && i < _rewriteOn.Length && _rewriteOn[i],
                     Extended = _rewriteFrame != null && _rewriteFrame[i] != null && _rewriteFrame[i].SelectedIndex == 1,
                     Id = _rewriteId != null && _rewriteId[i] != null ? _rewriteId[i].Text : "",
                     Data = _rewriteData != null && _rewriteData[i] != null ? _rewriteData[i].Text : ""
