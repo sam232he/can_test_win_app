@@ -16,3 +16,6 @@ D:\git repositories\can_test_win_app\USBCANTool\obj\x64\Debug\USBCANTool.csproj.
 D:\git repositories\can_test_win_app\USBCANTool\obj\x64\Debug\USBCANTool.csproj.CoreCompileInputs.cache
 D:\git repositories\can_test_win_app\USBCANTool\obj\x64\Debug\USBCANTool.exe
 D:\git repositories\can_test_win_app\USBCANTool\obj\x64\Debug\USBCANTool.pdb
+D:\git repositories\can_test_win_app\USBCANTool\bin\x64\Verify\USBCANTool.exe.config
+D:\git repositories\can_test_win_app\USBCANTool\bin\x64\Verify\USBCANTool.exe
+D:\git repositories\can_test_win_app\USBCANTool\bin\x64\Verify\USBCANTool.pdb

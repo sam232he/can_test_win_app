@@ -4,8 +4,8 @@ Windows app that:
 
 1. Opens **RX** and **TX** separately (two USB adapters, or two channels on one adapter)
 2. Software-forwards every RX frame to TX (rewrite slots apply only to the forwarded copy)
-3. Optionally **rewrites payload** for up to 10 CAN IDs (enable checkbox, ID, 8-byte data)
-4. Logs traffic with channel, direction, and CAN / CAN FD type
+3. Optionally **rewrites payload** for up to 10 CAN IDs (enable checkbox, ID, 8-byte data, Set/Unset mode)
+4. Displays traffic with channel, direction, and CAN / CAN FD type, plus one latest-matched-packet row per rewrite slot
 5. Remembers RX/TX device, baud, protocol, filters, and rewrite slots after close (`%AppData%\USBCANTool\settings.xml`)
 
 ## Requirements
@@ -33,9 +33,9 @@ Windows app that:
 3. Run the EXE.
 4. Set **RX** and **TX** rows independently: device type, USB **Idx**, **Ch**, protocol, bitrate (and **Data** baud for CAN FD). Same type+idx uses one adapter (two channels). Different type or idx opens two adapters.
 5. **Protocol**: CAN or CAN FD (CAN FD only on USBCANFD devices). USBCANFD-100U is 1 channel (`Ch` = 0). On FD hardware use **Term** for the internal resistor and **ISO / Non-ISO** when protocol is CAN FD.
-6. Optionally fill **Rewrite** slots: tick **En**, enter hex **ID**, choose **STD** (11-bit) or **EXT** (29-bit), enter 8 data bytes. Empty or unchecked slots are ignored. STD and EXT with the same number are different IDs.
+6. Optionally fill **Rewrite** slots: tick **En**, enter hex **ID**, choose **STD** (11-bit) or **EXT** (29-bit), and enter 8 data bytes. Slots default to **Unset**, which displays matching received data and forwards it unchanged. Choose **Set** only when you want to send the configured 8 bytes. Empty or unchecked slots are ignored. STD and EXT with the same number are different IDs.
 7. Click **Open**. Frames received on RX are sent on TX (one way).
-8. If a received ID matches an enabled slot, the **forwarded** frame uses your 8 bytes (`DLC = 8`). The RX log still shows the original data; TX shows the rewritten bytes.
+8. Each rewrite slot has its own matched-packet row. A row updates only when a received ID matches that enabled slot, and shows original/forwarded data, direction/channel, and send result. If the matching slot is **Set**, the **forwarded** frame uses your 8 bytes (`DLC = 8`). If it is **Unset**, it forwards the received payload unchanged.
 9. Received and forwarded frames appear in the packet list (`Ch` is the hardware channel on that side).
 
 One-channel cards (USBCANFD-100U) work as RX **or** TX. Two-channel cards can be one adapter with RX Ch=0 and TX Ch=1.

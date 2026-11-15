@@ -49,6 +49,8 @@ namespace USBCANTool
             this.btnOpen = new System.Windows.Forms.Button();
             this.grpRewrite = new System.Windows.Forms.GroupBox();
             this.grpRx = new System.Windows.Forms.GroupBox();
+            this.grpLatestSignal = new System.Windows.Forms.GroupBox();
+            this.lvLatestSignal = new System.Windows.Forms.ListView();
             this.lblFilter = new System.Windows.Forms.Label();
             this.txtFilterId = new System.Windows.Forms.TextBox();
             this.cmbFilterDir = new System.Windows.Forms.ComboBox();
@@ -63,6 +65,7 @@ namespace USBCANTool
             ((System.ComponentModel.ISupportInitialize)(this.numTxIndex)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numTxChannel)).BeginInit();
             this.grpRewrite.SuspendLayout();
+            this.grpLatestSignal.SuspendLayout();
             this.grpRx.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -387,6 +390,29 @@ namespace USBCANTool
             this.grpRewrite.TabStop = false;
             this.grpRewrite.Text = "Rewrite";
             // 
+            // grpLatestSignal
+            // 
+            this.grpLatestSignal.Controls.Add(this.lvLatestSignal);
+            this.grpLatestSignal.Location = new System.Drawing.Point(12, 334);
+            this.grpLatestSignal.Name = "grpLatestSignal";
+            this.grpLatestSignal.Size = new System.Drawing.Size(880, 265);
+            this.grpLatestSignal.TabIndex = 2;
+            this.grpLatestSignal.TabStop = false;
+            this.grpLatestSignal.Text = "Latest received packet";
+            // 
+            // lvLatestSignal
+            // 
+            this.lvLatestSignal.Font = new System.Drawing.Font("Consolas", 9F);
+            this.lvLatestSignal.FullRowSelect = true;
+            this.lvLatestSignal.GridLines = true;
+            this.lvLatestSignal.HideSelection = false;
+            this.lvLatestSignal.Location = new System.Drawing.Point(15, 35);
+            this.lvLatestSignal.Name = "lvLatestSignal";
+            this.lvLatestSignal.Size = new System.Drawing.Size(845, 220);
+            this.lvLatestSignal.TabIndex = 1;
+            this.lvLatestSignal.UseCompatibleStateImageBehavior = false;
+            this.lvLatestSignal.View = System.Windows.Forms.View.Details;
+            // 
             // grpRx
             // 
             this.grpRx.Controls.Add(this.lvPackets);
@@ -493,8 +519,9 @@ namespace USBCANTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(904, 699);
+            this.ClientSize = new System.Drawing.Size(944, 650);
             this.Controls.Add(this.statusStrip);
+            this.Controls.Add(this.grpLatestSignal);
             this.Controls.Add(this.grpRx);
             this.Controls.Add(this.grpRewrite);
             this.Controls.Add(this.grpDevice);
@@ -511,6 +538,7 @@ namespace USBCANTool
             ((System.ComponentModel.ISupportInitialize)(this.numTxChannel)).EndInit();
             this.grpRewrite.ResumeLayout(false);
             this.grpRewrite.PerformLayout();
+            this.grpLatestSignal.ResumeLayout(false);
             this.grpRx.ResumeLayout(false);
             this.grpRx.PerformLayout();
             this.statusStrip.ResumeLayout(false);
@@ -553,6 +581,8 @@ namespace USBCANTool
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.GroupBox grpRewrite;
         private System.Windows.Forms.GroupBox grpRx;
+        private System.Windows.Forms.GroupBox grpLatestSignal;
+        private System.Windows.Forms.ListView lvLatestSignal;
         private System.Windows.Forms.Label lblFilter;
         private System.Windows.Forms.TextBox txtFilterId;
         private System.Windows.Forms.ComboBox cmbFilterDir;
