@@ -1,0 +1,904 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: Tester BCM EPBi TCU ECU PEPS ICM
+
+
+BO_ 2015 Tester_P01_DiagFunctionalRequest: 8 Tester
+ SG_ P01_Tester_D_FunctionalDiagnosti : 7|64@0+ (1,0) [0|255] ""  PEPS,ICM,BCM
+
+BO_ 1900 PEPS_P07_DiagPEPSResponse: 8 PEPS
+ SG_ P07_PEPS_D_DiagnosticDataRespons : 7|64@0+ (1,0) [0|255] ""  Tester
+
+BO_ 1892 Tester_P00_DiagnosticPEPSRequest: 8 Tester
+ SG_ P00_Tester_D_DiagnosticDataReque : 7|64@0+ (1,0) [0|255] ""  PEPS
+
+BO_ 834 PEPS_P06_Status: 8 PEPS
+ SG_ P06_PEPS_S_STARTCtrl : 15|2@0+ (1,0) [0|3] ""  BCM
+ SG_ P06_PEPS_S_SearchOutsideValidity : 53|3@0+ (1,0) [0|7] ""  Tester
+ SG_ P06_PEPS_S_SearchInsideValidityK : 50|3@0+ (1,0) [0|7] ""  Tester
+ SG_ P06_PEPS_S_ResultOfKeyAuthentica : 1|2@0+ (1,0) [0|3] ""  BCM
+ SG_ P06_PEPS_S_PowerMode : 23|3@0+ (1,0) [0|7] ""  BCM
+ SG_ P06_PEPS_S_IGN2RelayHardware : 45|2@0+ (1,0) [0|3] ""  BCM
+ SG_ P06_PEPS_S_IGN2Ctrl : 13|2@0+ (1,0) [0|3] ""  BCM
+ SG_ P06_PEPS_S_IGN1RelayHardware : 43|2@0+ (1,0) [0|3] ""  BCM
+ SG_ P06_PEPS_S_IGN1Ctrl : 11|2@0+ (1,0) [0|3] ""  BCM
+ SG_ P06_PEPS_S_EMSAuthenticationStat : 5|2@0+ (1,0) [0|3] ""  BCM
+ SG_ P06_PEPS_S_BCMAuthenticationStat : 3|2@0+ (1,0) [0|3] ""  BCM
+ SG_ P06_PEPS_S_ACCRelayHardware : 41|2@0+ (1,0) [0|3] ""  BCM
+ SG_ P06_PEPS_S_ACCCtrl : 9|2@0+ (1,0) [0|3] ""  BCM
+
+BO_ 833 PEPS_P05_Warnings: 8 PEPS
+ SG_ P05_PEPS_S_ECUFailWarning : 15|1@0+ (1,0) [0|1] ""  ICM
+ SG_ P05_PEPS_S_Warning2 : 3|2@0+ (1,0) [0|3] ""  ICM
+ SG_ P05_PEPS_S_Warning1 : 1|2@0+ (1,0) [0|3] ""  ICM
+ SG_ P05_PEPS_S_RemoteKeyPowerIndicat : 5|2@0+ (1,0) [0|3] ""  ICM
+ SG_ P05_PEPS_S_PressBrakeIndicator : 19|1@0+ (1,0) [0|1] ""  ICM
+ SG_ P05_PEPS_S_KeyNotInVehicleWarnin : 11|1@0+ (1,0) [0|1] ""  ICM
+ SG_ P05_PEPS_S_KeyLearningSignal : 18|3@0+ (1,0) [0|7] ""  Tester
+ SG_ P05_PEPS_S_KeyDetectSwitchIn : 37|2@0+ (1,0) [0|3] ""  BCM
+ SG_ P05_PEPS_S_DoorsLockSkReminderIn : 10|1@0+ (1,0) [0|1] ""  ICM,BCM
+ SG_ P05_PEPS_S_DoorsLockDoorsOpendIn : 9|1@0+ (1,0) [0|1] ""  ICM,BCM
+ SG_ P05_PEPS_S_BrakePedalStatus : 20|1@0+ (1,0) [0|1] ""  Tester
+
+BO_ 1298 PEPS_P04_SendSKToBCM: 8 PEPS
+ SG_ P04_PEPS_D_LearnKey7 : 63|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P04_PEPS_D_LearnKey6 : 55|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P04_PEPS_D_LearnKey5 : 47|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P04_PEPS_D_LearnKey4 : 39|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P04_PEPS_D_LearnKey3 : 31|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P04_PEPS_D_LearnKey2 : 23|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P04_PEPS_D_LearnKey1 : 15|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P04_PEPS_D_LearnKey0 : 7|8@0+ (1,0) [0|255] ""  BCM
+
+BO_ 1297 PEPS_P03_SendSKToEMS: 8 PEPS
+ SG_ P03_PEPS_D_LearnEMSKey7 : 63|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P03_PEPS_D_LearnEMSKey6 : 55|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P03_PEPS_D_LearnEMSKey5 : 47|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P03_PEPS_D_LearnEMSKey4 : 39|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P03_PEPS_D_LearnEMSKey3 : 31|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P03_PEPS_D_LearnEMSKey2 : 23|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P03_PEPS_D_LearnEMSKey1 : 15|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P03_PEPS_D_LearnEMSKey0 : 7|8@0+ (1,0) [0|255] ""  ECU
+
+BO_ 64 PEPS_P02_AuthenticationEMSRespon: 8 PEPS
+ SG_ P02_PEPS_D_EMSResponse7 : 63|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P02_PEPS_D_EMSResponse6 : 55|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P02_PEPS_D_EMSResponse5 : 47|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P02_PEPS_D_EMSResponse4 : 39|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P02_PEPS_D_EMSResponse3 : 31|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P02_PEPS_D_EMSResponse2 : 23|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P02_PEPS_D_EMSResponse1 : 15|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P02_PEPS_D_EMSResponse0 : 7|8@0+ (1,0) [0|255] ""  ECU
+
+BO_ 56 PEPS_P01_AuthenticationBCMRespon: 8 PEPS
+ SG_ P01_PEPS_D_BCMResponse7 : 63|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P01_PEPS_D_BCMResponse6 : 55|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P01_PEPS_D_BCMResponse5 : 47|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P01_PEPS_D_BCMResponse4 : 39|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P01_PEPS_D_BCMResponse3 : 31|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P01_PEPS_D_BCMResponse2 : 23|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P01_PEPS_D_BCMResponse1 : 15|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P01_PEPS_D_BCMResponse0 : 7|8@0+ (1,0) [0|255] ""  BCM
+
+BO_ 16 PEPS_P00_Command: 8 PEPS
+ SG_ P00_PEPS_S_StartEMSCommand : 34|3@0+ (1,0) [0|7] ""  ECU
+ SG_ P00_PEPS_S_FOBRKECommand : 18|3@0+ (1,0) [0|7] ""  BCM
+ SG_ P00_PEPS_D_StartEMSCommandCounte : 47|8@0+ (1,0) [0|255] ""  ECU
+ SG_ P00_PEPS_D_FOBRKECommandCounter : 31|8@0+ (1,0) [0|255] ""  BCM
+ SG_ P00_PEPS_S_FOBPECommand : 2|3@0+ (1,0) [0|7] ""  BCM
+ SG_ P00_PEPS_D_FOBPECommandCounter : 15|8@0+ (1,0) [0|255] ""  BCM
+
+BO_ 872 BCM_P03_Response: 8 BCM
+ SG_ P03_BCM_D_AuthenticationStatusCo : 15|8@0+ (1,0) [0|255] ""  ICM,PEPS
+ SG_ P03_BCM_S_AuthenticationStatus : 1|2@0+ (1,0) [0|3] ""  ICM,PEPS
+
+BO_ 871 BCM_P02_BCMSendSKToIMMO: 8 BCM
+ SG_ P02_BCM_D_BCMLearnSeed2 : 23|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P02_BCM_D_BCMLearnSeed7 : 63|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P02_BCM_D_BCMLearnSeed6 : 55|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P02_BCM_D_BCMLearnSeed5 : 47|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P02_BCM_D_BCMLearnSeed4 : 39|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P02_BCM_D_BCMLearnSeed3 : 31|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P02_BCM_D_BCMLearnSeed1 : 15|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P02_BCM_D_BCMLearnSeed0 : 7|8@0+ (1,0) [0|255] ""  PEPS
+
+BO_ 870 BCM_P01_BCMAuthenticationChallen: 8 BCM
+ SG_ P01_BCM_D_PEPSRequest7 : 63|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P01_BCM_D_PEPSRequest6 : 55|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P01_BCM_D_PEPSRequest5 : 47|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P01_BCM_D_PEPSRequest4 : 39|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P01_BCM_D_PEPSRequest3 : 31|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P01_BCM_D_PEPSRequest2 : 23|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P01_BCM_D_PEPSRequest1 : 15|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P01_BCM_D_PEPSRequest0 : 7|8@0+ (1,0) [0|255] ""  PEPS
+
+BO_ 717 BCM_P00_BCMLSC: 8 BCM
+ SG_ P00_BCM_S_RightRearDoorStatus : 58|1@0+ (1,0) [0|1] ""  PEPS,ICM
+ SG_ P00_BCM_S_RearLeftDoorStatus : 59|1@0+ (1,0) [0|1] ""  PEPS,ICM
+ SG_ P00_BCM_S_PassengerDoorStatus : 57|1@0+ (1,0) [0|1] ""  PEPS,ICM
+ SG_ P00_BCM_S_DriverUnlockState : 45|1@0+ (1,0) [0|1] ""  PEPS
+ SG_ P00_BCM_S_DriverDoorStatus : 56|1@0+ (1,0) [0|1] ""  PEPS,ICM
+
+BO_ 430 EPBi_P00_EPBi: 8 EPBi
+ SG_ P00_EPBi_S_VehicleSpeedValid : 24|1@0+ (1,0) [0|1] ""  PEPS,ICM
+ SG_ P00_EPBi_D_VehicleSpeed : 23|15@0+ (0.05625,0) [0|299.98] "km/h"  PEPS,ICM
+
+BO_ 653 TCU_P00_TCUHSC: 8 TCU
+ SG_ P00_TCU_S_GearPosition : 19|4@0+ (1,0) [0|15] ""  BCM,PEPS,ICM
+
+BO_ 1174 ECU_P04_EMSResponsePS: 8 ECU
+ SG_ P04_ECU_D_AuthenticationStatusCo : 15|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P04_ECU_S_AuthenticationStatus : 1|2@0+ (1,0) [0|3] ""  PEPS
+
+BO_ 1176 ECU_P03_EMSSendSKToIMMO: 8 ECU
+ SG_ P03_ECU_D_EMSLearnSeed7 : 63|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P03_ECU_D_EMSLearnSeed6 : 55|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P03_ECU_D_EMSLearnSeed5 : 47|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P03_ECU_D_EMSLearnSeed4 : 39|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P03_ECU_D_EMSLearnSeed3 : 31|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P03_ECU_D_EMSLearnSeed2 : 23|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P03_ECU_D_EMSLearnSeed1 : 15|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P03_ECU_D_EMSLearnSeed0 : 7|8@0+ (1,0) [0|255] ""  PEPS
+
+BO_ 1173 ECU_P02_EMSAuthenticationChallen: 8 ECU
+ SG_ P02_ECU_D_EMSPEPSRequest7 : 63|8@0+ (1,0) [0|255] ""  ECU,PEPS
+ SG_ P02_ECU_D_EMSPEPSRequest6 : 55|8@0+ (1,0) [0|255] ""  ECU,PEPS
+ SG_ P02_ECU_D_EMSPEPSRequest5 : 47|8@0+ (1,0) [0|255] ""  ECU,PEPS
+ SG_ P02_ECU_D_EMSPEPSRequest4 : 39|8@0+ (1,0) [0|255] ""  ECU,PEPS
+ SG_ P02_ECU_D_EMSPEPSRequest3 : 31|8@0+ (1,0) [0|255] ""  ECU,PEPS
+ SG_ P02_ECU_D_EMSPEPSRequest2 : 23|8@0+ (1,0) [0|255] ""  ECU,PEPS
+ SG_ P02_ECU_D_EMSPEPSRequest1 : 15|8@0+ (1,0) [0|255] ""  ECU,PEPS
+ SG_ P02_ECU_D_EMSPEPSRequest0 : 7|8@0+ (1,0) [0|255] ""  ECU,PEPS
+
+BO_ 595 ECU_P01_EMSHSC: 8 ECU
+ SG_ P01_ECU_D_EMSCheckSum : 15|8@0+ (1,0) [0|255] ""  PEPS
+ SG_ P01_ECU_D_Counter : 7|4@0+ (1,0) [0|15] ""  PEPS
+ SG_ P01_ECU_S_BrakePedalStatus : 0|1@0+ (1,0) [0|1] ""  PEPS
+
+BO_ 280 ECU_P00_EMSHSC: 8 ECU
+ SG_ P00_ECU_S_EngineSpeedValidity : 8|1@0+ (1,0) [0|1] ""  PEPS,ICM
+ SG_ P00_ECU_S_EngineRunningStatus : 12|2@0+ (1,0) [0|3] ""  PEPS
+ SG_ P00_ECU_D_EngineSpeed : 23|16@0+ (0.5,0) [0|65534] "rpm"  PEPS,ICM
+
+
+
+CM_ SG_ 834 P06_PEPS_S_STARTCtrl "This signal indicates the status of the START_CTRL output pin. If the pin is activated, the CAN signal value is 01b; if the pin is deactivated, the CAN signal value is 00b.";
+CM_ SG_ 834 P06_PEPS_S_SearchOutsideValidity "Detect the status of the key outside the car";
+CM_ SG_ 834 P06_PEPS_S_SearchInsideValidityK "Detect the status of the key in the car";
+CM_ SG_ 834 P06_PEPS_S_ResultOfKeyAuthentica "Result of key authentication";
+CM_ SG_ 834 P06_PEPS_S_PowerMode "Power_mode";
+CM_ SG_ 834 P06_PEPS_S_IGN2RelayHardware "Represents the status of IGN2 hardware relay";
+CM_ SG_ 834 P06_PEPS_S_IGN2Ctrl "This signal indicates the status of the output pin IGN2_CTRL. If the pin is activated, the CAN signal value is 01b; if the pin is deactivated, the CAN signal value is 00b.";
+CM_ SG_ 834 P06_PEPS_S_IGN1RelayHardware "Represents the status of IGN1 hardware relay";
+CM_ SG_ 834 P06_PEPS_S_IGN1Ctrl "This signal indicates the status of the output pin IGN1_CTRL. If the pin is activated, the CAN signal value is 01b. If the pin is deactivated, the CAN signal value is 00b.";
+CM_ SG_ 834 P06_PEPS_S_EMSAuthenticationStat "Status of EMS authentication";
+CM_ SG_ 834 P06_PEPS_S_BCMAuthenticationStat "Status of BCM authentication";
+CM_ SG_ 834 P06_PEPS_S_ACCRelayHardware "Represents the status of ACC hardware relay";
+CM_ SG_ 834 P06_PEPS_S_ACCCtrl "This signal indicates the status of the ACC_CTRL output pin. If the pin is activated, the CAN signal value is 01b; if the pin is deactivated, the CAN signal value is 00b.";
+CM_ SG_ 833 P05_PEPS_S_ECUFailWarning "PEPS_ECU fault prompt";
+CM_ SG_ 833 P05_PEPS_S_Warning2 "PEPS horn warning sound alarm";
+CM_ SG_ 833 P05_PEPS_S_Warning1 "PEPS beep warning sound alarm";
+CM_ SG_ 833 P05_PEPS_S_RemoteKeyPowerIndicat "Remote Key battery level indicator";
+CM_ SG_ 833 P05_PEPS_S_PressBrakeIndicator "The driver will be informed if they need to press the brake. (CVT model)";
+CM_ SG_ 833 P05_PEPS_S_KeyNotInVehicleWarnin "Smart key removal warning (Key Not In Vehicle Warning)";
+CM_ SG_ 833 P05_PEPS_S_KeyLearningSignal "Key Learning Success Signals (New)
+When the remote key is learned by a diagnostic device or an online key configuration device, PEPS sends periodic key learning success packets for each key that is successfully configured.";
+CM_ SG_ 833 P05_PEPS_S_KeyDetectSwitchIn "key insertion signal (a simulated signal for the BCM system)";
+CM_ SG_ 833 P05_PEPS_S_DoorsLockSkReminderIn "Reminder message for 'Key in Car' by PE or RKE locking when the key is inside the car (PE, RKE, tailgate closed when locking).";
+CM_ SG_ 833 P05_PEPS_S_DoorsLockDoorsOpendIn "Reminder message for unclosed doors by PE locking (doors open)";
+CM_ SG_ 833 P05_PEPS_S_BrakePedalStatus "Brake Pedal switch status (CVT models)";
+CM_ SG_ 1298 P04_PEPS_D_LearnKey7 "SK64 K7";
+CM_ SG_ 1298 P04_PEPS_D_LearnKey6 "SK64 K6";
+CM_ SG_ 1298 P04_PEPS_D_LearnKey5 "SK64 K5";
+CM_ SG_ 1298 P04_PEPS_D_LearnKey4 "SK64 K4";
+CM_ SG_ 1298 P04_PEPS_D_LearnKey3 "SK64 K3";
+CM_ SG_ 1298 P04_PEPS_D_LearnKey2 "SK64 K2";
+CM_ SG_ 1298 P04_PEPS_D_LearnKey1 "SK64 K1";
+CM_ SG_ 1298 P04_PEPS_D_LearnKey0 "SK64 K0,64 bits secret key (SK 64) to be learned by BCM, sent by IMMO(PEPS) on tester request SK64 is used in the mutual authentication between BCM and IMMO(PEPS)";
+CM_ SG_ 1297 P03_PEPS_D_LearnEMSKey7 "SK64 K7";
+CM_ SG_ 1297 P03_PEPS_D_LearnEMSKey6 "SK64 K6";
+CM_ SG_ 1297 P03_PEPS_D_LearnEMSKey5 "SK64 K5";
+CM_ SG_ 1297 P03_PEPS_D_LearnEMSKey4 "SK64 K4";
+CM_ SG_ 1297 P03_PEPS_D_LearnEMSKey3 "SK64 K3";
+CM_ SG_ 1297 P03_PEPS_D_LearnEMSKey2 "SK64 K2";
+CM_ SG_ 1297 P03_PEPS_D_LearnEMSKey1 "SK64 K1";
+CM_ SG_ 1297 P03_PEPS_D_LearnEMSKey0 "SK64 K0, 64 bits secret key (SK 64) to be learned by EMS, sent by IMMO(PEPS) on tester request SK64 is used in the mutual authentication between EMS and IMMO(PEPS)";
+CM_ SG_ 64 P02_PEPS_D_EMSResponse7 "Response_Y0";
+CM_ SG_ 64 P02_PEPS_D_EMSResponse6 "Response_Y1";
+CM_ SG_ 64 P02_PEPS_D_EMSResponse5 "Response_Y2";
+CM_ SG_ 64 P02_PEPS_D_EMSResponse4 "Response_Y3";
+CM_ SG_ 64 P02_PEPS_D_EMSResponse3 "Response_Y4";
+CM_ SG_ 64 P02_PEPS_D_EMSResponse2 "Response_Y5";
+CM_ SG_ 64 P02_PEPS_D_EMSResponse1 "Response_Y6";
+CM_ SG_ 64 P02_PEPS_D_EMSResponse0 "Response_Y7, Authentication Response sent by IMMO(PEPS) to EMS in response to EMS challenge sent to IMMO(PEPS) at IG ON
+64 bits encrypted response";
+CM_ SG_ 56 P01_PEPS_D_BCMResponse7 "Response_Y0";
+CM_ SG_ 56 P01_PEPS_D_BCMResponse6 "Response_Y1";
+CM_ SG_ 56 P01_PEPS_D_BCMResponse5 "Response_Y2";
+CM_ SG_ 56 P01_PEPS_D_BCMResponse4 "Response_Y3";
+CM_ SG_ 56 P01_PEPS_D_BCMResponse3 "Response_Y4";
+CM_ SG_ 56 P01_PEPS_D_BCMResponse2 "Response_Y5";
+CM_ SG_ 56 P01_PEPS_D_BCMResponse1 "Response_Y6";
+CM_ SG_ 56 P01_PEPS_D_BCMResponse0 "Response_Y7, Authentication Response sent by IMMO(PEPS) to BCM in response to BCM challenge sent to IMMO(PEPS)
+64 bits encrypted response";
+CM_ SG_ 16 P00_PEPS_S_StartEMSCommand "PEPS_Engine start request";
+CM_ SG_ 16 P00_PEPS_S_FOBRKECommand "PEPS_RKE command";
+CM_ SG_ 16 P00_PEPS_D_StartEMSCommandCounte "PEPS_Engine start request counter";
+CM_ SG_ 16 P00_PEPS_D_FOBRKECommandCounter "PEPS_RKE command counter";
+CM_ SG_ 16 P00_PEPS_S_FOBPECommand "PE command";
+CM_ SG_ 16 P00_PEPS_D_FOBPECommandCounter "PE command counter";
+CM_ SG_ 872 P03_BCM_D_AuthenticationStatusCo "BCM Authentication Status counter, 0-255, 
+the counter need to correspondence the counter of PEPS request or response";
+CM_ SG_ 872 P03_BCM_S_AuthenticationStatus "After BCM is powered on, or awakened from the sleep mode,and before BCM authentication finish,BCM needs send “BCM Authentication Status =00(Default)” ,after BCM authentication finish,BCM will send  Authentication Status = 1(Success) / 2(Fail)”";
+CM_ SG_ 871 P02_BCM_D_BCMLearnSeed2 "SK64 K2";
+CM_ SG_ 871 P02_BCM_D_BCMLearnSeed7 "SK64 K7";
+CM_ SG_ 871 P02_BCM_D_BCMLearnSeed6 "SK64 K6";
+CM_ SG_ 871 P02_BCM_D_BCMLearnSeed5 "SK64 K5";
+CM_ SG_ 871 P02_BCM_D_BCMLearnSeed4 "SK64 K4";
+CM_ SG_ 871 P02_BCM_D_BCMLearnSeed3 "SK64 K3";
+CM_ SG_ 871 P02_BCM_D_BCMLearnSeed1 "SK64 K1";
+CM_ SG_ 871 P02_BCM_D_BCMLearnSeed0 "SK64 K0, 64 bits secret key (SK 64) to be learned by IMMO(PEPS): sent by BCM on tester request; SK64 is used in the mutual authentication between BCM and IMMO(PEPS)";
+CM_ SG_ 870 P01_BCM_D_PEPSRequest7 "Encrypted text x12";
+CM_ SG_ 870 P01_BCM_D_PEPSRequest6 "Encrypted text x13";
+CM_ SG_ 870 P01_BCM_D_PEPSRequest5 "Encrypted text x14";
+CM_ SG_ 870 P01_BCM_D_PEPSRequest4 "Encrypted text x15";
+CM_ SG_ 870 P01_BCM_D_PEPSRequest3 "BCM Certification Random Number R0";
+CM_ SG_ 870 P01_BCM_D_PEPSRequest2 "BCM Certification Random Number R1";
+CM_ SG_ 870 P01_BCM_D_PEPSRequest1 "BCM Certification Random Number R2";
+CM_ SG_ 870 P01_BCM_D_PEPSRequest0 "BCM Certification Random Number R3, Authentication challenge sent by BCM to IMMO(PEPS)when BCM is powered on, or awakened from the sleep mode";
+CM_ SG_ 717 P00_BCM_S_RightRearDoorStatus "Right rear door status";
+CM_ SG_ 717 P00_BCM_S_RearLeftDoorStatus "Left rear door status";
+CM_ SG_ 717 P00_BCM_S_PassengerDoorStatus "Right front door status";
+CM_ SG_ 717 P00_BCM_S_DriverUnlockState "Left front door lock status";
+CM_ SG_ 717 P00_BCM_S_DriverDoorStatus "Left front door status";
+CM_ SG_ 430 P00_EPBi_S_VehicleSpeedValid "Vehicle speed valid, Quality/fault information to current vehicle speed information";
+CM_ SG_ 430 P00_EPBi_D_VehicleSpeed "Vehicle speed, 0x0~0x14D5(*0.05625,offset:0), 0~299.98km/h";
+CM_ SG_ 653 P00_TCU_S_GearPosition "gear position signal";
+CM_ SG_ 1174 P04_ECU_D_AuthenticationStatusCo "EMS Authentication Status counter, 0-255, the counter need to correspondence the counter of PEPS request or response";
+CM_ SG_ 1174 P04_ECU_S_AuthenticationStatus "After power mode switch to IGN ON and before EMS authentication finish,EMS needs send “EMS Authentication Status =00(Default)” ,after  EMS authentication finish,EMS will send  Authentication Status = 1(Success) / 2(Fail)”";
+CM_ SG_ 1176 P03_ECU_D_EMSLearnSeed7 "SK64 K7";
+CM_ SG_ 1176 P03_ECU_D_EMSLearnSeed6 "SK64 K6";
+CM_ SG_ 1176 P03_ECU_D_EMSLearnSeed5 "SK64 K5";
+CM_ SG_ 1176 P03_ECU_D_EMSLearnSeed4 "SK64 K4";
+CM_ SG_ 1176 P03_ECU_D_EMSLearnSeed3 "SK64 K3";
+CM_ SG_ 1176 P03_ECU_D_EMSLearnSeed2 "SK64 K2";
+CM_ SG_ 1176 P03_ECU_D_EMSLearnSeed1 "SK64 K1";
+CM_ SG_ 1176 P03_ECU_D_EMSLearnSeed0 "SK64 K0, 64 bits secret key (SK 64) to be learned by IMMO(PEPS), sent by EMS on tester request SK64 is used in the mutual authentication between EMS and IMMO(PEPS)";
+CM_ SG_ 1173 P02_ECU_D_EMSPEPSRequest7 "Encrypted text x12";
+CM_ SG_ 1173 P02_ECU_D_EMSPEPSRequest6 "Encrypted text x13";
+CM_ SG_ 1173 P02_ECU_D_EMSPEPSRequest5 "Encrypted text x14";
+CM_ SG_ 1173 P02_ECU_D_EMSPEPSRequest4 "Encrypted text x15";
+CM_ SG_ 1173 P02_ECU_D_EMSPEPSRequest3 "Authentication Random Number R0";
+CM_ SG_ 1173 P02_ECU_D_EMSPEPSRequest2 "Authentication Random Number R1";
+CM_ SG_ 1173 P02_ECU_D_EMSPEPSRequest1 "Authentication Random Number R2";
+CM_ SG_ 1173 P02_ECU_D_EMSPEPSRequest0 "Authentication Random Number R3, Authentication challenge sent by EMS to IMMO(PEPS)when IG is switched ON";
+CM_ SG_ 595 P01_ECU_D_EMSCheckSum "Check Sum";
+CM_ SG_ 595 P01_ECU_D_Counter "Message counter for this frame";
+CM_ SG_ 595 P01_ECU_S_BrakePedalStatus "Brake pedal";
+CM_ SG_ 280 P00_ECU_S_EngineSpeedValidity "Engine speed validity";
+CM_ SG_ 280 P00_ECU_S_EngineRunningStatus "Engine running status";
+CM_ SG_ 280 P00_ECU_D_EngineSpeed "Signal from EMS/PowerTrian to indicate Engine RPM, 0x0000~0x4000:0~8192rpm ,(*0.5, offset:0)";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ BO_  "J1939FdTpADS" INT 0 52;
+BA_DEF_ BO_  "J1939FdTpADT" INT 0 255;
+BA_DEF_ BO_  "J1939PgAppearanceOnBus" ENUM  "Default","CAN_Extended","CANFD_Extended";
+BA_DEF_ BO_  "J1939CPgSendTimeout" INT -1 3600000;
+BA_DEF_ BO_  "J1939CPgTOS" INT 0 7;
+BA_DEF_ BO_  "J1939CPgTF" INT 0 7;
+BA_DEF_ BU_  "J1939MultiPgSendTimeout" INT 0 3600000;
+BA_DEF_ BU_  "J1939MultiPgSizeThreshold" INT 0 64;
+BA_DEF_ BU_  "J1939MultiPgBroadcastType" ENUM  "FBFF","FEFF";
+BA_DEF_  "DatabaseVersion" STRING ;
+BA_DEF_ BO_  "FsJ1939UseCrcAndCounter" STRING ;
+BA_DEF_ BO_  "FsJ1939NeedsSHM" ENUM  "No","Yes";
+BA_DEF_ BO_  "FsJ1939Delay" INT 0 1000;
+BA_DEF_ BO_  "TpJ1939VarDlc" ENUM  "No","Yes";
+BA_DEF_ SG_  "SigType" ENUM  "Default","Range","RangeSigned","ASCII","Discrete","Control","ReferencePGN","DTC","StringDelimiter","StringLength","StringLengthControl","MessageCounter","MessageChecksum";
+BA_DEF_ SG_  "GenSigILSupport" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ BO_  "GenMsgFastOnStart" INT 0 100000;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 3600000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 1000000;
+BA_DEF_ SG_  "GenSigStartValue" INT 0 2147483647;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 100000;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "NmJ1939SystemInstance" INT 0 15;
+BA_DEF_ BU_  "NmJ1939System" INT 0 127;
+BA_DEF_ BU_  "NmJ1939ManufacturerCode" INT 0 2047;
+BA_DEF_ BU_  "NmJ1939IndustryGroup" INT 0 7;
+BA_DEF_ BU_  "NmJ1939IdentityNumber" INT 0 2097151;
+BA_DEF_ BU_  "NmJ1939FunctionInstance" INT 0 7;
+BA_DEF_ BU_  "NmJ1939Function" INT 0 255;
+BA_DEF_ BU_  "NmJ1939ECUInstance" INT 0 7;
+BA_DEF_ BU_  "NmJ1939AAC" INT 0 1;
+BA_DEF_ BU_  "NmStationAddress" INT 0 255;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclic","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","IfActive","noMsgSendType";
+BA_DEF_ BO_  "GenMsgRequestable" INT 0 1;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+BA_DEF_ SG_  "SPN" INT 0 524287;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "ProtocolType" STRING ;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_ BO_  "SystemMessageLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZone" "NA";
+BA_DEF_DEF_  "FaultAction" "NA";
+BA_DEF_DEF_  "FaultTrigger" "NA";
+BA_DEF_DEF_  "J1939FdTpADS" 0;
+BA_DEF_DEF_  "J1939FdTpADT" 0;
+BA_DEF_DEF_  "J1939PgAppearanceOnBus" "Default";
+BA_DEF_DEF_  "J1939CPgSendTimeout" -1;
+BA_DEF_DEF_  "J1939CPgTOS" 2;
+BA_DEF_DEF_  "J1939CPgTF" 0;
+BA_DEF_DEF_  "J1939MultiPgSendTimeout" 2;
+BA_DEF_DEF_  "J1939MultiPgSizeThreshold" 56;
+BA_DEF_DEF_  "J1939MultiPgBroadcastType" "FBFF";
+BA_DEF_DEF_  "DatabaseVersion" "";
+BA_DEF_DEF_  "FsJ1939UseCrcAndCounter" "";
+BA_DEF_DEF_  "FsJ1939NeedsSHM" "No";
+BA_DEF_DEF_  "FsJ1939Delay" 0;
+BA_DEF_DEF_  "TpJ1939VarDlc" "No";
+BA_DEF_DEF_  "SigType" "Default";
+BA_DEF_DEF_  "GenSigILSupport" "Yes";
+BA_DEF_DEF_  "GenSigSendType" "NoSigSendType";
+BA_DEF_DEF_  "GenMsgFastOnStart" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "NmJ1939SystemInstance" 0;
+BA_DEF_DEF_  "NmJ1939System" 0;
+BA_DEF_DEF_  "NmJ1939ManufacturerCode" 0;
+BA_DEF_DEF_  "NmJ1939IndustryGroup" 0;
+BA_DEF_DEF_  "NmJ1939IdentityNumber" 0;
+BA_DEF_DEF_  "NmJ1939FunctionInstance" 0;
+BA_DEF_DEF_  "NmJ1939Function" 0;
+BA_DEF_DEF_  "NmJ1939ECUInstance" 0;
+BA_DEF_DEF_  "NmJ1939AAC" 0;
+BA_DEF_DEF_  "NmStationAddress" 254;
+BA_DEF_DEF_  "GenMsgSendType" "noMsgSendType";
+BA_DEF_DEF_  "GenMsgRequestable" 1;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "ProtocolType" "J1939";
+BA_DEF_DEF_  "VFrameFormat" "J1939PG";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_DEF_DEF_  "SystemMessageLongSymbol" "";
+BA_ "BusType" "CAN";
+BA_ "DBName" "PEPS";
+BA_ "TXRX" BO_ 2015 1;
+BA_ "GenMsgSendType" BO_ 2015 0;
+BA_ "GenMsgCycleTime" BO_ 2015 10;
+BA_ "VFrameFormat" BO_ 2015 0;
+BA_ "TXRX" BO_ 1900 0;
+BA_ "GenMsgSendType" BO_ 1900 0;
+BA_ "GenMsgCycleTime" BO_ 1900 10;
+BA_ "VFrameFormat" BO_ 1900 0;
+BA_ "TXRX" BO_ 1892 1;
+BA_ "GenMsgSendType" BO_ 1892 0;
+BA_ "GenMsgCycleTime" BO_ 1892 10;
+BA_ "VFrameFormat" BO_ 1892 0;
+BA_ "VFrameFormat" BO_ 834 0;
+BA_ "GenMsgCycleTime" BO_ 834 100;
+BA_ "GenMsgSendType" BO_ 834 0;
+BA_ "TXRX" BO_ 834 0;
+BA_ "VFrameFormat" BO_ 833 0;
+BA_ "GenMsgCycleTime" BO_ 833 100;
+BA_ "GenMsgSendType" BO_ 833 0;
+BA_ "TXRX" BO_ 833 0;
+BA_ "VFrameFormat" BO_ 1298 0;
+BA_ "GenMsgCycleTime" BO_ 1298 10;
+BA_ "GenMsgSendType" BO_ 1298 0;
+BA_ "TXRX" BO_ 1298 0;
+BA_ "VFrameFormat" BO_ 1297 0;
+BA_ "GenMsgCycleTime" BO_ 1297 10;
+BA_ "GenMsgSendType" BO_ 1297 0;
+BA_ "TXRX" BO_ 1297 0;
+BA_ "VFrameFormat" BO_ 64 0;
+BA_ "GenMsgCycleTime" BO_ 64 10;
+BA_ "GenMsgSendType" BO_ 64 0;
+BA_ "TXRX" BO_ 64 0;
+BA_ "SystemMessageLongSymbol" BO_ 64 "PEPS_P02_AuthenticationEMSResponse";
+BA_ "VFrameFormat" BO_ 56 0;
+BA_ "GenMsgCycleTime" BO_ 56 10;
+BA_ "GenMsgSendType" BO_ 56 0;
+BA_ "TXRX" BO_ 56 0;
+BA_ "SystemMessageLongSymbol" BO_ 56 "PEPS_P01_AuthenticationBCMResponse";
+BA_ "VFrameFormat" BO_ 16 0;
+BA_ "GenMsgCycleTime" BO_ 16 100;
+BA_ "GenMsgSendType" BO_ 16 0;
+BA_ "TXRX" BO_ 16 0;
+BA_ "VFrameFormat" BO_ 872 0;
+BA_ "GenMsgCycleTime" BO_ 872 100;
+BA_ "GenMsgSendType" BO_ 872 0;
+BA_ "TXRX" BO_ 872 1;
+BA_ "VFrameFormat" BO_ 871 0;
+BA_ "GenMsgCycleTime" BO_ 871 10;
+BA_ "GenMsgSendType" BO_ 871 0;
+BA_ "TXRX" BO_ 871 1;
+BA_ "VFrameFormat" BO_ 870 0;
+BA_ "GenMsgCycleTime" BO_ 870 10;
+BA_ "GenMsgSendType" BO_ 870 0;
+BA_ "TXRX" BO_ 870 1;
+BA_ "SystemMessageLongSymbol" BO_ 870 "BCM_P01_BCMAuthenticationChallenge";
+BA_ "TXRX" BO_ 717 1;
+BA_ "GenMsgSendType" BO_ 717 0;
+BA_ "GenMsgCycleTime" BO_ 717 100;
+BA_ "VFrameFormat" BO_ 717 0;
+BA_ "TXRX" BO_ 430 1;
+BA_ "GenMsgSendType" BO_ 430 0;
+BA_ "GenMsgCycleTime" BO_ 430 10;
+BA_ "VFrameFormat" BO_ 430 0;
+BA_ "TXRX" BO_ 653 1;
+BA_ "GenMsgSendType" BO_ 653 0;
+BA_ "GenMsgCycleTime" BO_ 653 10;
+BA_ "VFrameFormat" BO_ 653 0;
+BA_ "TXRX" BO_ 1174 1;
+BA_ "GenMsgSendType" BO_ 1174 0;
+BA_ "GenMsgCycleTime" BO_ 1174 100;
+BA_ "VFrameFormat" BO_ 1174 0;
+BA_ "TXRX" BO_ 1176 1;
+BA_ "GenMsgSendType" BO_ 1176 0;
+BA_ "GenMsgCycleTime" BO_ 1176 10;
+BA_ "VFrameFormat" BO_ 1176 0;
+BA_ "TXRX" BO_ 1173 1;
+BA_ "GenMsgSendType" BO_ 1173 0;
+BA_ "GenMsgCycleTime" BO_ 1173 10;
+BA_ "VFrameFormat" BO_ 1173 0;
+BA_ "SystemMessageLongSymbol" BO_ 1173 "ECU_P02_EMSAuthenticationChallenge";
+BA_ "GenMsgSendType" BO_ 595 0;
+BA_ "GenMsgCycleTime" BO_ 595 10;
+BA_ "TXRX" BO_ 595 1;
+BA_ "VFrameFormat" BO_ 595 0;
+BA_ "GenMsgSendType" BO_ 280 0;
+BA_ "GenMsgCycleTime" BO_ 280 10;
+BA_ "TXRX" BO_ 280 1;
+BA_ "VFrameFormat" BO_ 280 0;
+BA_ "GenSigSendType" SG_ 2015 P01_Tester_D_FunctionalDiagnosti 0;
+BA_ "GenSigStartValue" SG_ 2015 P01_Tester_D_FunctionalDiagnosti 0;
+BA_ "SPN" SG_ 2015 P01_Tester_D_FunctionalDiagnosti 3351;
+BA_ "SystemSignalLongSymbol" SG_ 2015 P01_Tester_D_FunctionalDiagnosti "P01_Tester_D_FunctionalDiagnosticDataRequest";
+BA_ "GenSigSendType" SG_ 1900 P07_PEPS_D_DiagnosticDataRespons 0;
+BA_ "GenSigStartValue" SG_ 1900 P07_PEPS_D_DiagnosticDataRespons 0;
+BA_ "SPN" SG_ 1900 P07_PEPS_D_DiagnosticDataRespons 962;
+BA_ "SystemSignalLongSymbol" SG_ 1900 P07_PEPS_D_DiagnosticDataRespons "P07_PEPS_D_DiagnosticDataResponse";
+BA_ "GenSigSendType" SG_ 1892 P00_Tester_D_DiagnosticDataReque 0;
+BA_ "GenSigStartValue" SG_ 1892 P00_Tester_D_DiagnosticDataReque 0;
+BA_ "SPN" SG_ 1892 P00_Tester_D_DiagnosticDataReque 3350;
+BA_ "SystemSignalLongSymbol" SG_ 1892 P00_Tester_D_DiagnosticDataReque "P00_Tester_D_DiagnosticDataRequest";
+BA_ "SPN" SG_ 834 P06_PEPS_S_STARTCtrl 955;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_STARTCtrl 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_STARTCtrl 0;
+BA_ "SPN" SG_ 834 P06_PEPS_S_SearchOutsideValidity 961;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_SearchOutsideValidity 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_SearchOutsideValidity 0;
+BA_ "SystemSignalLongSymbol" SG_ 834 P06_PEPS_S_SearchOutsideValidity "P06_PEPS_S_SearchOutsideValidityKey";
+BA_ "SPN" SG_ 834 P06_PEPS_S_SearchInsideValidityK 960;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_SearchInsideValidityK 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_SearchInsideValidityK 0;
+BA_ "SystemSignalLongSymbol" SG_ 834 P06_PEPS_S_SearchInsideValidityK "P06_PEPS_S_SearchInsideValidityKey";
+BA_ "SPN" SG_ 834 P06_PEPS_S_ResultOfKeyAuthentica 949;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_ResultOfKeyAuthentica 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_ResultOfKeyAuthentica 0;
+BA_ "SystemSignalLongSymbol" SG_ 834 P06_PEPS_S_ResultOfKeyAuthentica "P06_PEPS_S_ResultOfKeyAuthentication";
+BA_ "SPN" SG_ 834 P06_PEPS_S_PowerMode 956;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_PowerMode 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_PowerMode 0;
+BA_ "SPN" SG_ 834 P06_PEPS_S_IGN2RelayHardware 959;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_IGN2RelayHardware 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_IGN2RelayHardware 0;
+BA_ "SPN" SG_ 834 P06_PEPS_S_IGN2Ctrl 954;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_IGN2Ctrl 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_IGN2Ctrl 0;
+BA_ "SPN" SG_ 834 P06_PEPS_S_IGN1RelayHardware 958;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_IGN1RelayHardware 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_IGN1RelayHardware 0;
+BA_ "SPN" SG_ 834 P06_PEPS_S_IGN1Ctrl 953;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_IGN1Ctrl 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_IGN1Ctrl 0;
+BA_ "SPN" SG_ 834 P06_PEPS_S_EMSAuthenticationStat 951;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_EMSAuthenticationStat 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_EMSAuthenticationStat 0;
+BA_ "SystemSignalLongSymbol" SG_ 834 P06_PEPS_S_EMSAuthenticationStat "P06_PEPS_S_EMSAuthenticationStatus";
+BA_ "SPN" SG_ 834 P06_PEPS_S_BCMAuthenticationStat 950;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_BCMAuthenticationStat 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_BCMAuthenticationStat 0;
+BA_ "SystemSignalLongSymbol" SG_ 834 P06_PEPS_S_BCMAuthenticationStat "P06_PEPS_S_BCMAuthenticationStatus";
+BA_ "SPN" SG_ 834 P06_PEPS_S_ACCRelayHardware 957;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_ACCRelayHardware 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_ACCRelayHardware 0;
+BA_ "SPN" SG_ 834 P06_PEPS_S_ACCCtrl 952;
+BA_ "GenSigStartValue" SG_ 834 P06_PEPS_S_ACCCtrl 0;
+BA_ "GenSigSendType" SG_ 834 P06_PEPS_S_ACCCtrl 0;
+BA_ "SPN" SG_ 833 P05_PEPS_S_ECUFailWarning 944;
+BA_ "GenSigStartValue" SG_ 833 P05_PEPS_S_ECUFailWarning 0;
+BA_ "GenSigSendType" SG_ 833 P05_PEPS_S_ECUFailWarning 0;
+BA_ "SPN" SG_ 833 P05_PEPS_S_Warning2 939;
+BA_ "GenSigStartValue" SG_ 833 P05_PEPS_S_Warning2 0;
+BA_ "GenSigSendType" SG_ 833 P05_PEPS_S_Warning2 0;
+BA_ "SPN" SG_ 833 P05_PEPS_S_Warning1 938;
+BA_ "GenSigStartValue" SG_ 833 P05_PEPS_S_Warning1 0;
+BA_ "GenSigSendType" SG_ 833 P05_PEPS_S_Warning1 0;
+BA_ "SPN" SG_ 833 P05_PEPS_S_RemoteKeyPowerIndicat 940;
+BA_ "GenSigStartValue" SG_ 833 P05_PEPS_S_RemoteKeyPowerIndicat 0;
+BA_ "GenSigSendType" SG_ 833 P05_PEPS_S_RemoteKeyPowerIndicat 0;
+BA_ "SystemSignalLongSymbol" SG_ 833 P05_PEPS_S_RemoteKeyPowerIndicat "P05_PEPS_S_RemoteKeyPowerIndicator";
+BA_ "SPN" SG_ 833 P05_PEPS_S_PressBrakeIndicator 946;
+BA_ "GenSigStartValue" SG_ 833 P05_PEPS_S_PressBrakeIndicator 0;
+BA_ "GenSigSendType" SG_ 833 P05_PEPS_S_PressBrakeIndicator 0;
+BA_ "SPN" SG_ 833 P05_PEPS_S_KeyNotInVehicleWarnin 943;
+BA_ "GenSigStartValue" SG_ 833 P05_PEPS_S_KeyNotInVehicleWarnin 0;
+BA_ "GenSigSendType" SG_ 833 P05_PEPS_S_KeyNotInVehicleWarnin 0;
+BA_ "SystemSignalLongSymbol" SG_ 833 P05_PEPS_S_KeyNotInVehicleWarnin "P05_PEPS_S_KeyNotInVehicleWarning";
+BA_ "SPN" SG_ 833 P05_PEPS_S_KeyLearningSignal 945;
+BA_ "GenSigStartValue" SG_ 833 P05_PEPS_S_KeyLearningSignal 0;
+BA_ "GenSigSendType" SG_ 833 P05_PEPS_S_KeyLearningSignal 0;
+BA_ "SPN" SG_ 833 P05_PEPS_S_KeyDetectSwitchIn 948;
+BA_ "GenSigStartValue" SG_ 833 P05_PEPS_S_KeyDetectSwitchIn 0;
+BA_ "GenSigSendType" SG_ 833 P05_PEPS_S_KeyDetectSwitchIn 0;
+BA_ "SPN" SG_ 833 P05_PEPS_S_DoorsLockSkReminderIn 942;
+BA_ "GenSigStartValue" SG_ 833 P05_PEPS_S_DoorsLockSkReminderIn 0;
+BA_ "GenSigSendType" SG_ 833 P05_PEPS_S_DoorsLockSkReminderIn 0;
+BA_ "SystemSignalLongSymbol" SG_ 833 P05_PEPS_S_DoorsLockSkReminderIn "P05_PEPS_S_DoorsLockSkReminderIndicator";
+BA_ "SPN" SG_ 833 P05_PEPS_S_DoorsLockDoorsOpendIn 941;
+BA_ "GenSigStartValue" SG_ 833 P05_PEPS_S_DoorsLockDoorsOpendIn 0;
+BA_ "GenSigSendType" SG_ 833 P05_PEPS_S_DoorsLockDoorsOpendIn 0;
+BA_ "SystemSignalLongSymbol" SG_ 833 P05_PEPS_S_DoorsLockDoorsOpendIn "P05_PEPS_S_DoorsLockDoorsOpendIndicator";
+BA_ "SPN" SG_ 833 P05_PEPS_S_BrakePedalStatus 947;
+BA_ "GenSigStartValue" SG_ 833 P05_PEPS_S_BrakePedalStatus 0;
+BA_ "GenSigSendType" SG_ 833 P05_PEPS_S_BrakePedalStatus 0;
+BA_ "SPN" SG_ 1298 P04_PEPS_D_LearnKey7 937;
+BA_ "GenSigStartValue" SG_ 1298 P04_PEPS_D_LearnKey7 0;
+BA_ "GenSigSendType" SG_ 1298 P04_PEPS_D_LearnKey7 0;
+BA_ "SPN" SG_ 1298 P04_PEPS_D_LearnKey6 936;
+BA_ "GenSigStartValue" SG_ 1298 P04_PEPS_D_LearnKey6 0;
+BA_ "GenSigSendType" SG_ 1298 P04_PEPS_D_LearnKey6 0;
+BA_ "SPN" SG_ 1298 P04_PEPS_D_LearnKey5 935;
+BA_ "GenSigStartValue" SG_ 1298 P04_PEPS_D_LearnKey5 0;
+BA_ "GenSigSendType" SG_ 1298 P04_PEPS_D_LearnKey5 0;
+BA_ "SPN" SG_ 1298 P04_PEPS_D_LearnKey4 934;
+BA_ "GenSigStartValue" SG_ 1298 P04_PEPS_D_LearnKey4 0;
+BA_ "GenSigSendType" SG_ 1298 P04_PEPS_D_LearnKey4 0;
+BA_ "SPN" SG_ 1298 P04_PEPS_D_LearnKey3 933;
+BA_ "GenSigStartValue" SG_ 1298 P04_PEPS_D_LearnKey3 0;
+BA_ "GenSigSendType" SG_ 1298 P04_PEPS_D_LearnKey3 0;
+BA_ "SPN" SG_ 1298 P04_PEPS_D_LearnKey2 932;
+BA_ "GenSigStartValue" SG_ 1298 P04_PEPS_D_LearnKey2 0;
+BA_ "GenSigSendType" SG_ 1298 P04_PEPS_D_LearnKey2 0;
+BA_ "SPN" SG_ 1298 P04_PEPS_D_LearnKey1 931;
+BA_ "GenSigStartValue" SG_ 1298 P04_PEPS_D_LearnKey1 0;
+BA_ "GenSigSendType" SG_ 1298 P04_PEPS_D_LearnKey1 0;
+BA_ "SPN" SG_ 1298 P04_PEPS_D_LearnKey0 930;
+BA_ "GenSigStartValue" SG_ 1298 P04_PEPS_D_LearnKey0 0;
+BA_ "GenSigSendType" SG_ 1298 P04_PEPS_D_LearnKey0 0;
+BA_ "SPN" SG_ 1297 P03_PEPS_D_LearnEMSKey7 929;
+BA_ "GenSigStartValue" SG_ 1297 P03_PEPS_D_LearnEMSKey7 0;
+BA_ "GenSigSendType" SG_ 1297 P03_PEPS_D_LearnEMSKey7 0;
+BA_ "SPN" SG_ 1297 P03_PEPS_D_LearnEMSKey6 928;
+BA_ "GenSigStartValue" SG_ 1297 P03_PEPS_D_LearnEMSKey6 0;
+BA_ "GenSigSendType" SG_ 1297 P03_PEPS_D_LearnEMSKey6 0;
+BA_ "SPN" SG_ 1297 P03_PEPS_D_LearnEMSKey5 927;
+BA_ "GenSigStartValue" SG_ 1297 P03_PEPS_D_LearnEMSKey5 0;
+BA_ "GenSigSendType" SG_ 1297 P03_PEPS_D_LearnEMSKey5 0;
+BA_ "SPN" SG_ 1297 P03_PEPS_D_LearnEMSKey4 926;
+BA_ "GenSigStartValue" SG_ 1297 P03_PEPS_D_LearnEMSKey4 0;
+BA_ "GenSigSendType" SG_ 1297 P03_PEPS_D_LearnEMSKey4 0;
+BA_ "SPN" SG_ 1297 P03_PEPS_D_LearnEMSKey3 925;
+BA_ "GenSigStartValue" SG_ 1297 P03_PEPS_D_LearnEMSKey3 0;
+BA_ "GenSigSendType" SG_ 1297 P03_PEPS_D_LearnEMSKey3 0;
+BA_ "SPN" SG_ 1297 P03_PEPS_D_LearnEMSKey2 924;
+BA_ "GenSigStartValue" SG_ 1297 P03_PEPS_D_LearnEMSKey2 0;
+BA_ "GenSigSendType" SG_ 1297 P03_PEPS_D_LearnEMSKey2 0;
+BA_ "SPN" SG_ 1297 P03_PEPS_D_LearnEMSKey1 923;
+BA_ "GenSigStartValue" SG_ 1297 P03_PEPS_D_LearnEMSKey1 0;
+BA_ "GenSigSendType" SG_ 1297 P03_PEPS_D_LearnEMSKey1 0;
+BA_ "SPN" SG_ 1297 P03_PEPS_D_LearnEMSKey0 922;
+BA_ "GenSigStartValue" SG_ 1297 P03_PEPS_D_LearnEMSKey0 0;
+BA_ "GenSigSendType" SG_ 1297 P03_PEPS_D_LearnEMSKey0 0;
+BA_ "SPN" SG_ 64 P02_PEPS_D_EMSResponse7 921;
+BA_ "GenSigStartValue" SG_ 64 P02_PEPS_D_EMSResponse7 0;
+BA_ "GenSigSendType" SG_ 64 P02_PEPS_D_EMSResponse7 0;
+BA_ "SPN" SG_ 64 P02_PEPS_D_EMSResponse6 920;
+BA_ "GenSigStartValue" SG_ 64 P02_PEPS_D_EMSResponse6 0;
+BA_ "GenSigSendType" SG_ 64 P02_PEPS_D_EMSResponse6 0;
+BA_ "SPN" SG_ 64 P02_PEPS_D_EMSResponse5 919;
+BA_ "GenSigStartValue" SG_ 64 P02_PEPS_D_EMSResponse5 0;
+BA_ "GenSigSendType" SG_ 64 P02_PEPS_D_EMSResponse5 0;
+BA_ "SPN" SG_ 64 P02_PEPS_D_EMSResponse4 918;
+BA_ "GenSigStartValue" SG_ 64 P02_PEPS_D_EMSResponse4 0;
+BA_ "GenSigSendType" SG_ 64 P02_PEPS_D_EMSResponse4 0;
+BA_ "SPN" SG_ 64 P02_PEPS_D_EMSResponse3 917;
+BA_ "GenSigStartValue" SG_ 64 P02_PEPS_D_EMSResponse3 0;
+BA_ "GenSigSendType" SG_ 64 P02_PEPS_D_EMSResponse3 0;
+BA_ "SPN" SG_ 64 P02_PEPS_D_EMSResponse2 916;
+BA_ "GenSigStartValue" SG_ 64 P02_PEPS_D_EMSResponse2 0;
+BA_ "GenSigSendType" SG_ 64 P02_PEPS_D_EMSResponse2 0;
+BA_ "SPN" SG_ 64 P02_PEPS_D_EMSResponse1 915;
+BA_ "GenSigStartValue" SG_ 64 P02_PEPS_D_EMSResponse1 0;
+BA_ "GenSigSendType" SG_ 64 P02_PEPS_D_EMSResponse1 0;
+BA_ "SPN" SG_ 64 P02_PEPS_D_EMSResponse0 914;
+BA_ "GenSigStartValue" SG_ 64 P02_PEPS_D_EMSResponse0 0;
+BA_ "GenSigSendType" SG_ 64 P02_PEPS_D_EMSResponse0 0;
+BA_ "SPN" SG_ 56 P01_PEPS_D_BCMResponse7 913;
+BA_ "GenSigStartValue" SG_ 56 P01_PEPS_D_BCMResponse7 0;
+BA_ "GenSigSendType" SG_ 56 P01_PEPS_D_BCMResponse7 0;
+BA_ "SPN" SG_ 56 P01_PEPS_D_BCMResponse6 912;
+BA_ "GenSigStartValue" SG_ 56 P01_PEPS_D_BCMResponse6 0;
+BA_ "GenSigSendType" SG_ 56 P01_PEPS_D_BCMResponse6 0;
+BA_ "SPN" SG_ 56 P01_PEPS_D_BCMResponse5 911;
+BA_ "GenSigStartValue" SG_ 56 P01_PEPS_D_BCMResponse5 0;
+BA_ "GenSigSendType" SG_ 56 P01_PEPS_D_BCMResponse5 0;
+BA_ "SPN" SG_ 56 P01_PEPS_D_BCMResponse4 910;
+BA_ "GenSigStartValue" SG_ 56 P01_PEPS_D_BCMResponse4 0;
+BA_ "GenSigSendType" SG_ 56 P01_PEPS_D_BCMResponse4 0;
+BA_ "SPN" SG_ 56 P01_PEPS_D_BCMResponse3 909;
+BA_ "GenSigStartValue" SG_ 56 P01_PEPS_D_BCMResponse3 0;
+BA_ "GenSigSendType" SG_ 56 P01_PEPS_D_BCMResponse3 0;
+BA_ "SPN" SG_ 56 P01_PEPS_D_BCMResponse2 908;
+BA_ "GenSigStartValue" SG_ 56 P01_PEPS_D_BCMResponse2 0;
+BA_ "GenSigSendType" SG_ 56 P01_PEPS_D_BCMResponse2 0;
+BA_ "SPN" SG_ 56 P01_PEPS_D_BCMResponse1 907;
+BA_ "GenSigStartValue" SG_ 56 P01_PEPS_D_BCMResponse1 0;
+BA_ "GenSigSendType" SG_ 56 P01_PEPS_D_BCMResponse1 0;
+BA_ "SPN" SG_ 56 P01_PEPS_D_BCMResponse0 906;
+BA_ "GenSigStartValue" SG_ 56 P01_PEPS_D_BCMResponse0 0;
+BA_ "GenSigSendType" SG_ 56 P01_PEPS_D_BCMResponse0 0;
+BA_ "SPN" SG_ 16 P00_PEPS_S_StartEMSCommand 904;
+BA_ "GenSigStartValue" SG_ 16 P00_PEPS_S_StartEMSCommand 0;
+BA_ "GenSigSendType" SG_ 16 P00_PEPS_S_StartEMSCommand 0;
+BA_ "SPN" SG_ 16 P00_PEPS_S_FOBRKECommand 902;
+BA_ "GenSigStartValue" SG_ 16 P00_PEPS_S_FOBRKECommand 0;
+BA_ "GenSigSendType" SG_ 16 P00_PEPS_S_FOBRKECommand 0;
+BA_ "SPN" SG_ 16 P00_PEPS_D_StartEMSCommandCounte 905;
+BA_ "GenSigStartValue" SG_ 16 P00_PEPS_D_StartEMSCommandCounte 0;
+BA_ "GenSigSendType" SG_ 16 P00_PEPS_D_StartEMSCommandCounte 0;
+BA_ "SystemSignalLongSymbol" SG_ 16 P00_PEPS_D_StartEMSCommandCounte "P00_PEPS_D_StartEMSCommandCounter";
+BA_ "SPN" SG_ 16 P00_PEPS_D_FOBRKECommandCounter 903;
+BA_ "GenSigStartValue" SG_ 16 P00_PEPS_D_FOBRKECommandCounter 0;
+BA_ "GenSigSendType" SG_ 16 P00_PEPS_D_FOBRKECommandCounter 0;
+BA_ "SPN" SG_ 16 P00_PEPS_S_FOBPECommand 900;
+BA_ "GenSigStartValue" SG_ 16 P00_PEPS_S_FOBPECommand 0;
+BA_ "GenSigSendType" SG_ 16 P00_PEPS_S_FOBPECommand 0;
+BA_ "SPN" SG_ 16 P00_PEPS_D_FOBPECommandCounter 901;
+BA_ "GenSigStartValue" SG_ 16 P00_PEPS_D_FOBPECommandCounter 0;
+BA_ "GenSigSendType" SG_ 16 P00_PEPS_D_FOBPECommandCounter 0;
+BA_ "SPN" SG_ 872 P03_BCM_D_AuthenticationStatusCo 3322;
+BA_ "GenSigStartValue" SG_ 872 P03_BCM_D_AuthenticationStatusCo 0;
+BA_ "GenSigSendType" SG_ 872 P03_BCM_D_AuthenticationStatusCo 0;
+BA_ "SystemSignalLongSymbol" SG_ 872 P03_BCM_D_AuthenticationStatusCo "P03_BCM_D_AuthenticationStatusCounter";
+BA_ "SPN" SG_ 872 P03_BCM_S_AuthenticationStatus 3321;
+BA_ "GenSigStartValue" SG_ 872 P03_BCM_S_AuthenticationStatus 0;
+BA_ "GenSigSendType" SG_ 872 P03_BCM_S_AuthenticationStatus 0;
+BA_ "SPN" SG_ 871 P02_BCM_D_BCMLearnSeed2 3315;
+BA_ "GenSigStartValue" SG_ 871 P02_BCM_D_BCMLearnSeed2 0;
+BA_ "GenSigSendType" SG_ 871 P02_BCM_D_BCMLearnSeed2 0;
+BA_ "SPN" SG_ 871 P02_BCM_D_BCMLearnSeed7 3320;
+BA_ "GenSigStartValue" SG_ 871 P02_BCM_D_BCMLearnSeed7 0;
+BA_ "GenSigSendType" SG_ 871 P02_BCM_D_BCMLearnSeed7 0;
+BA_ "SPN" SG_ 871 P02_BCM_D_BCMLearnSeed6 3319;
+BA_ "GenSigStartValue" SG_ 871 P02_BCM_D_BCMLearnSeed6 0;
+BA_ "GenSigSendType" SG_ 871 P02_BCM_D_BCMLearnSeed6 0;
+BA_ "SPN" SG_ 871 P02_BCM_D_BCMLearnSeed5 3318;
+BA_ "GenSigStartValue" SG_ 871 P02_BCM_D_BCMLearnSeed5 0;
+BA_ "GenSigSendType" SG_ 871 P02_BCM_D_BCMLearnSeed5 0;
+BA_ "SPN" SG_ 871 P02_BCM_D_BCMLearnSeed4 3317;
+BA_ "GenSigStartValue" SG_ 871 P02_BCM_D_BCMLearnSeed4 0;
+BA_ "GenSigSendType" SG_ 871 P02_BCM_D_BCMLearnSeed4 0;
+BA_ "SPN" SG_ 871 P02_BCM_D_BCMLearnSeed3 3316;
+BA_ "GenSigStartValue" SG_ 871 P02_BCM_D_BCMLearnSeed3 0;
+BA_ "GenSigSendType" SG_ 871 P02_BCM_D_BCMLearnSeed3 0;
+BA_ "SPN" SG_ 871 P02_BCM_D_BCMLearnSeed1 3314;
+BA_ "GenSigStartValue" SG_ 871 P02_BCM_D_BCMLearnSeed1 0;
+BA_ "GenSigSendType" SG_ 871 P02_BCM_D_BCMLearnSeed1 0;
+BA_ "SPN" SG_ 871 P02_BCM_D_BCMLearnSeed0 3313;
+BA_ "GenSigStartValue" SG_ 871 P02_BCM_D_BCMLearnSeed0 0;
+BA_ "GenSigSendType" SG_ 871 P02_BCM_D_BCMLearnSeed0 0;
+BA_ "SPN" SG_ 870 P01_BCM_D_PEPSRequest7 3312;
+BA_ "GenSigStartValue" SG_ 870 P01_BCM_D_PEPSRequest7 0;
+BA_ "GenSigSendType" SG_ 870 P01_BCM_D_PEPSRequest7 0;
+BA_ "SPN" SG_ 870 P01_BCM_D_PEPSRequest6 3311;
+BA_ "GenSigStartValue" SG_ 870 P01_BCM_D_PEPSRequest6 0;
+BA_ "GenSigSendType" SG_ 870 P01_BCM_D_PEPSRequest6 0;
+BA_ "SPN" SG_ 870 P01_BCM_D_PEPSRequest5 3310;
+BA_ "GenSigStartValue" SG_ 870 P01_BCM_D_PEPSRequest5 0;
+BA_ "GenSigSendType" SG_ 870 P01_BCM_D_PEPSRequest5 0;
+BA_ "SPN" SG_ 870 P01_BCM_D_PEPSRequest4 3309;
+BA_ "GenSigStartValue" SG_ 870 P01_BCM_D_PEPSRequest4 0;
+BA_ "GenSigSendType" SG_ 870 P01_BCM_D_PEPSRequest4 0;
+BA_ "SPN" SG_ 870 P01_BCM_D_PEPSRequest3 3308;
+BA_ "GenSigStartValue" SG_ 870 P01_BCM_D_PEPSRequest3 0;
+BA_ "GenSigSendType" SG_ 870 P01_BCM_D_PEPSRequest3 0;
+BA_ "SPN" SG_ 870 P01_BCM_D_PEPSRequest2 3307;
+BA_ "GenSigStartValue" SG_ 870 P01_BCM_D_PEPSRequest2 0;
+BA_ "GenSigSendType" SG_ 870 P01_BCM_D_PEPSRequest2 0;
+BA_ "SPN" SG_ 870 P01_BCM_D_PEPSRequest1 3306;
+BA_ "GenSigStartValue" SG_ 870 P01_BCM_D_PEPSRequest1 0;
+BA_ "GenSigSendType" SG_ 870 P01_BCM_D_PEPSRequest1 0;
+BA_ "SPN" SG_ 870 P01_BCM_D_PEPSRequest0 3305;
+BA_ "GenSigStartValue" SG_ 870 P01_BCM_D_PEPSRequest0 0;
+BA_ "GenSigSendType" SG_ 870 P01_BCM_D_PEPSRequest0 0;
+BA_ "SPN" SG_ 717 P00_BCM_S_RightRearDoorStatus 3303;
+BA_ "GenSigStartValue" SG_ 717 P00_BCM_S_RightRearDoorStatus 0;
+BA_ "GenSigSendType" SG_ 717 P00_BCM_S_RightRearDoorStatus 0;
+BA_ "SPN" SG_ 717 P00_BCM_S_RearLeftDoorStatus 3304;
+BA_ "GenSigStartValue" SG_ 717 P00_BCM_S_RearLeftDoorStatus 0;
+BA_ "GenSigSendType" SG_ 717 P00_BCM_S_RearLeftDoorStatus 0;
+BA_ "SPN" SG_ 717 P00_BCM_S_PassengerDoorStatus 3302;
+BA_ "GenSigStartValue" SG_ 717 P00_BCM_S_PassengerDoorStatus 0;
+BA_ "GenSigSendType" SG_ 717 P00_BCM_S_PassengerDoorStatus 0;
+BA_ "SPN" SG_ 717 P00_BCM_S_DriverUnlockState 3300;
+BA_ "GenSigStartValue" SG_ 717 P00_BCM_S_DriverUnlockState 0;
+BA_ "GenSigSendType" SG_ 717 P00_BCM_S_DriverUnlockState 0;
+BA_ "GenSigSendType" SG_ 717 P00_BCM_S_DriverDoorStatus 0;
+BA_ "GenSigStartValue" SG_ 717 P00_BCM_S_DriverDoorStatus 0;
+BA_ "SPN" SG_ 717 P00_BCM_S_DriverDoorStatus 3301;
+BA_ "GenSigSendType" SG_ 430 P00_EPBi_S_VehicleSpeedValid 0;
+BA_ "GenSigStartValue" SG_ 430 P00_EPBi_S_VehicleSpeedValid 0;
+BA_ "SPN" SG_ 430 P00_EPBi_S_VehicleSpeedValid 3347;
+BA_ "GenSigSendType" SG_ 430 P00_EPBi_D_VehicleSpeed 0;
+BA_ "GenSigStartValue" SG_ 430 P00_EPBi_D_VehicleSpeed 0;
+BA_ "SPN" SG_ 430 P00_EPBi_D_VehicleSpeed 3348;
+BA_ "GenSigSendType" SG_ 653 P00_TCU_S_GearPosition 0;
+BA_ "GenSigStartValue" SG_ 653 P00_TCU_S_GearPosition 0;
+BA_ "SPN" SG_ 653 P00_TCU_S_GearPosition 3349;
+BA_ "GenSigSendType" SG_ 1174 P04_ECU_D_AuthenticationStatusCo 0;
+BA_ "GenSigStartValue" SG_ 1174 P04_ECU_D_AuthenticationStatusCo 0;
+BA_ "SPN" SG_ 1174 P04_ECU_D_AuthenticationStatusCo 3346;
+BA_ "SystemSignalLongSymbol" SG_ 1174 P04_ECU_D_AuthenticationStatusCo "P04_ECU_D_AuthenticationStatusCounter";
+BA_ "GenSigSendType" SG_ 1174 P04_ECU_S_AuthenticationStatus 0;
+BA_ "GenSigStartValue" SG_ 1174 P04_ECU_S_AuthenticationStatus 0;
+BA_ "SPN" SG_ 1174 P04_ECU_S_AuthenticationStatus 3345;
+BA_ "GenSigSendType" SG_ 1176 P03_ECU_D_EMSLearnSeed7 0;
+BA_ "GenSigStartValue" SG_ 1176 P03_ECU_D_EMSLearnSeed7 0;
+BA_ "SPN" SG_ 1176 P03_ECU_D_EMSLearnSeed7 3344;
+BA_ "GenSigSendType" SG_ 1176 P03_ECU_D_EMSLearnSeed6 0;
+BA_ "GenSigStartValue" SG_ 1176 P03_ECU_D_EMSLearnSeed6 0;
+BA_ "SPN" SG_ 1176 P03_ECU_D_EMSLearnSeed6 3343;
+BA_ "GenSigSendType" SG_ 1176 P03_ECU_D_EMSLearnSeed5 0;
+BA_ "GenSigStartValue" SG_ 1176 P03_ECU_D_EMSLearnSeed5 0;
+BA_ "SPN" SG_ 1176 P03_ECU_D_EMSLearnSeed5 3342;
+BA_ "GenSigSendType" SG_ 1176 P03_ECU_D_EMSLearnSeed4 0;
+BA_ "GenSigStartValue" SG_ 1176 P03_ECU_D_EMSLearnSeed4 0;
+BA_ "SPN" SG_ 1176 P03_ECU_D_EMSLearnSeed4 3341;
+BA_ "GenSigSendType" SG_ 1176 P03_ECU_D_EMSLearnSeed3 0;
+BA_ "GenSigStartValue" SG_ 1176 P03_ECU_D_EMSLearnSeed3 0;
+BA_ "SPN" SG_ 1176 P03_ECU_D_EMSLearnSeed3 3340;
+BA_ "GenSigSendType" SG_ 1176 P03_ECU_D_EMSLearnSeed2 0;
+BA_ "GenSigStartValue" SG_ 1176 P03_ECU_D_EMSLearnSeed2 0;
+BA_ "SPN" SG_ 1176 P03_ECU_D_EMSLearnSeed2 3339;
+BA_ "GenSigSendType" SG_ 1176 P03_ECU_D_EMSLearnSeed1 0;
+BA_ "GenSigStartValue" SG_ 1176 P03_ECU_D_EMSLearnSeed1 0;
+BA_ "SPN" SG_ 1176 P03_ECU_D_EMSLearnSeed1 3338;
+BA_ "GenSigSendType" SG_ 1176 P03_ECU_D_EMSLearnSeed0 0;
+BA_ "GenSigStartValue" SG_ 1176 P03_ECU_D_EMSLearnSeed0 0;
+BA_ "SPN" SG_ 1176 P03_ECU_D_EMSLearnSeed0 3337;
+BA_ "GenSigSendType" SG_ 1173 P02_ECU_D_EMSPEPSRequest7 0;
+BA_ "GenSigStartValue" SG_ 1173 P02_ECU_D_EMSPEPSRequest7 0;
+BA_ "SPN" SG_ 1173 P02_ECU_D_EMSPEPSRequest7 3336;
+BA_ "GenSigSendType" SG_ 1173 P02_ECU_D_EMSPEPSRequest6 0;
+BA_ "GenSigStartValue" SG_ 1173 P02_ECU_D_EMSPEPSRequest6 0;
+BA_ "SPN" SG_ 1173 P02_ECU_D_EMSPEPSRequest6 3335;
+BA_ "GenSigSendType" SG_ 1173 P02_ECU_D_EMSPEPSRequest5 0;
+BA_ "GenSigStartValue" SG_ 1173 P02_ECU_D_EMSPEPSRequest5 0;
+BA_ "SPN" SG_ 1173 P02_ECU_D_EMSPEPSRequest5 3334;
+BA_ "GenSigSendType" SG_ 1173 P02_ECU_D_EMSPEPSRequest4 0;
+BA_ "GenSigStartValue" SG_ 1173 P02_ECU_D_EMSPEPSRequest4 0;
+BA_ "SPN" SG_ 1173 P02_ECU_D_EMSPEPSRequest4 3333;
+BA_ "GenSigSendType" SG_ 1173 P02_ECU_D_EMSPEPSRequest3 0;
+BA_ "GenSigStartValue" SG_ 1173 P02_ECU_D_EMSPEPSRequest3 0;
+BA_ "SPN" SG_ 1173 P02_ECU_D_EMSPEPSRequest3 3332;
+BA_ "GenSigSendType" SG_ 1173 P02_ECU_D_EMSPEPSRequest2 0;
+BA_ "GenSigStartValue" SG_ 1173 P02_ECU_D_EMSPEPSRequest2 0;
+BA_ "SPN" SG_ 1173 P02_ECU_D_EMSPEPSRequest2 3331;
+BA_ "GenSigSendType" SG_ 1173 P02_ECU_D_EMSPEPSRequest1 0;
+BA_ "GenSigStartValue" SG_ 1173 P02_ECU_D_EMSPEPSRequest1 0;
+BA_ "SPN" SG_ 1173 P02_ECU_D_EMSPEPSRequest1 3330;
+BA_ "GenSigSendType" SG_ 1173 P02_ECU_D_EMSPEPSRequest0 0;
+BA_ "GenSigStartValue" SG_ 1173 P02_ECU_D_EMSPEPSRequest0 0;
+BA_ "SPN" SG_ 1173 P02_ECU_D_EMSPEPSRequest0 3329;
+BA_ "SPN" SG_ 595 P01_ECU_D_EMSCheckSum 3328;
+BA_ "GenSigStartValue" SG_ 595 P01_ECU_D_EMSCheckSum 0;
+BA_ "GenSigSendType" SG_ 595 P01_ECU_D_EMSCheckSum 0;
+BA_ "SPN" SG_ 595 P01_ECU_D_Counter 3327;
+BA_ "GenSigStartValue" SG_ 595 P01_ECU_D_Counter 0;
+BA_ "GenSigSendType" SG_ 595 P01_ECU_D_Counter 0;
+BA_ "SPN" SG_ 595 P01_ECU_S_BrakePedalStatus 3326;
+BA_ "GenSigStartValue" SG_ 595 P01_ECU_S_BrakePedalStatus 0;
+BA_ "GenSigSendType" SG_ 595 P01_ECU_S_BrakePedalStatus 0;
+BA_ "SPN" SG_ 280 P00_ECU_S_EngineSpeedValidity 3323;
+BA_ "GenSigSendType" SG_ 280 P00_ECU_S_EngineSpeedValidity 0;
+BA_ "SPN" SG_ 280 P00_ECU_S_EngineRunningStatus 3324;
+BA_ "GenSigSendType" SG_ 280 P00_ECU_S_EngineRunningStatus 0;
+BA_ "SPN" SG_ 280 P00_ECU_D_EngineSpeed 3325;
+BA_ "GenSigSendType" SG_ 280 P00_ECU_D_EngineSpeed 0;
+VAL_ 834 P06_PEPS_S_STARTCtrl 3 "Invalid" 2 "Error" 1 "active" 0 "inactive" ;
+VAL_ 834 P06_PEPS_S_SearchOutsideValidity 9 "Invalid (key 5)" 8 "Valid (key 5)" 7 "Invalid (key 4)" 6 "Valid (key 4)" 5 "Invalid (key 3)" 4 "Valid (key 3)" 3 " Invalid (Key 2)" 2 "Valid (key 2)" 1 "Invalid (key 1)" 0 "Valid (No. 1 key)" ;
+VAL_ 834 P06_PEPS_S_SearchInsideValidityK 9 "Invalid (key 5)" 8 "Valid (key 5)" 7 "Invalid (key 4)" 6 "Valid (key 4)" 5 "Invalid (key 3)" 4 "Valid (key 3)" 3 " Invalid (Key 2)" 2 "Valid (key 2)" 1 "Invalid (key 1)" 0 "Valid (No. 1 key)" ;
+VAL_ 834 P06_PEPS_S_ResultOfKeyAuthentica 3 "reserved" 2 "Fail" 1 "Success" 0 "Default" ;
+VAL_ 834 P06_PEPS_S_PowerMode 7 "not define" 6 "not define" 5 "not define" 4 "START" 3 "ON (Engine ON)" 2 "ON (Engine OFF)" 1 "ACC" 0 "OFF" ;
+VAL_ 834 P06_PEPS_S_IGN2RelayHardware 3 "Invalid" 2 "reserved" 1 "ON" 0 "OFF" ;
+VAL_ 834 P06_PEPS_S_IGN2Ctrl 3 "Invalid" 2 "Error" 1 "active" 0 "inactive" ;
+VAL_ 834 P06_PEPS_S_IGN1RelayHardware 3 "Invalid" 2 "reserved" 1 "ON" 0 "OFF" ;
+VAL_ 834 P06_PEPS_S_IGN1Ctrl 3 "Invalid" 2 "Error" 1 "active" 0 "inactive" ;
+VAL_ 834 P06_PEPS_S_EMSAuthenticationStat 3 "reserved" 2 "Fail" 1 "Success" 0 "Default" ;
+VAL_ 834 P06_PEPS_S_BCMAuthenticationStat 3 "reserved" 2 "Fail" 1 "Success" 0 "Default" ;
+VAL_ 834 P06_PEPS_S_ACCRelayHardware 3 "Invalid" 2 "reserved" 1 "ON" 0 "OFF" ;
+VAL_ 834 P06_PEPS_S_ACCCtrl 3 "Invalid" 2 "Error" 1 "active" 0 "inactive" ;
+VAL_ 833 P05_PEPS_S_ECUFailWarning 1 "On" 0 "Off" ;
+VAL_ 833 P05_PEPS_S_Warning2 3 "reserved" 2 "error" 1 "warning" 0 "no warning" ;
+VAL_ 833 P05_PEPS_S_Warning1 3 "reserved" 2 "error" 1 "warning" 0 "no warning" ;
+VAL_ 833 P05_PEPS_S_RemoteKeyPowerIndicat 3 "Invalid " 2 "Error" 1 "Low battery level" 0 "Normal" ;
+VAL_ 833 P05_PEPS_S_PressBrakeIndicator 1 "On - Prompt" 0 "Off - No prompt" ;
+VAL_ 833 P05_PEPS_S_KeyNotInVehicleWarnin 1 "On" 0 "Off" ;
+VAL_ 833 P05_PEPS_S_KeyLearningSignal 6 "PEPS does not learn any keys" 5 "PEPS learned 5 keys" 4 "PEPS learned 4 keys" 3 "PEPS learned 3 keys" 2 "PEPS learned 2 keys" 1 "PEPS learned 1 key" 0 "None unknown" ;
+VAL_ 833 P05_PEPS_S_KeyDetectSwitchIn 3 "Invalid" 2 "Error" 1 "key insert" 0 "key not insert" ;
+VAL_ 833 P05_PEPS_S_DoorsLockSkReminderIn 1 "On" 0 "Off" ;
+VAL_ 833 P05_PEPS_S_DoorsLockDoorsOpendIn 1 "On" 0 "Off" ;
+VAL_ 833 P05_PEPS_S_BrakePedalStatus 1 "pressed" 0 "Notpressed" ;
+VAL_ 16 P00_PEPS_S_StartEMSCommand 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "Reserved" 2 "Stop" 1 "Start" 0 "Default" ;
+VAL_ 16 P00_PEPS_S_FOBRKECommand 7 "Windowsdown" 6 "Windowsup" 5 "reserved" 4 "Search" 3 "Tailgate" 2 "Unlock" 1 "Lock" 0 "None" ;
+VAL_ 16 P00_PEPS_S_FOBPECommand 7 "reserved" 6 "reserved" 5 "reserved" 4 "reserved" 3 "reserved" 2 "pe lock" 1 "pe unlock" 0 "no cmd" ;
+VAL_ 872 P03_BCM_S_AuthenticationStatus 3 "reserved" 2 "Fail" 1 "Success" 0 "Default" ;
+VAL_ 717 P00_BCM_S_RightRearDoorStatus 1 "Open" 0 "Close" ;
+VAL_ 717 P00_BCM_S_RearLeftDoorStatus 1 "Open" 0 "Close" ;
+VAL_ 717 P00_BCM_S_PassengerDoorStatus 1 "Open" 0 "Close" ;
+VAL_ 717 P00_BCM_S_DriverUnlockState 1 "Open" 0 "Close" ;
+VAL_ 717 P00_BCM_S_DriverDoorStatus 1 "Open" 0 "Close" ;
+VAL_ 430 P00_EPBi_S_VehicleSpeedValid 1 "Valid" 0 "NotValid" ;
+VAL_ 653 P00_TCU_S_GearPosition 15 "Invalid" 8 "Position S" 7 "reserved" 6 "reserved" 5 "Position M" 4 "Position D" 3 "Position N" 2 "Position R" 1 "Position P" 0 "unknown" ;
+VAL_ 1174 P04_ECU_S_AuthenticationStatus 3 "reserved" 2 "Fail" 1 "Success" 0 "Default" ;
+VAL_ 595 P01_ECU_S_BrakePedalStatus 1 "Pressed" 0 "NotPressed" ;
+VAL_ 280 P00_ECU_S_EngineSpeedValidity 1 "Valid" 0 "Invalid" ;
+VAL_ 280 P00_ECU_S_EngineRunningStatus 3 "Fault" 2 "Crank" 1 "Running" 0 "No Running" ;
+

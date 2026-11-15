@@ -1,0 +1,100 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU AVAS
+
+
+BO_ 792 PCU_P01_Indicator: 1 PCU
+ SG_ P01_PCU_S_AVASRightTurnIndicator : 1|1@0+ (1,0) [0|1] ""  AVAS
+ SG_ P01_PCU_S_AVASLeftTurnIndicatorS : 0|1@0+ (1,0) [0|1] ""  AVAS
+
+BO_ 536 PCU_P00_VehicleSpeed: 8 PCU
+ SG_ P00_PCU_D_VehicleSpeedSetpoint : 15|13@0+ (0.05625,0) [0|253] "km/h"  AVAS
+ SG_ P00_PCU_S_VehicleSpeedValidState : 4|1@0+ (1,0) [0|1] ""  AVAS
+
+BO_ 280 PCU_P02_NDR: 8 PCU
+ SG_ P02_PCU_S_AVASVehicleNDRState : 2|3@0+ (1,0) [0|5] ""  AVAS
+
+
+
+CM_ SG_ 792 P01_PCU_S_AVASRightTurnIndicator "Right turn indicator state";
+CM_ SG_ 792 P01_PCU_S_AVASLeftTurnIndicatorS "Left turn indicator state";
+CM_ SG_ 536 P00_PCU_D_VehicleSpeedSetpoint "Vehicle speed set point";
+CM_ SG_ 536 P00_PCU_S_VehicleSpeedValidState "Vehicle speed validation state";
+CM_ SG_ 280 P02_PCU_S_AVASVehicleNDRState "Gear level position";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SPN" INT 0 0;
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "CANoeJitterMax" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMin" INT 0 0;
+BA_DEF_ BU_  "CANoeDrift" INT 0 0;
+BA_DEF_ BU_  "CANoeStartDelay" INT 0 0;
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZone" "";
+BA_DEF_DEF_  "FaultTrigger" "";
+BA_DEF_DEF_  "FaultAction" "";
+BA_DEF_DEF_  "BusType" "";
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "CANoeJitterMax" 0;
+BA_DEF_DEF_  "CANoeJitterMin" 0;
+BA_DEF_DEF_  "CANoeDrift" 0;
+BA_DEF_DEF_  "CANoeStartDelay" 0;
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN";
+BA_ "TXRX" BO_ 792 1;
+BA_ "TXRX" BO_ 536 1;
+BA_ "TXRX" BO_ 280 1;
+BA_ "SPN" SG_ 792 P01_PCU_S_AVASRightTurnIndicator 2003;
+BA_ "SystemSignalLongSymbol" SG_ 792 P01_PCU_S_AVASRightTurnIndicator "P01_PCU_S_AVASRightTurnIndicatorState";
+BA_ "SPN" SG_ 792 P01_PCU_S_AVASLeftTurnIndicatorS 2002;
+BA_ "SystemSignalLongSymbol" SG_ 792 P01_PCU_S_AVASLeftTurnIndicatorS "P01_PCU_S_AVASLeftTurnIndicatorState";
+BA_ "SPN" SG_ 536 P00_PCU_D_VehicleSpeedSetpoint 2001;
+BA_ "SPN" SG_ 536 P00_PCU_S_VehicleSpeedValidState 2000;
+BA_ "SPN" SG_ 280 P02_PCU_S_AVASVehicleNDRState 2004;
+VAL_ 792 P01_PCU_S_AVASRightTurnIndicator 1 "Off" 0 "On" ;
+VAL_ 792 P01_PCU_S_AVASLeftTurnIndicatorS 1 "Off" 0 "On" ;
+VAL_ 536 P00_PCU_S_VehicleSpeedValidState 1 "Invalid" 0 "Valid" ;
+VAL_ 280 P02_PCU_S_AVASVehicleNDRState 1 "R" 5 "P" 4 "Eco" 3 "D" 2 "N" 0 "Invalid" ;
+

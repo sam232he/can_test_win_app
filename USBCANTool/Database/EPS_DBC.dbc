@@ -1,0 +1,90 @@
+VERSION "1.0"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU EPS
+
+
+BO_ 419 EPS_P00_HSCFr: 8 EPS
+ SG_ P00_EPS_D_SteeringAngleSpeed : 54|15@0+ (0.04375,0) [0|1433.5125] "deg/sec"  PCU
+ SG_ P00_EPS_F_GeneralFault : 55|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_EPS_D_SteeringAngle : 38|15@0+ (0.04375,0) [0|1433.55625] "deg"  PCU
+ SG_ P00_EPS_S_SteeringAngleValidStat : 39|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_EPS_S_SteeringSystemID : 31|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_EPS_F_ElectricSteeringFault : 18|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_EPS_S_SteeringAngleDirection : 19|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_EPS_S_SteeringAngleSpeedDire : 20|1@0+ (1,0) [0|1] ""  PCU
+
+
+
+CM_ SG_ 419 P00_EPS_D_SteeringAngleSpeed "Steering wheel rotation speed";
+CM_ SG_ 419 P00_EPS_F_GeneralFault "General fault";
+CM_ SG_ 419 P00_EPS_D_SteeringAngle "Steering wheel angle";
+CM_ SG_ 419 P00_EPS_S_SteeringAngleValidStat "Steering angle validation state";
+CM_ SG_ 419 P00_EPS_S_SteeringSystemID "Steering system ID";
+CM_ SG_ 419 P00_EPS_F_ElectricSteeringFault "Electric steering fault";
+CM_ SG_ 419 P00_EPS_S_SteeringAngleDirection "Steering wheel angle direction state";
+CM_ SG_ 419 P00_EPS_S_SteeringAngleSpeedDire "Steering wheel rotation direction state";
+BA_DEF_ BO_  "CycleTime" INT 0 0;
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SPN" INT 0 0;
+BA_DEF_  "MultiplexExtEnabled" ENUM  "No","Yes";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "CycleTime" 0;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "MultiplexExtEnabled" "No";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "CycleTime" BO_ 419 10;
+BA_ "TXRX" BO_ 419 0;
+BA_ "SPN" SG_ 419 P00_EPS_D_SteeringAngleSpeed 2801;
+BA_ "SPN" SG_ 419 P00_EPS_F_GeneralFault 2803;
+BA_ "SPN" SG_ 419 P00_EPS_D_SteeringAngle 2800;
+BA_ "SPN" SG_ 419 P00_EPS_S_SteeringAngleValidStat 2806;
+BA_ "SystemSignalLongSymbol" SG_ 419 P00_EPS_S_SteeringAngleValidStat "P00_EPS_S_SteeringAngleValidState";
+BA_ "SPN" SG_ 419 P00_EPS_S_SteeringSystemID 2807;
+BA_ "SPN" SG_ 419 P00_EPS_F_ElectricSteeringFault 2802;
+BA_ "SPN" SG_ 419 P00_EPS_S_SteeringAngleDirection 2804;
+BA_ "SystemSignalLongSymbol" SG_ 419 P00_EPS_S_SteeringAngleDirection "P00_EPS_S_SteeringAngleDirectionState";
+BA_ "SPN" SG_ 419 P00_EPS_S_SteeringAngleSpeedDire 2805;
+BA_ "SystemSignalLongSymbol" SG_ 419 P00_EPS_S_SteeringAngleSpeedDire "P00_EPS_S_SteeringAngleSpeedDirectionState";
+VAL_ 419 P00_EPS_F_GeneralFault 1 "Fault" 0 "No fault" ;
+VAL_ 419 P00_EPS_S_SteeringAngleValidStat 1 "Valid" 0 "Invalid" ;
+VAL_ 419 P00_EPS_S_SteeringSystemID 1 "Calibrated" 0 "Not calibrated" ;
+VAL_ 419 P00_EPS_F_ElectricSteeringFault 1 "Fault" 0 "No fault" ;
+VAL_ 419 P00_EPS_S_SteeringAngleDirection 1 "Counter-Clockwise (CCW)" 0 "Clockwise (CW)" ;
+VAL_ 419 P00_EPS_S_SteeringAngleSpeedDire 1 "Negative (Decreasing Angle)" 0 "Positive (Increasing Angle)" ;
+

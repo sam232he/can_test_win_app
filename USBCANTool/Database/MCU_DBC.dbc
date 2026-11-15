@@ -1,0 +1,565 @@
+VERSION "2.0"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU MCU
+
+
+BO_ 625 PCU_P06_Odometer: 8 PCU
+ SG_ P06_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  MCU
+ SG_ P06_PCU_D_Counter : 55|8@0+ (1,0) [0|255] ""  MCU
+ SG_ P06_PCU_D_Odometer : 11|20@0+ (1,0) [0|999999] "km"  MCU
+
+BO_ 369 PCU_P07_Contactor: 8 PCU
+ SG_ P07_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  MCU
+ SG_ P07_PCU_D_Counter : 51|4@0+ (1,0) [0|15] ""  MCU
+ SG_ P07_PCU_S_FastChargeContactorCom : 33|2@0+ (1,0) [0|3] ""  MCU
+
+BO_ 291 PCU_P04_Actuator: 8 PCU
+ SG_ P04_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  MCU
+ SG_ P04_PCU_D_Counter : 55|8@0+ (1,0) [0|255] ""  MCU
+ SG_ P04_PCU_S_AcceleratorPositionInt : 45|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P04_PCU_S_VehicleSpeedValidState : 44|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P04_PCU_S_VehicleNDRValidState : 43|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P04_PCU_S_TargetGearValidState : 42|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P04_PCU_S_BrakePedalValidState : 41|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P04_PCU_S_AcceleratorPositionPhy : 40|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P04_PCU_D_VehicleSpeed : 31|13@0+ (0.0625,0) [0|253] "km/h"  MCU
+ SG_ P04_PCU_S_ReadyCommandState : 34|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P04_PCU_S_BrakePedalState : 33|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P04_PCU_S_SelectorInProgressStat : 32|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P04_PCU_D_AcceleratorPositionInt : 23|8@0+ (0.4,0) [0|100] "%"  MCU
+ SG_ P04_PCU_D_AcceleratorPositionPhy : 15|8@0+ (0.4,0) [0|100] "%"  MCU
+ SG_ P04_PCU_S_VehicleNDR : 7|4@0+ (1,0) [0|15] ""  MCU
+ SG_ P04_PCU_S_TargetNDR : 3|4@0+ (1,0) [0|15] ""  MCU
+
+BO_ 273 PCU_P05_TorqueCommand: 8 PCU
+ SG_ P05_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  MCU
+ SG_ P05_PCU_S_PowerEnableCommand : 53|2@0+ (1,0) [0|3] ""  MCU
+ SG_ P05_PCU_D_Counter : 51|4@0+ (1,0) [0|15] ""  MCU
+ SG_ P05_PCU_S_TorqueCompEnableComman : 38|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P05_PCU_S_MotorEnableCommand : 36|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P05_PCU_S_WorkingModeCommand : 35|4@0+ (1,0) [0|15] ""  MCU
+ SG_ P05_PCU_D_TorqueSetpoint : 23|12@0+ (0.5,-1000) [-1000|1000] "N.m"  MCU
+ SG_ P05_PCU_S_KL15Command : 26|1@0+ (1,0) [0|1] ""  MCU
+ SG_ P05_PCU_S_FunctionalModeCommand : 25|2@0+ (1,0) [0|3] ""  MCU
+ SG_ P05_PCU_D_SpeedSetpoint : 7|16@0+ (1,-30000) [-30000|30000] "rpm"  MCU
+
+BO_ 792 MCU_P03_Fault2: 8 MCU
+ SG_ P03_MCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  PCU
+ SG_ P03_MCU_D_Counter : 55|8@0+ (1,0) [0|255] ""  PCU
+ SG_ P03_MCU_F_HVOverVoltageSoftwareW : 5|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P03_MCU_F_SelfcheckFault : 1|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P03_MCU_F_HighVoltageSensorFault : 0|1@0+ (1,0) [0|1] ""  PCU
+
+BO_ 791 MCU_P02_Fault1: 8 MCU
+ SG_ P02_MCU_F_HVInputOverVoltageSoft : 38|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_MotorStallWarning : 63|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_HVILFault : 62|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_NetworkOfflineBMSFault : 61|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_NetworkOfflinePCUFault : 60|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_InvalidInformationPCUF : 59|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_TorqueMonitorFault : 58|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_TorqueMonitorWarning : 57|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_AbnormalUpdateRateFaul : 56|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_MotorPositionSensorFau : 55|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_DriveTemperatureSensor : 53|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_FastChargingRelayConta : 52|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_MotorTemperatureSensor : 51|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_PhaseCurrentSensorFaul : 50|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_MotorOverSpeedFault : 49|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_MotorOverSpeedWarning : 48|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_DriverOverTemperatureF : 47|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_DriveOverTemperatureWa : 46|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_MotorOverTemperatureFa : 45|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_MotorOverTemperatureWa : 44|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_PowerModuleFault : 43|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_LVVoltageFault : 42|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_HVInputUnderVoltageWar : 41|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_HVInputUnderVoltageFau : 40|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_HVInputOverVoltageHard : 39|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_PhaseOverCurrentHardwa : 37|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_PhaseOverCurrentSoftwa : 36|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_PhaseOverCurrentS_0000 : 35|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_F_DriveOverTemperatureFa : 34|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_MCU_S_CalibrationState : 33|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P02_MCU_S_ActiveDischargeStatus : 31|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P02_MCU_D_MotorFaultNumber : 29|6@0+ (1,0) [0|63] ""  PCU
+ SG_ P02_MCU_D_IGBTTemperature : 23|8@0+ (1,-40) [-40|210] "°C"  PCU
+ SG_ P02_MCU_D_MotorActualTemperature : 15|8@0+ (1,-40) [-40|210] "°C"  PCU
+ SG_ P02_MCU_D_MCUTemperature : 7|8@0+ (1,-40) [-40|210] "°C"  PCU
+
+BO_ 326 MCU_P01_VoltageCurrent: 8 MCU
+ SG_ P01_MCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  PCU
+ SG_ P01_MCU_S_AntiSlipActiveState : 52|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_D_Counter : 51|4@0+ (1,0) [0|15] ""  PCU
+ SG_ P01_MCU_F_SystemLevel8Fault : 47|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_F_SystemLevel7Fault : 46|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_F_SystemLevel6Fault : 45|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_F_SystemLevel5Fault : 44|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_F_SystemLevel4Fault : 43|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_F_SystemLevel3Fault : 42|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_F_SystemLevel2Fault : 41|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_F_SystemLevel1Fault : 40|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_S_TorquePriorStatus : 39|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_S_DriveControlStatus : 36|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_S_IGBTStatus : 35|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P01_MCU_S_IgnitionHardwareState : 32|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_MCU_S_FastChargeNegativeCont : 27|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P01_MCU_S_FastChargePositiveCont : 25|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P01_MCU_D_HVInputCurrent : 13|14@0+ (0.1,-800) [-800|800] "A"  PCU
+ SG_ P01_MCU_D_HVInputVoltage : 7|10@0+ (1,0) [0|1000] "V"  PCU
+
+BO_ 325 MCU_P00_SpeedTorque: 8 MCU
+ SG_ P00_MCU_D_CRC : 63|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ P00_MCU_D_Counter : 51|4@0+ (1,0) [0|15] "" Vector__XXX
+ SG_ P00_MCU_S_MotorTorqueValidState : 53|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_MCU_S_MotorSpeedValidState : 52|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_MCU_S_WorkingModeState : 44|3@0+ (1,0) [0|7] ""  PCU
+ SG_ P00_MCU_S_ControlModeStatus : 41|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P00_MCU_D_MaximumTorqueLimit : 27|12@0+ (0.5,0) [0|500] "N.m"  PCU
+ SG_ P00_MCU_D_MotorTorqueFeedback : 23|12@0+ (0.5,-1000) [-1000|1000] "N.m"  PCU
+ SG_ P00_MCU_D_MotorSpeedFeedback : 7|16@0+ (1,-30000) [-30000|30000] "rpm"  PCU
+
+
+
+CM_ BO_ 625 "Control status signals sent by ICM to other nodes";
+CM_ SG_ 625 P06_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 625 P06_PCU_D_Counter "8bit up counter";
+CM_ SG_ 625 P06_PCU_D_Odometer "Total mileage";
+CM_ BO_ 369 " BMS high voltage control related signals";
+CM_ SG_ 369 P07_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 369 P07_PCU_D_Counter "Up counter (0-15)";
+CM_ SG_ 369 P07_PCU_S_FastChargeContactorCom "Fast charge contactor command";
+CM_ BO_ 291 "PCU controls gear position, vehicle speed, throttle and braking related signals";
+CM_ SG_ 291 P04_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 291 P04_PCU_D_Counter "8bit up counter";
+CM_ SG_ 291 P04_PCU_S_AcceleratorPositionInt "Accelerator position integrate state";
+CM_ SG_ 291 P04_PCU_S_VehicleSpeedValidState "Vehicle speed validation state";
+CM_ SG_ 291 P04_PCU_S_VehicleNDRValidState "Vehicle NDR validation state";
+CM_ SG_ 291 P04_PCU_S_TargetGearValidState "Target gear validation state";
+CM_ SG_ 291 P04_PCU_S_BrakePedalValidState "Brake pedal validation state";
+CM_ SG_ 291 P04_PCU_S_AcceleratorPositionPhy "Accelerator pedal opening state";
+CM_ SG_ 291 P04_PCU_D_VehicleSpeed "Vehicle speed";
+CM_ SG_ 291 P04_PCU_S_ReadyCommandState "Ready command state";
+CM_ SG_ 291 P04_PCU_S_BrakePedalState "Brake pedal state";
+CM_ SG_ 291 P04_PCU_S_SelectorInProgressStat "Selector in progress state";
+CM_ SG_ 291 P04_PCU_D_AcceleratorPositionInt "Fusion of physical pedal opening and virtual switch opening";
+CM_ SG_ 291 P04_PCU_D_AcceleratorPositionPhy "The actual physical opening of the pedal";
+CM_ SG_ 291 P04_PCU_S_VehicleNDR "Vehicle NDR gear position";
+CM_ SG_ 291 P04_PCU_S_TargetNDR "Target NDR gear position";
+CM_ BO_ 273 "Relevant signals related to VCUâ€™s torque and speed control of the rear motor";
+CM_ SG_ 273 P05_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 273 P05_PCU_S_PowerEnableCommand "High voltage power on and off request";
+CM_ SG_ 273 P05_PCU_D_Counter "Up counter (0-15)";
+CM_ SG_ 273 P05_PCU_S_TorqueCompEnableComman "Torque compensation enable command";
+CM_ SG_ 273 P05_PCU_S_MotorEnableCommand "Motor enable command";
+CM_ SG_ 273 P05_PCU_S_WorkingModeCommand "Working mode command";
+CM_ SG_ 273 P05_PCU_D_TorqueSetpoint "Motor torque set point";
+CM_ SG_ 273 P05_PCU_S_KL15Command "KL15 input power command";
+CM_ SG_ 273 P05_PCU_S_FunctionalModeCommand "Motor Control Unit (MCU) functional control mode command";
+CM_ SG_ 273 P05_PCU_D_SpeedSetpoint "Motor speed set point";
+CM_ SG_ 792 P03_MCU_D_CRC "8 bit CRC";
+CM_ SG_ 792 P03_MCU_D_Counter "8bit up counter";
+CM_ SG_ 792 P03_MCU_F_HVOverVoltageSoftwareW "High voltage input over voltage fault - triggered by software";
+CM_ SG_ 792 P03_MCU_F_SelfcheckFault "Self check fault";
+CM_ SG_ 792 P03_MCU_F_HighVoltageSensorFault "High voltage sensor fault";
+CM_ SG_ 791 P02_MCU_F_HVInputOverVoltageSoft "High voltage input over voltage software fault - triggered by software (HV)";
+CM_ SG_ 791 P02_MCU_F_MotorStallWarning "Motor stall warning (motor is unable to turn properly due to excessive load or mechanical blockage)";
+CM_ SG_ 791 P02_MCU_F_HVILFault "High Voltage InterLock (HVIL) fault";
+CM_ SG_ 791 P02_MCU_F_NetworkOfflineBMSFault "Network offline Battery Management System (BMS) fault";
+CM_ SG_ 791 P02_MCU_F_NetworkOfflinePCUFault "Network offline Propulsion Control Unit (PCU) fault";
+CM_ SG_ 791 P02_MCU_F_InvalidInformationPCUF "PCU controller information invalid fault";
+CM_ SG_ 791 P02_MCU_F_TorqueMonitorFault "Torque monitor fault";
+CM_ SG_ 791 P02_MCU_F_TorqueMonitorWarning "Torque monitor warning";
+CM_ SG_ 791 P02_MCU_F_AbnormalUpdateRateFaul "Abnormal update rate fault";
+CM_ SG_ 791 P02_MCU_F_MotorPositionSensorFau "Motor position sensor fault";
+CM_ SG_ 791 P02_MCU_F_DriveTemperatureSensor "Drive temperature sensor health warning";
+CM_ SG_ 791 P02_MCU_F_FastChargingRelayConta "Fast charging relay contactor welded fault";
+CM_ SG_ 791 P02_MCU_F_MotorTemperatureSensor "Motor temperature sensor health warning";
+CM_ SG_ 791 P02_MCU_F_PhaseCurrentSensorFaul "Phase current sensor fault";
+CM_ SG_ 791 P02_MCU_F_MotorOverSpeedFault "Motor over speed fault";
+CM_ SG_ 791 P02_MCU_F_MotorOverSpeedWarning "Motor over speed warning";
+CM_ SG_ 791 P02_MCU_F_DriverOverTemperatureF "Drive over temperature fault";
+CM_ SG_ 791 P02_MCU_F_DriveOverTemperatureWa "Drive over temperature warning";
+CM_ SG_ 791 P02_MCU_F_MotorOverTemperatureFa "Motor over temperature fault";
+CM_ SG_ 791 P02_MCU_F_MotorOverTemperatureWa "Motor over temperature warning";
+CM_ SG_ 791 P02_MCU_F_PowerModuleFault "Power module fault (not used)";
+CM_ SG_ 791 P02_MCU_F_LVVoltageFault "LV voltage fault";
+CM_ SG_ 791 P02_MCU_F_HVInputUnderVoltageWar "High voltage input under voltage warning";
+CM_ SG_ 791 P02_MCU_F_HVInputUnderVoltageFau "High voltage input under voltage fault";
+CM_ SG_ 791 P02_MCU_F_HVInputOverVoltageHard "High voltage input over voltage fault - triggered by hardware (HV)";
+CM_ SG_ 791 P02_MCU_F_PhaseOverCurrentHardwa "Phase over current fault - triggered by hardware";
+CM_ SG_ 791 P02_MCU_F_PhaseOverCurrentSoftwa "Phase over current fault - triggered by software";
+CM_ SG_ 791 P02_MCU_F_PhaseOverCurrentS_0000 "Phase over current warning - triggered by software";
+CM_ SG_ 791 P02_MCU_F_DriveOverTemperatureFa "Drive over temperature fault";
+CM_ SG_ 791 P02_MCU_S_CalibrationState "Calibration state";
+CM_ SG_ 791 P02_MCU_S_ActiveDischargeStatus "Active discharge status";
+CM_ SG_ 791 P02_MCU_D_MotorFaultNumber "Number of motor faults";
+CM_ SG_ 791 P02_MCU_D_IGBTTemperature "IGBT temperature";
+CM_ SG_ 791 P02_MCU_D_MotorActualTemperature "Motor temperature";
+CM_ SG_ 791 P02_MCU_D_MCUTemperature "Motor control unit (MCU) temperature";
+CM_ SG_ 326 P01_MCU_D_CRC "8 bit CRC";
+CM_ SG_ 326 P01_MCU_S_AntiSlipActiveState "Anti slip activation state";
+CM_ SG_ 326 P01_MCU_D_Counter "Up counter (0-15)";
+CM_ SG_ 326 P01_MCU_F_SystemLevel8Fault "System level 8 fault";
+CM_ SG_ 326 P01_MCU_F_SystemLevel7Fault "System level 7 fault";
+CM_ SG_ 326 P01_MCU_F_SystemLevel6Fault "System level 6 fault";
+CM_ SG_ 326 P01_MCU_F_SystemLevel5Fault "System level 5 fault";
+CM_ SG_ 326 P01_MCU_F_SystemLevel4Fault "System level 4 fault";
+CM_ SG_ 326 P01_MCU_F_SystemLevel3Fault "System level 3 fault";
+CM_ SG_ 326 P01_MCU_F_SystemLevel2Fault "System level 2 fault";
+CM_ SG_ 326 P01_MCU_F_SystemLevel1Fault "System level 1 fault";
+CM_ SG_ 326 P01_MCU_S_TorquePriorStatus "Torque prior status";
+CM_ SG_ 326 P01_MCU_S_DriveControlStatus "Drive control enable status";
+CM_ SG_ 326 P01_MCU_S_IGBTStatus "IGBT status";
+CM_ SG_ 326 P01_MCU_S_IgnitionHardwareState "Ignition hardware state";
+CM_ SG_ 326 P01_MCU_S_FastChargeNegativeCont "Fast charge negative contactor status";
+CM_ SG_ 326 P01_MCU_S_FastChargePositiveCont "Fast charge positive contactor status";
+CM_ SG_ 326 P01_MCU_D_HVInputCurrent "High voltage input current";
+CM_ SG_ 326 P01_MCU_D_HVInputVoltage "High voltage input voltage";
+CM_ SG_ 325 P00_MCU_D_CRC "8 bit CRC";
+CM_ SG_ 325 P00_MCU_D_Counter "Up counter (0-15)";
+CM_ SG_ 325 P00_MCU_S_MotorTorqueValidState "Motor torque validation feedback state";
+CM_ SG_ 325 P00_MCU_S_MotorSpeedValidState "Motor speed validation feedback state";
+CM_ SG_ 325 P00_MCU_S_WorkingModeState "Working Mode State";
+CM_ SG_ 325 P00_MCU_S_ControlModeStatus "Control mode status";
+CM_ SG_ 325 P00_MCU_D_MaximumTorqueLimit "Maximum torque limit";
+CM_ SG_ 325 P00_MCU_D_MotorTorqueFeedback "Motor torque feedback";
+CM_ SG_ 325 P00_MCU_D_MotorSpeedFeedback "Motor speed feedback";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SPN" INT 0 0;
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ SG_  "GenSigStartValue" FLOAT 0 100000000000;
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed";
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 100000;
+BA_DEF_ SG_  "NWM - WakeupAllowed" ENUM  "no","Yes";
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","NotUsed","NotUsed","NotUsed","NotUsed","Cyclic","NotUsed","IfActive","NoMsgSendType","NotUsed","vector_leerstring";
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 999999;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 50000;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 50000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "no","Yes";
+BA_DEF_ BO_  "NmMessage" ENUM  "no","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 65535;
+BA_DEF_ BU_  "NmStationAddress" INT 0 63;
+BA_DEF_ BU_  "NmNode" ENUM  "no","Yes";
+BA_DEF_  "NmBaseAddress" HEX 1024 1087;
+BA_DEF_ BO_  "CANFD_BRS" ENUM  "0","1";
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "CANoeJitterMax" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMin" INT 0 0;
+BA_DEF_ BU_  "CANoeDrift" INT 0 0;
+BA_DEF_ BU_  "CANoeStartDelay" INT 0 0;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZone" "";
+BA_DEF_DEF_  "FaultAction" "";
+BA_DEF_DEF_  "FaultTrigger" "";
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenSigSendType" "Cyclic";
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "NWM - WakeupAllowed" "";
+BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "NmMessage" "";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "NmNode" "";
+BA_DEF_DEF_  "NmBaseAddress" 1024;
+BA_DEF_DEF_  "CANFD_BRS" "1";
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "BusType" "";
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "CANoeJitterMax" 0;
+BA_DEF_DEF_  "CANoeJitterMin" 0;
+BA_DEF_DEF_  "CANoeDrift" 0;
+BA_DEF_DEF_  "CANoeStartDelay" 0;
+BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN FD";
+BA_ "DBName" "MCU";
+BA_ "TXRX" BO_ 625 1;
+BA_ "GenMsgCycleTime" BO_ 625 20;
+BA_ "TXRX" BO_ 369 1;
+BA_ "GenMsgCycleTime" BO_ 369 10;
+BA_ "TXRX" BO_ 291 1;
+BA_ "GenMsgCycleTime" BO_ 291 10;
+BA_ "TXRX" BO_ 273 1;
+BA_ "GenMsgCycleTime" BO_ 273 10;
+BA_ "TXRX" BO_ 792 0;
+BA_ "GenMsgCycleTime" BO_ 792 100;
+BA_ "VFrameFormat" BO_ 792 0;
+BA_ "TXRX" BO_ 791 0;
+BA_ "GenMsgCycleTime" BO_ 791 100;
+BA_ "VFrameFormat" BO_ 791 0;
+BA_ "TXRX" BO_ 326 0;
+BA_ "GenMsgCycleTime" BO_ 326 10;
+BA_ "VFrameFormat" BO_ 326 0;
+BA_ "TXRX" BO_ 325 0;
+BA_ "GenMsgCycleTime" BO_ 325 10;
+BA_ "VFrameFormat" BO_ 325 0;
+BA_ "GenSigSendType" SG_ 625 P06_PCU_D_Odometer 0;
+BA_ "SPN" SG_ 625 P06_PCU_D_Odometer 2066;
+BA_ "GenSigSendType" SG_ 369 P07_PCU_D_CRC 0;
+BA_ "GenSigSendType" SG_ 369 P07_PCU_D_Counter 0;
+BA_ "GenSigSendType" SG_ 369 P07_PCU_S_FastChargeContactorCom 0;
+BA_ "SPN" SG_ 369 P07_PCU_S_FastChargeContactorCom 2067;
+BA_ "SystemSignalLongSymbol" SG_ 369 P07_PCU_S_FastChargeContactorCom "P07_PCU_S_FastChargeContactorCommand";
+BA_ "GenSigSendType" SG_ 291 P04_PCU_D_CRC 0;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_D_Counter 0;
+BA_ "SPN" SG_ 291 P04_PCU_S_AcceleratorPositionInt 2057;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_S_AcceleratorPositionInt 0;
+BA_ "SystemSignalLongSymbol" SG_ 291 P04_PCU_S_AcceleratorPositionInt "P04_PCU_S_AcceleratorPositionIntegrateState";
+BA_ "SPN" SG_ 291 P04_PCU_S_VehicleSpeedValidState 2056;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_S_VehicleSpeedValidState 0;
+BA_ "SPN" SG_ 291 P04_PCU_S_VehicleNDRValidState 2055;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_S_VehicleNDRValidState 0;
+BA_ "SPN" SG_ 291 P04_PCU_S_TargetGearValidState 2054;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_S_TargetGearValidState 0;
+BA_ "SPN" SG_ 291 P04_PCU_S_BrakePedalValidState 2053;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_S_BrakePedalValidState 0;
+BA_ "SPN" SG_ 291 P04_PCU_S_AcceleratorPositionPhy 2052;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_S_AcceleratorPositionPhy 0;
+BA_ "SystemSignalLongSymbol" SG_ 291 P04_PCU_S_AcceleratorPositionPhy "P04_PCU_S_AcceleratorPositionPhysicalState";
+BA_ "SPN" SG_ 291 P04_PCU_D_VehicleSpeed 2051;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_D_VehicleSpeed 0;
+BA_ "SPN" SG_ 291 P04_PCU_S_ReadyCommandState 2050;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_S_ReadyCommandState 0;
+BA_ "SPN" SG_ 291 P04_PCU_S_BrakePedalState 2049;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_S_BrakePedalState 0;
+BA_ "SPN" SG_ 291 P04_PCU_S_SelectorInProgressStat 2048;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_S_SelectorInProgressStat 0;
+BA_ "SystemSignalLongSymbol" SG_ 291 P04_PCU_S_SelectorInProgressStat "P04_PCU_S_SelectorInProgressState";
+BA_ "SPN" SG_ 291 P04_PCU_D_AcceleratorPositionInt 2047;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_D_AcceleratorPositionInt 0;
+BA_ "SystemSignalLongSymbol" SG_ 291 P04_PCU_D_AcceleratorPositionInt "P04_PCU_D_AcceleratorPositionIntegrate";
+BA_ "SPN" SG_ 291 P04_PCU_D_AcceleratorPositionPhy 2046;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_D_AcceleratorPositionPhy 0;
+BA_ "SystemSignalLongSymbol" SG_ 291 P04_PCU_D_AcceleratorPositionPhy "P04_PCU_D_AcceleratorPositionPhysical";
+BA_ "SPN" SG_ 291 P04_PCU_S_VehicleNDR 2045;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_S_VehicleNDR 0;
+BA_ "SPN" SG_ 291 P04_PCU_S_TargetNDR 2044;
+BA_ "GenSigSendType" SG_ 291 P04_PCU_S_TargetNDR 0;
+BA_ "GenSigStartValue" SG_ 273 P05_PCU_D_CRC 0;
+BA_ "SPN" SG_ 273 P05_PCU_S_PowerEnableCommand 2065;
+BA_ "GenSigStartValue" SG_ 273 P05_PCU_D_Counter 0;
+BA_ "SPN" SG_ 273 P05_PCU_S_TorqueCompEnableComman 2064;
+BA_ "SystemSignalLongSymbol" SG_ 273 P05_PCU_S_TorqueCompEnableComman "P05_PCU_S_TorqueCompEnableCommand";
+BA_ "SPN" SG_ 273 P05_PCU_S_MotorEnableCommand 2063;
+BA_ "SPN" SG_ 273 P05_PCU_S_WorkingModeCommand 2062;
+BA_ "GenSigStartValue" SG_ 273 P05_PCU_D_TorqueSetpoint 2000;
+BA_ "SPN" SG_ 273 P05_PCU_D_TorqueSetpoint 2061;
+BA_ "SPN" SG_ 273 P05_PCU_S_KL15Command 2060;
+BA_ "SPN" SG_ 273 P05_PCU_S_FunctionalModeCommand 2059;
+BA_ "GenSigStartValue" SG_ 273 P05_PCU_D_SpeedSetpoint 30000;
+BA_ "SPN" SG_ 273 P05_PCU_D_SpeedSetpoint 2058;
+BA_ "SPN" SG_ 792 P03_MCU_F_HVOverVoltageSoftwareW 218;
+BA_ "SystemSignalLongSymbol" SG_ 792 P03_MCU_F_HVOverVoltageSoftwareW "P03_MCU_F_HVOverVoltageSoftwareWarning";
+BA_ "SPN" SG_ 792 P03_MCU_F_SelfcheckFault 217;
+BA_ "SPN" SG_ 792 P03_MCU_F_HighVoltageSensorFault 216;
+BA_ "SPN" SG_ 791 P02_MCU_F_HVInputOverVoltageSoft 186;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_HVInputOverVoltageSoft "P02_MCU_F_HVInputOverVoltageSoftwareFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_MotorStallWarning 208;
+BA_ "SPN" SG_ 791 P02_MCU_F_HVILFault 209;
+BA_ "SPN" SG_ 791 P02_MCU_F_NetworkOfflineBMSFault 210;
+BA_ "SPN" SG_ 791 P02_MCU_F_NetworkOfflinePCUFault 211;
+BA_ "SPN" SG_ 791 P02_MCU_F_InvalidInformationPCUF 212;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_InvalidInformationPCUF "P02_MCU_F_InvalidInformationPCUFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_TorqueMonitorFault 213;
+BA_ "SPN" SG_ 791 P02_MCU_F_TorqueMonitorWarning 214;
+BA_ "SPN" SG_ 791 P02_MCU_F_AbnormalUpdateRateFaul 215;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_AbnormalUpdateRateFaul "P02_MCU_F_AbnormalUpdateRateFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_MotorPositionSensorFau 201;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_MotorPositionSensorFau "P02_MCU_F_MotorPositionSensorFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_DriveTemperatureSensor 202;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_DriveTemperatureSensor "P02_MCU_F_DriveTemperatureSensorWarning";
+BA_ "SPN" SG_ 791 P02_MCU_F_FastChargingRelayConta 203;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_FastChargingRelayConta "P02_MCU_F_FastChargingRelayContactorFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_MotorTemperatureSensor 204;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_MotorTemperatureSensor "P02_MCU_F_MotorTemperatureSensorWarning";
+BA_ "SPN" SG_ 791 P02_MCU_F_PhaseCurrentSensorFaul 205;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_PhaseCurrentSensorFaul "P02_MCU_F_PhaseCurrentSensorFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_MotorOverSpeedFault 206;
+BA_ "SPN" SG_ 791 P02_MCU_F_MotorOverSpeedWarning 207;
+BA_ "SPN" SG_ 791 P02_MCU_F_DriverOverTemperatureF 193;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_DriverOverTemperatureF "P02_MCU_F_DriverOverTemperatureFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_DriveOverTemperatureWa 194;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_DriveOverTemperatureWa "P02_MCU_F_DriveOverTemperatureWarning";
+BA_ "SPN" SG_ 791 P02_MCU_F_MotorOverTemperatureFa 195;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_MotorOverTemperatureFa "P02_MCU_F_MotorOverTemperatureFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_MotorOverTemperatureWa 196;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_MotorOverTemperatureWa "P02_MCU_F_MotorOverTemperatureWarning";
+BA_ "SPN" SG_ 791 P02_MCU_F_PowerModuleFault 197;
+BA_ "SPN" SG_ 791 P02_MCU_F_LVVoltageFault 198;
+BA_ "SPN" SG_ 791 P02_MCU_F_HVInputUnderVoltageWar 199;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_HVInputUnderVoltageWar "P02_MCU_F_HVInputUnderVoltageWarning";
+BA_ "SPN" SG_ 791 P02_MCU_F_HVInputUnderVoltageFau 200;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_HVInputUnderVoltageFau "P02_MCU_F_HVInputUnderVoltageFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_HVInputOverVoltageHard 187;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_HVInputOverVoltageHard "P02_MCU_F_HVInputOverVoltageHardwareFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_PhaseOverCurrentHardwa 188;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_PhaseOverCurrentHardwa "P02_MCU_F_PhaseOverCurrentHardwareFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_PhaseOverCurrentSoftwa 189;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_PhaseOverCurrentSoftwa "P02_MCU_F_PhaseOverCurrentSoftwareFault";
+BA_ "SPN" SG_ 791 P02_MCU_F_PhaseOverCurrentS_0000 190;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_PhaseOverCurrentS_0000 "P02_MCU_F_PhaseOverCurrentSoftwareWarning";
+BA_ "SPN" SG_ 791 P02_MCU_F_DriveOverTemperatureFa 191;
+BA_ "SystemSignalLongSymbol" SG_ 791 P02_MCU_F_DriveOverTemperatureFa "P02_MCU_F_DriveOverTemperatureFault";
+BA_ "SPN" SG_ 791 P02_MCU_S_CalibrationState 192;
+BA_ "SPN" SG_ 791 P02_MCU_S_ActiveDischargeStatus 184;
+BA_ "SPN" SG_ 791 P02_MCU_D_MotorFaultNumber 185;
+BA_ "GenSigStartValue" SG_ 791 P02_MCU_D_IGBTTemperature 105;
+BA_ "SPN" SG_ 791 P02_MCU_D_IGBTTemperature 183;
+BA_ "GenSigStartValue" SG_ 791 P02_MCU_D_MotorActualTemperature 105;
+BA_ "SPN" SG_ 791 P02_MCU_D_MotorActualTemperature 182;
+BA_ "GenSigStartValue" SG_ 791 P02_MCU_D_MCUTemperature 105;
+BA_ "SPN" SG_ 791 P02_MCU_D_MCUTemperature 181;
+BA_ "SPN" SG_ 326 P01_MCU_S_AntiSlipActiveState 180;
+BA_ "SPN" SG_ 326 P01_MCU_F_SystemLevel8Fault 179;
+BA_ "SPN" SG_ 326 P01_MCU_F_SystemLevel7Fault 178;
+BA_ "SPN" SG_ 326 P01_MCU_F_SystemLevel6Fault 177;
+BA_ "SPN" SG_ 326 P01_MCU_F_SystemLevel5Fault 176;
+BA_ "SPN" SG_ 326 P01_MCU_F_SystemLevel4Fault 175;
+BA_ "SPN" SG_ 326 P01_MCU_F_SystemLevel3Fault 174;
+BA_ "SPN" SG_ 326 P01_MCU_F_SystemLevel2Fault 173;
+BA_ "SPN" SG_ 326 P01_MCU_F_SystemLevel1Fault 172;
+BA_ "SPN" SG_ 326 P01_MCU_S_TorquePriorStatus 171;
+BA_ "SPN" SG_ 326 P01_MCU_S_DriveControlStatus 170;
+BA_ "SPN" SG_ 326 P01_MCU_S_IGBTStatus 169;
+BA_ "SPN" SG_ 326 P01_MCU_S_IgnitionHardwareState 168;
+BA_ "SPN" SG_ 326 P01_MCU_S_FastChargeNegativeCont 167;
+BA_ "SystemSignalLongSymbol" SG_ 326 P01_MCU_S_FastChargeNegativeCont "P01_MCU_S_FastChargeNegativeContactorStatus";
+BA_ "SPN" SG_ 326 P01_MCU_S_FastChargePositiveCont 166;
+BA_ "SystemSignalLongSymbol" SG_ 326 P01_MCU_S_FastChargePositiveCont "P01_MCU_S_FastChargePositiveContactorStatus";
+BA_ "GenSigStartValue" SG_ 326 P01_MCU_D_HVInputCurrent 8000;
+BA_ "SPN" SG_ 326 P01_MCU_D_HVInputCurrent 165;
+BA_ "SPN" SG_ 326 P01_MCU_D_HVInputVoltage 164;
+BA_ "SPN" SG_ 325 P00_MCU_S_MotorTorqueValidState 163;
+BA_ "SPN" SG_ 325 P00_MCU_S_MotorSpeedValidState 162;
+BA_ "SPN" SG_ 325 P00_MCU_S_WorkingModeState 161;
+BA_ "SPN" SG_ 325 P00_MCU_S_ControlModeStatus 160;
+BA_ "SPN" SG_ 325 P00_MCU_D_MaximumTorqueLimit 159;
+BA_ "GenSigStartValue" SG_ 325 P00_MCU_D_MaximumTorqueLimit 500;
+BA_ "FaultTrigger" SG_ 325 P00_MCU_D_MotorTorqueFeedback "";
+BA_ "GenSigStartValue" SG_ 325 P00_MCU_D_MotorTorqueFeedback 2000;
+BA_ "SPN" SG_ 325 P00_MCU_D_MotorTorqueFeedback 158;
+BA_ "GenSigStartValue" SG_ 325 P00_MCU_D_MotorSpeedFeedback 30000;
+BA_ "SPN" SG_ 325 P00_MCU_D_MotorSpeedFeedback 157;
+VAL_ 369 P07_PCU_S_FastChargeContactorCom 3 "Reserved" 2 "Reserved" 1 "Connect request" 0 "Disconnect request" ;
+VAL_ 291 P04_PCU_S_AcceleratorPositionInt 1 "Invalid" 0 "Valid" ;
+VAL_ 291 P04_PCU_S_VehicleSpeedValidState 1 "Invalid" 0 "Valid" ;
+VAL_ 291 P04_PCU_S_VehicleNDRValidState 1 "Invalid" 0 "Valid" ;
+VAL_ 291 P04_PCU_S_TargetGearValidState 1 "Invalid" 0 "Valid" ;
+VAL_ 291 P04_PCU_S_BrakePedalValidState 1 "Invalid" 0 "Valid" ;
+VAL_ 291 P04_PCU_S_AcceleratorPositionPhy 1 "Invalid" 0 "Valid" ;
+VAL_ 291 P04_PCU_S_ReadyCommandState 1 "Ready" 0 "Not Ready" ;
+VAL_ 291 P04_PCU_S_BrakePedalState 1 "Pressed" 0 "Released" ;
+VAL_ 291 P04_PCU_S_SelectorInProgressStat 1 "Active" 0 "Inactive" ;
+VAL_ 291 P04_PCU_S_VehicleNDR 15 "Invalid Value" 11 "Parking gear" 10 "Neutral gear" 9 "Reverse gear" 8 "8th gear(Reserved)" 7 "7th gear(Reserved)" 6 "6th gear(Reserved)" 5 "5th gear(Reserved)" 4 "4th gear(Reserved)" 3 "3rd gear(Reserved)" 2 "2nd gear(Reserved)" 1 "Drive gear" 0 "Initial value" ;
+VAL_ 291 P04_PCU_S_TargetNDR 15 "Invalid Value" 14 "Reserved" 13 "Reserved" 12 "Reserved" 11 "Parking gear" 10 "Neutral gear" 9 "Reverse gear" 8 "8th gear(Reserved)" 7 "7th gear(Reserved)" 6 "6th gear(Reserved)" 5 "5th gear(Reserved)" 4 "4th gear(Reserved)" 3 "3rd gear(Reserved)" 2 "2nd gear(Reserved)" 1 "Drive gear" 0 "Initial value" ;
+VAL_ 273 P05_PCU_S_PowerEnableCommand 3 "Reserved" 2 "Emergency Power Off" 1 "Power On" 0 "Power Off" ;
+VAL_ 273 P05_PCU_S_TorqueCompEnableComman 1 "Disable" 0 "Enable" ;
+VAL_ 273 P05_PCU_S_MotorEnableCommand 1 "Enable" 0 "Disable" ;
+VAL_ 273 P05_PCU_S_WorkingModeCommand 7 "Emergency discharge" 6 "Service(Reserved)" 5 "After run" 4 "Power down" 3 "Reserved" 2 "Operational" 1 "Standby" 0 "Initial" ;
+VAL_ 273 P05_PCU_S_KL15Command 1 "On" 0 "Off" ;
+VAL_ 273 P05_PCU_S_FunctionalModeCommand 3 "Offset calibration" 2 "Speed control" 1 "Torque control" 0 "Disabled" ;
+VAL_ 792 P03_MCU_F_HVOverVoltageSoftwareW 1 "Warning" 0 "No fault" ;
+VAL_ 792 P03_MCU_F_SelfcheckFault 1 "Fault" 0 "No fault" ;
+VAL_ 792 P03_MCU_F_HighVoltageSensorFault 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_HVInputOverVoltageSoft 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_MotorStallWarning 1 "Warning" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_HVILFault 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_NetworkOfflineBMSFault 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_NetworkOfflinePCUFault 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_InvalidInformationPCUF 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_TorqueMonitorFault 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_TorqueMonitorWarning 1 "Warning" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_AbnormalUpdateRateFaul 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_MotorPositionSensorFau 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_DriveTemperatureSensor 1 "Warning" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_FastChargingRelayConta 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_MotorTemperatureSensor 1 "Warning" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_PhaseCurrentSensorFaul 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_MotorOverSpeedFault 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_MotorOverSpeedWarning 1 "Warning" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_DriverOverTemperatureF 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_DriveOverTemperatureWa 1 "Warning" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_MotorOverTemperatureFa 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_MotorOverTemperatureWa 1 "Warning" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_PowerModuleFault 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_LVVoltageFault 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_HVInputUnderVoltageWar 1 "Warning" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_HVInputUnderVoltageFau 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_HVInputOverVoltageHard 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_PhaseOverCurrentHardwa 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_PhaseOverCurrentSoftwa 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_PhaseOverCurrentS_0000 1 "Warning" 0 "No fault" ;
+VAL_ 791 P02_MCU_F_DriveOverTemperatureFa 1 "Fault" 0 "No fault" ;
+VAL_ 791 P02_MCU_S_CalibrationState 3 "Failed calibration" 2 "Successful calibration" 1 "Calibrating" 0 "Initial state" ;
+VAL_ 791 P02_MCU_S_ActiveDischargeStatus 3 "Failed discharge" 2 "Successful discharge" 1 "Discharging" 0 "Initial state" ;
+VAL_ 326 P01_MCU_S_AntiSlipActiveState 1 "Active" 0 "Inactive" ;
+VAL_ 326 P01_MCU_F_SystemLevel8Fault 1 "Fault" 0 "No fault" ;
+VAL_ 326 P01_MCU_F_SystemLevel7Fault 1 "Fault" 0 "No fault" ;
+VAL_ 326 P01_MCU_F_SystemLevel6Fault 1 "Fault" 0 "No fault" ;
+VAL_ 326 P01_MCU_F_SystemLevel5Fault 1 "Fault" 0 "No fault" ;
+VAL_ 326 P01_MCU_F_SystemLevel4Fault 1 "Fault" 0 "No fault" ;
+VAL_ 326 P01_MCU_F_SystemLevel3Fault 1 "Fault" 0 "No fault" ;
+VAL_ 326 P01_MCU_F_SystemLevel2Fault 1 "Fault" 0 "No fault" ;
+VAL_ 326 P01_MCU_F_SystemLevel1Fault 1 "Fault" 0 "No fault" ;
+VAL_ 326 P01_MCU_S_TorquePriorStatus 1 "Disable" 0 "Enable" ;
+VAL_ 326 P01_MCU_S_DriveControlStatus 1 "Enable" 0 "Disable" ;
+VAL_ 326 P01_MCU_S_IGBTStatus 3 "Reserved" 2 "IGBT short circuit" 1 "IGBT active" 0 "IGBT inactive" ;
+VAL_ 326 P01_MCU_S_IgnitionHardwareState 1 "IGN On" 0 "IGN Off" ;
+VAL_ 326 P01_MCU_S_FastChargeNegativeCont 3 "Reserved" 2 "Welded" 1 "Disconnect" 0 "Connect" ;
+VAL_ 326 P01_MCU_S_FastChargePositiveCont 3 "Reserved" 2 "Welded" 1 "Disconnect" 0 "Connect" ;
+VAL_ 325 P00_MCU_S_MotorTorqueValidState 1 "Invalid" 0 "Valid" ;
+VAL_ 325 P00_MCU_S_MotorSpeedValidState 1 "Invalid" 0 "Valid" ;
+VAL_ 325 P00_MCU_S_WorkingModeState 7 "Emergency discharge" 6 "Service(Reserved)" 5 "After run" 4 "Power down" 0 "Initial" 1 "Standby" 2 "Operational" 3 "Reserved" ;
+VAL_ 325 P00_MCU_S_ControlModeStatus 3 "Offset calibration" 2 "Speed control" 1 "Torque control" 0 "Disabled" ;
+

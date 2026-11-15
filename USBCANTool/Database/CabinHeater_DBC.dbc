@@ -1,0 +1,117 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU CabinHeater
+
+
+BO_ 1077 PCU_P02_Command: 8 PCU
+ SG_ P02_PCU_D_PowerSetpoint : 39|16@0+ (1,0) [0|4500] "W"  CabinHeater
+
+BO_ 1071 CabinHeater_P01_Temperature: 8 CabinHeater
+ SG_ P01_CabinHeater_D_IGBTTemperatur : 47|8@0+ (1,-40) [-40|190] "°C"  PCU
+ SG_ P01_CabinHeater_D_Temperature : 55|8@0+ (1,-40) [-40|190] "°C"  PCU
+ SG_ P01_CabinHeater_F_FaultCode : 63|8@0+ (1,0) [0|255] ""  PCU
+
+BO_ 1069 CabinHeater_P00_Voltage: 8 CabinHeater
+ SG_ P00_CabinHeater_D_SoftwareVersio : 39|8@0+ (1,2000) [2000|2255] "year"  PCU
+ SG_ P00_CabinHeater_D_HardwareVersio : 63|8@0+ (1,0) [0|255] ""  PCU
+ SG_ P00_CabinHeater_D_HVInputVoltage : 23|16@0+ (1,0) [0|500] "V"  PCU
+ SG_ P00_CabinHeater_D_PowerFeedback : 7|16@0+ (1,0) [0|4500] "W"  PCU
+
+
+
+CM_ SG_ 1077 P02_PCU_D_PowerSetpoint "Power set point";
+CM_ SG_ 1071 P01_CabinHeater_D_IGBTTemperatur "IGBT temperature";
+CM_ SG_ 1071 P01_CabinHeater_D_Temperature "Heater temperature";
+CM_ SG_ 1071 P01_CabinHeater_F_FaultCode "Fault code (fault group)";
+CM_ SG_ 1069 P00_CabinHeater_D_SoftwareVersio "Software version";
+CM_ SG_ 1069 P00_CabinHeater_D_HardwareVersio "Hardware version";
+CM_ SG_ 1069 P00_CabinHeater_D_HVInputVoltage "High voltage input voltage";
+CM_ SG_ 1069 P00_CabinHeater_D_PowerFeedback "Power feedback";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SPN" INT 0 0;
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ BO_  "CycleTime" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 0;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "CANoeJitterMax" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMin" INT 0 0;
+BA_DEF_ BU_  "CANoeDrift" INT 0 0;
+BA_DEF_ BU_  "CANoeStartDelay" INT 0 0;
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZone" "";
+BA_DEF_DEF_  "FaultAction" "";
+BA_DEF_DEF_  "FaultTrigger" "";
+BA_DEF_DEF_  "CycleTime" 0;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "BusType" "";
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "CANoeJitterMax" 0;
+BA_DEF_DEF_  "CANoeJitterMin" 0;
+BA_DEF_DEF_  "CANoeDrift" 0;
+BA_DEF_DEF_  "CANoeStartDelay" 0;
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN";
+BA_ "CycleTime" BO_ 1077 200;
+BA_ "GenMsgCycleTime" BO_ 1077 200;
+BA_ "TXRX" BO_ 1077 1;
+BA_ "CycleTime" BO_ 1071 200;
+BA_ "GenMsgCycleTime" BO_ 1071 200;
+BA_ "TXRX" BO_ 1071 0;
+BA_ "CycleTime" BO_ 1069 200;
+BA_ "GenMsgCycleTime" BO_ 1069 200;
+BA_ "TXRX" BO_ 1069 0;
+BA_ "SPN" SG_ 1077 P02_PCU_D_PowerSetpoint 2011;
+BA_ "SPN" SG_ 1071 P01_CabinHeater_D_IGBTTemperatur 356;
+BA_ "SystemSignalLongSymbol" SG_ 1071 P01_CabinHeater_D_IGBTTemperatur "P01_CabinHeater_D_IGBTTemperature";
+BA_ "SPN" SG_ 1071 P01_CabinHeater_D_Temperature 357;
+BA_ "SPN" SG_ 1071 P01_CabinHeater_F_FaultCode 358;
+BA_ "SPN" SG_ 1069 P00_CabinHeater_D_SoftwareVersio 352;
+BA_ "SystemSignalLongSymbol" SG_ 1069 P00_CabinHeater_D_SoftwareVersio "P00_CabinHeater_D_SoftwareVersion";
+BA_ "SPN" SG_ 1069 P00_CabinHeater_D_HardwareVersio 355;
+BA_ "SystemSignalLongSymbol" SG_ 1069 P00_CabinHeater_D_HardwareVersio "P00_CabinHeater_D_HardwareVersion";
+BA_ "SPN" SG_ 1069 P00_CabinHeater_D_HVInputVoltage 351;
+BA_ "SPN" SG_ 1069 P00_CabinHeater_D_PowerFeedback 350;
+VAL_ 1071 P01_CabinHeater_F_FaultCode 0 "No fault" 1 "High voltage input under voltage fault" 2 "High voltage input over voltage fault" 3 "Over current fault" 4 "PTC temperature sensor open circuit fault" 5 "PTC temperature sensor short circuit fault" 6 "PTC temperature warning threshold fault" 7 "Communication fault" 8 "IGBT over temperature " 9 "IGBT temperature sensor short circuit fault" 10 "IGBT temperature sensor open circuit fault" ;
+

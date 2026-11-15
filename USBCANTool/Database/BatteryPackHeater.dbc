@@ -1,0 +1,277 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: WaterInlineHeater PCU
+VAL_TABLE_ AttribTable 32 "IGBT芯片温度过高" 16 "IGBT输出异常" 8 "高压超过最低限度" 4 "高压超过最大限度" 1 "PTC通信故障" 2 "PTC温度过高" 0 "无故障" ;
+VAL_TABLE_ DiagErrorTab 1 "故障" 0 "正常" ;
+
+
+BO_ 1360 WaterHeater_P00_Monitoring: 8 WaterInlineHeater
+ SG_ P00_WaterHeater_S_EnableStatus : 0|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_InternalFault : 4|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_SeriousFault : 7|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_D_WaterTempratur : 8|8@1+ (1,-40) [-40|180] "癈"  PCU
+ SG_ P00_WaterHeater_D_IGBTTemprature : 16|8@1+ (1,-40) [-40|120] "癈"  PCU
+ SG_ P00_WaterHeater_D_HVInputVoltage : 24|8@1+ (4,0) [0|650] "V"  PCU
+ SG_ P00_WaterHeater_D_PowerFeedback : 32|8@1+ (50,0) [0|12650] "W"  PCU
+ SG_ P00_WaterHeater_F_HVInputVoltage : 40|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_HVInputVo_0000 : 41|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_IGBTDriveVolta : 42|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_OverTemperatur : 43|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_IGBTOverTemper : 44|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_OverCurrentFau : 45|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_LowFlowFault : 46|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_AbnormalUpdate : 47|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_HeatCoreShortC : 48|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_IGBTBreakDownF : 52|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_HeatingPathOpe : 56|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_WaterOutTempSe : 60|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_WaterOutTemper : 61|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_IGBTTemperatur : 62|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_WaterHeater_F_IGBTTempe_0000 : 63|1@1+ (1,0) [0|1] ""  PCU
+
+BO_ 1362 WaterHeater_P01_VersionInfo: 8 WaterInlineHeater
+ SG_ P01_WaterHeater_D_HardwareVersio : 16|8@1+ (0.1,0) [0|25.5] ""  PCU
+ SG_ P01_WaterHeater_D_SoftwareVersio : 24|8@1+ (0.1,0) [0|25.5] ""  PCU
+
+BO_ 1361 PCU_P00_Command: 8 PCU
+ SG_ P00_PCU_S_EnableCommand : 0|8@1+ (1,0) [0|1] ""  WaterInlineHeater
+ SG_ P00_PCU_D_PowerSetpoint : 8|8@1+ (50,0) [0|12650] "W"  WaterInlineHeater
+ SG_ P00_PCU_D_WaterTemperatureSetpoi : 16|8@1+ (1,-40) [-40|80] "癈"  WaterInlineHeater
+
+
+
+CM_ SG_ 1360 P00_WaterHeater_S_EnableStatus "Enable status";
+CM_ SG_ 1360 P00_WaterHeater_F_InternalFault "Internal fault";
+CM_ SG_ 1360 P00_WaterHeater_F_SeriousFault "Serious fault";
+CM_ SG_ 1360 P00_WaterHeater_D_WaterTempratur "Output water temprature feedback";
+CM_ SG_ 1360 P00_WaterHeater_D_IGBTTemprature "IGBT temprature";
+CM_ SG_ 1360 P00_WaterHeater_D_HVInputVoltage "High voltage input voltage";
+CM_ SG_ 1360 P00_WaterHeater_D_PowerFeedback "Internal power feedback";
+CM_ SG_ 1360 P00_WaterHeater_F_HVInputVoltage "High voltage input voltage abnormal fault";
+CM_ SG_ 1360 P00_WaterHeater_F_HVInputVo_0000 "High voltage input voltage reverse fault";
+CM_ SG_ 1360 P00_WaterHeater_F_IGBTDriveVolta "IGBT gate drive voltage abnormal fault";
+CM_ SG_ 1360 P00_WaterHeater_F_OverTemperatur "Over temperature fault";
+CM_ SG_ 1360 P00_WaterHeater_F_IGBTOverTemper "IGBT over temperature fault";
+CM_ SG_ 1360 P00_WaterHeater_F_OverCurrentFau "Over current fault";
+CM_ SG_ 1360 P00_WaterHeater_F_LowFlowFault "Low flow rate fault";
+CM_ SG_ 1360 P00_WaterHeater_F_AbnormalUpdate "Abnormal can update rate fault";
+CM_ SG_ 1360 P00_WaterHeater_F_HeatCoreShortC "PTC short circuit fault";
+CM_ SG_ 1360 P00_WaterHeater_F_IGBTBreakDownF "IGBT failure fault";
+CM_ SG_ 1360 P00_WaterHeater_F_HeatingPathOpe "PTC open circuit fault";
+CM_ SG_ 1360 P00_WaterHeater_F_WaterOutTempSe "Output water temperature sensor open circuit fault";
+CM_ SG_ 1360 P00_WaterHeater_F_WaterOutTemper "Output water temperature sensor short circuit fault";
+CM_ SG_ 1360 P00_WaterHeater_F_IGBTTemperatur "IGBT temperature sensor open wire fault";
+CM_ SG_ 1360 P00_WaterHeater_F_IGBTTempe_0000 "IGBT temperature sensor short wire fault";
+CM_ SG_ 1362 P01_WaterHeater_D_HardwareVersio "Hardware version";
+CM_ SG_ 1362 P01_WaterHeater_D_SoftwareVersio "Software version";
+CM_ SG_ 1361 P00_PCU_S_EnableCommand "Enable command";
+CM_ SG_ 1361 P00_PCU_D_PowerSetpoint "Power set point";
+CM_ SG_ 1361 P00_PCU_D_WaterTemperatureSetpoi "Water temperature set point";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SPN" INT 0 0;
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 0;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 0;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 0;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","IfActive","NoMsgSendType","NotUsed";
+BA_DEF_ SG_  "GenSigStartValue" INT 0 0;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ SG_  "GenSigCycleTimeActive" INT 0 0;
+BA_DEF_ SG_  "GenSigCycleTime" INT 0 0;
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed";
+BA_DEF_  "Baudrate" INT 0 1000000;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "NmType" STRING ;
+BA_DEF_  "Manufacturer" STRING ;
+BA_DEF_ BO_  "TpTxIndex" INT 0 255;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "NmStationAddress" HEX 0 255;
+BA_DEF_ BU_  "NmNode" ENUM  "no","yes";
+BA_DEF_ BO_  "NmMessage" ENUM  "no","yes";
+BA_DEF_  "NmAsrWaitBusSleepTime" INT 0 65535;
+BA_DEF_  "NmAsrTimeoutTime" INT 1 65535;
+BA_DEF_  "NmAsrRepeatMessageTime" INT 0 65535;
+BA_DEF_ BU_  "NmAsrNodeIdentifier" HEX 0 255;
+BA_DEF_ BU_  "NmAsrNode" ENUM  "no","yes";
+BA_DEF_  "NmAsrMessageCount" INT 1 256;
+BA_DEF_ BO_  "NmAsrMessage" ENUM  "no","yes";
+BA_DEF_ BU_  "NmAsrCanMsgReducedTime" INT 1 65535;
+BA_DEF_  "NmAsrCanMsgCycleTime" INT 1 65535;
+BA_DEF_ BU_  "NmAsrCanMsgCycleOffset" INT 0 65535;
+BA_DEF_  "NmAsrBaseAddress" HEX 0 2047;
+BA_DEF_ BU_  "ILUsed" ENUM  "no","yes";
+BA_DEF_  "ILTxTimeout" INT 0 65535;
+BA_DEF_ SG_  "GenSigTimeoutValue" INT 0 65535;
+BA_DEF_ SG_  "GenSigTimeoutTime" INT 0 65535;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "no","yes";
+BA_DEF_ BO_  "GenMsgFastOnStart" INT 0 65535;
+BA_DEF_ BO_  "DiagUudtResponse" ENUM  "false","true";
+BA_DEF_ BO_  "DiagUudResponse" ENUM  "False","True";
+BA_DEF_ BO_  "DiagState" ENUM  "no","yes";
+BA_DEF_ BO_  "DiagResponse" ENUM  "no","yes";
+BA_DEF_ BO_  "DiagRequest" ENUM  "no","yes";
+BA_DEF_  "DBName" STRING ;
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenSigCycleTimeActive" 0;
+BA_DEF_DEF_  "GenSigCycleTime" 0;
+BA_DEF_DEF_  "GenSigSendType" "Cyclic";
+BA_DEF_DEF_  "Baudrate" 500000;
+BA_DEF_DEF_  "BusType" "";
+BA_DEF_DEF_  "NmType" "";
+BA_DEF_DEF_  "Manufacturer" "Vector";
+BA_DEF_DEF_  "TpTxIndex" 0;
+BA_DEF_DEF_  "NodeLayerModules" " ";
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "NmNode" "no";
+BA_DEF_DEF_  "NmMessage" "no";
+BA_DEF_DEF_  "NmAsrWaitBusSleepTime" 1500;
+BA_DEF_DEF_  "NmAsrTimeoutTime" 2000;
+BA_DEF_DEF_  "NmAsrRepeatMessageTime" 3200;
+BA_DEF_DEF_  "NmAsrNodeIdentifier" 50;
+BA_DEF_DEF_  "NmAsrNode" "no";
+BA_DEF_DEF_  "NmAsrMessageCount" 128;
+BA_DEF_DEF_  "NmAsrMessage" "no";
+BA_DEF_DEF_  "NmAsrCanMsgReducedTime" 320;
+BA_DEF_DEF_  "NmAsrCanMsgCycleTime" 640;
+BA_DEF_DEF_  "NmAsrCanMsgCycleOffset" 0;
+BA_DEF_DEF_  "NmAsrBaseAddress" 1280;
+BA_DEF_DEF_  "ILUsed" "no";
+BA_DEF_DEF_  "ILTxTimeout" 0;
+BA_DEF_DEF_  "GenSigTimeoutValue" 0;
+BA_DEF_DEF_  "GenSigTimeoutTime" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "no";
+BA_DEF_DEF_  "GenMsgFastOnStart" 0;
+BA_DEF_DEF_  "DiagUudtResponse" "false";
+BA_DEF_DEF_  "DiagUudResponse" "False";
+BA_DEF_DEF_  "DiagState" "no";
+BA_DEF_DEF_  "DiagResponse" "no";
+BA_DEF_DEF_  "DiagRequest" "no";
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "Manufacturer" "Vector";
+BA_ "NmType" "NmAsr";
+BA_ "BusType" "CAN";
+BA_ "Baudrate" 500000;
+BA_ "NmAsrWaitBusSleepTime" 2000;
+BA_ "DBName" "WaterInlineHeater";
+BA_ "GenMsgSendType" BO_ 1360 0;
+BA_ "GenMsgCycleTime" BO_ 1360 400;
+BA_ "TXRX" BO_ 1360 0;
+BA_ "TXRX" BO_ 1362 0;
+BA_ "GenMsgSendType" BO_ 1362 7;
+BA_ "GenMsgSendType" BO_ 1361 0;
+BA_ "GenMsgCycleTime" BO_ 1361 400;
+BA_ "TXRX" BO_ 1361 1;
+BA_ "SPN" SG_ 1360 P00_WaterHeater_S_EnableStatus 500;
+BA_ "GenSigStartValue" SG_ 1360 P00_WaterHeater_S_EnableStatus 0;
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_InternalFault 501;
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_SeriousFault 502;
+BA_ "SPN" SG_ 1360 P00_WaterHeater_D_WaterTempratur 503;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_D_WaterTempratur "P00_WaterHeater_D_WaterTempratureFeedBack";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_D_IGBTTemprature 504;
+BA_ "SPN" SG_ 1360 P00_WaterHeater_D_HVInputVoltage 505;
+BA_ "GenSigStartValue" SG_ 1360 P00_WaterHeater_D_HVInputVoltage 0;
+BA_ "SPN" SG_ 1360 P00_WaterHeater_D_PowerFeedback 506;
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_HVInputVoltage 507;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_HVInputVoltage "P00_WaterHeater_F_HVInputVoltageAbnormalFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_HVInputVo_0000 508;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_HVInputVo_0000 "P00_WaterHeater_F_HVInputVoltageReverseFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_IGBTDriveVolta 509;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_IGBTDriveVolta "P00_WaterHeater_F_IGBTDriveVoltageAbnormalFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_OverTemperatur 510;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_OverTemperatur "P00_WaterHeater_F_OverTemperatureFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_IGBTOverTemper 511;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_IGBTOverTemper "P00_WaterHeater_F_IGBTOverTemperatureFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_OverCurrentFau 512;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_OverCurrentFau "P00_WaterHeater_F_OverCurrentFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_LowFlowFault 513;
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_AbnormalUpdate 514;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_AbnormalUpdate "P00_WaterHeater_F_AbnormalUpdateRateFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_HeatCoreShortC 515;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_HeatCoreShortC "P00_WaterHeater_F_HeatCoreShortCircuitFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_IGBTBreakDownF 516;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_IGBTBreakDownF "P00_WaterHeater_F_IGBTBreakDownFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_HeatingPathOpe 517;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_HeatingPathOpe "P00_WaterHeater_F_HeatingPathOpenCircuitFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_WaterOutTempSe 518;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_WaterOutTempSe "P00_WaterHeater_F_WaterOutTempSensorOpenCircuitFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_WaterOutTemper 519;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_WaterOutTemper "P00_WaterHeater_F_WaterOutTemperatureSensorShortCircuitFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_IGBTTemperatur 520;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_IGBTTemperatur "P00_WaterHeater_F_IGBTTemperatureSensorOpenCircuitFault";
+BA_ "SPN" SG_ 1360 P00_WaterHeater_F_IGBTTempe_0000 521;
+BA_ "SystemSignalLongSymbol" SG_ 1360 P00_WaterHeater_F_IGBTTempe_0000 "P00_WaterHeater_F_IGBTTemperatureSensorShortCircuitFault";
+BA_ "SPN" SG_ 1362 P01_WaterHeater_D_HardwareVersio 524;
+BA_ "SystemSignalLongSymbol" SG_ 1362 P01_WaterHeater_D_HardwareVersio "P01_WaterHeater_D_HardwareVersion";
+BA_ "SPN" SG_ 1362 P01_WaterHeater_D_SoftwareVersio 525;
+BA_ "SystemSignalLongSymbol" SG_ 1362 P01_WaterHeater_D_SoftwareVersio "P01_WaterHeater_D_SoftwareVersion";
+BA_ "SPN" SG_ 1361 P00_PCU_S_EnableCommand 2070;
+BA_ "GenSigStartValue" SG_ 1361 P00_PCU_S_EnableCommand 0;
+BA_ "SPN" SG_ 1361 P00_PCU_D_PowerSetpoint 2071;
+BA_ "GenSigStartValue" SG_ 1361 P00_PCU_D_PowerSetpoint 0;
+BA_ "SPN" SG_ 1361 P00_PCU_D_WaterTemperatureSetpoi 2072;
+BA_ "SystemSignalLongSymbol" SG_ 1361 P00_PCU_D_WaterTemperatureSetpoi "P00_PCU_D_WaterTemperatureSetpoint";
+VAL_ 1360 P00_WaterHeater_S_EnableStatus 1 "On" 0 "Off" ;
+VAL_ 1360 P00_WaterHeater_F_InternalFault 1 "Fault" 0 "No Fault" ;
+VAL_ 1360 P00_WaterHeater_F_SeriousFault 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_HVInputVoltage 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_HVInputVo_0000 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_IGBTDriveVolta 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_OverTemperatur 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_IGBTOverTemper 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_OverCurrentFau 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_LowFlowFault 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_AbnormalUpdate 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_HeatCoreShortC 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_IGBTBreakDownF 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_HeatingPathOpe 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_WaterOutTempSe 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_WaterOutTemper 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_IGBTTemperatur 1 "Fault" 0 "No fault" ;
+VAL_ 1360 P00_WaterHeater_F_IGBTTempe_0000 1 "Fault" 0 "No fault" ;
+VAL_ 1361 P00_PCU_S_EnableCommand 1 "On" 0 "Off" ;
+

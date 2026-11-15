@@ -1,0 +1,206 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU CoolerCompressor
+VAL_TABLE_ New_Value_Table_15 1 "Disable" 0 "Enable" ;
+
+
+BO_ 529 PCU_P03_SpeedCommand: 8 PCU
+ SG_ P03_PCU_S_EnableCommand : 0|1@0+ (1,0) [0|1] ""  CoolerCompressor
+ SG_ P03_PCU_D_CompressorMotorSpeedSe : 23|16@0+ (0.25,0) [0|16000] "rpm"  CoolerCompressor
+
+BO_ 532 PCU_P02_LVStatus: 8 PCU
+ SG_ P02_PCU_S_PCUInitializationState : 8|1@0+ (1,0) [0|1] ""  CoolerCompressor
+ SG_ P02_PCU_D_Counter : 7|8@0+ (1,0) [0|255] ""  CoolerCompressor
+ SG_ P02_PCU_D_12VBatteryVoltage : 23|8@0+ (0.0683,0) [0|17.2] "V"  CoolerCompressor
+
+BO_ 1168 CoolerCompressor_P00_Status: 8 CoolerCompressor
+ SG_ P00_CoolerCompressor_F_Communica : 13|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_S_Controlle : 4|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_S_Initializ : 0|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_S_Cont_0000 : 1|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_S_Cont_0001 : 2|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_S_MotorSpee : 3|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_F_InternalF : 14|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_F_OverTempe : 12|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_F_Instantan : 11|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_F_LockFault : 15|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_F_HVInputUn : 8|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_F_HVInputOv : 9|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_D_HVInputVo : 23|16@0+ (0.01,0) [0|650] "V"  PCU
+ SG_ P00_CoolerCompressor_F_LongTermO : 10|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_CoolerCompressor_D_Compresso : 39|16@0+ (0.02,0) [0|50] "A"  PCU
+ SG_ P00_CoolerCompressor_D_Comp_0000 : 55|16@0+ (0.25,0) [0|16000] "rpm"  PCU
+
+BO_ 1169 CoolerCompressor_P01_Fault: 8 CoolerCompressor
+ SG_ P01_CoolerCompressor_D_NumberOfF : 23|4@0+ (1,0) [0|15] ""  PCU
+ SG_ P01_CoolerCompressor_F_FaultCode : 15|8@0+ (1,0) [0|255] ""  PCU
+ SG_ P01_CoolerCompressor_D_Counter : 7|8@0+ (1,0) [0|255] ""  PCU
+ SG_ P01_CoolerCompressor_D_HardwareV : 55|8@0+ (1,0) [0|255] ""  PCU
+ SG_ P01_CoolerCompressor_D_SoftwareV : 63|8@0+ (1,0) [0|255] ""  PCU
+ SG_ P01_CoolerCompressor_D_PartNumbe : 39|16@0+ (1,0) [0|65535] ""  PCU
+
+
+
+CM_ SG_ 529 P03_PCU_S_EnableCommand "Enable command";
+CM_ SG_ 529 P03_PCU_D_CompressorMotorSpeedSe "Compressor motor speed set point";
+CM_ SG_ 532 P02_PCU_S_PCUInitializationState "PCU initialization state";
+CM_ SG_ 532 P02_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 532 P02_PCU_D_12VBatteryVoltage "12V battery voltage";
+CM_ SG_ 1168 P00_CoolerCompressor_F_Communica "Communication fault";
+CM_ SG_ 1168 P00_CoolerCompressor_S_Controlle "Controller operating state";
+CM_ SG_ 1168 P00_CoolerCompressor_S_Initializ "Initialization state";
+CM_ SG_ 1168 P00_CoolerCompressor_S_Cont_0000 "Controller current sensor validation state";
+CM_ SG_ 1168 P00_CoolerCompressor_S_Cont_0001 "Controller voltage sensor validation state";
+CM_ SG_ 1168 P00_CoolerCompressor_S_MotorSpee "Motor speed validation state";
+CM_ SG_ 1168 P00_CoolerCompressor_F_InternalF "Internal fault";
+CM_ SG_ 1168 P00_CoolerCompressor_F_OverTempe "Over temperature fault";
+CM_ SG_ 1168 P00_CoolerCompressor_F_Instantan "Instantaneous over current fault";
+CM_ SG_ 1168 P00_CoolerCompressor_F_LockFault "Lock fault";
+CM_ SG_ 1168 P00_CoolerCompressor_F_HVInputUn "High voltage input under voltage fault";
+CM_ SG_ 1168 P00_CoolerCompressor_F_HVInputOv "High voltage input over voltage fault";
+CM_ SG_ 1168 P00_CoolerCompressor_D_HVInputVo "High voltage input voltage";
+CM_ SG_ 1168 P00_CoolerCompressor_F_LongTermO "Long term over current fault";
+CM_ SG_ 1168 P00_CoolerCompressor_D_Compresso "Compressor controller current";
+CM_ SG_ 1168 P00_CoolerCompressor_D_Comp_0000 "Compressor motor speed feedback";
+CM_ SG_ 1169 P01_CoolerCompressor_D_NumberOfF "Number of faults that occurred";
+CM_ SG_ 1169 P01_CoolerCompressor_F_FaultCode "Fault code (group fault)";
+CM_ SG_ 1169 P01_CoolerCompressor_D_Counter "8 bit up counter";
+CM_ SG_ 1169 P01_CoolerCompressor_D_HardwareV "Hardware version";
+CM_ SG_ 1169 P01_CoolerCompressor_D_SoftwareV "Software version";
+CM_ SG_ 1169 P01_CoolerCompressor_D_PartNumbe "Part number";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SPN" INT 0 0;
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ BO_  "CycleTime" INT 0 0;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "CANoeJitterMax" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMin" INT 0 0;
+BA_DEF_ BU_  "CANoeDrift" INT 0 0;
+BA_DEF_ BU_  "CANoeStartDelay" INT 0 0;
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZone" "";
+BA_DEF_DEF_  "FaultAction" "";
+BA_DEF_DEF_  "FaultTrigger" "";
+BA_DEF_DEF_  "CycleTime" 100;
+BA_DEF_DEF_  "BusType" "";
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "CANoeJitterMax" 0;
+BA_DEF_DEF_  "CANoeJitterMin" 0;
+BA_DEF_DEF_  "CANoeDrift" 0;
+BA_DEF_DEF_  "CANoeStartDelay" 0;
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN";
+BA_ "TXRX" BO_ 529 1;
+BA_ "CycleTime" BO_ 529 100;
+BA_ "TXRX" BO_ 532 1;
+BA_ "CycleTime" BO_ 532 1000;
+BA_ "TXRX" BO_ 1168 0;
+BA_ "CycleTime" BO_ 1168 100;
+BA_ "CycleTime" BO_ 1169 1000;
+BA_ "TXRX" BO_ 1169 0;
+BA_ "SPN" SG_ 529 P03_PCU_S_EnableCommand 2852;
+BA_ "SPN" SG_ 529 P03_PCU_D_CompressorMotorSpeedSe 2851;
+BA_ "SystemSignalLongSymbol" SG_ 529 P03_PCU_D_CompressorMotorSpeedSe "P03_PCU_D_CompressorMotorSpeedSetpoint";
+BA_ "SPN" SG_ 532 P02_PCU_S_PCUInitializationState 2850;
+BA_ "SPN" SG_ 532 P02_PCU_D_Counter 2013;
+BA_ "SPN" SG_ 532 P02_PCU_D_12VBatteryVoltage 2012;
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_F_Communica 390;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_F_Communica "P00_CoolerCompressor_F_CommunicationFault";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_S_Controlle 384;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_S_Controlle "P00_CoolerCompressor_S_ControllerOperatingState";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_S_Initializ 380;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_S_Initializ "P00_CoolerCompressor_S_InitializationState";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_S_Cont_0000 381;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_S_Cont_0000 "P00_CoolerCompressor_S_ControllerCurrentValidState";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_S_Cont_0001 382;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_S_Cont_0001 "P00_CoolerCompressor_S_ControllerVoltageValidState";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_S_MotorSpee 383;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_S_MotorSpee "P00_CoolerCompressor_S_MotorSpeedValidState";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_F_InternalF 391;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_F_InternalF "P00_CoolerCompressor_F_InternalFault";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_F_OverTempe 389;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_F_OverTempe "P00_CoolerCompressor_F_OverTemperatureFault";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_F_Instantan 388;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_F_Instantan "P00_CoolerCompressor_F_InstantaneousOverCurrentFault";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_F_LockFault 392;
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_F_HVInputUn 385;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_F_HVInputUn "P00_CoolerCompressor_F_HVInputUnderVoltgeFault";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_F_HVInputOv 386;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_F_HVInputOv "P00_CoolerCompressor_F_HVInputOverVoltageFault";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_D_HVInputVo 393;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_D_HVInputVo "P00_CoolerCompressor_D_HVInputVoltage";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_F_LongTermO 387;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_F_LongTermO "P00_CoolerCompressor_F_LongTermOverCurrentFault";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_D_Compresso 394;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_D_Compresso "P00_CoolerCompressor_D_CompressorControllerCurrent";
+BA_ "SPN" SG_ 1168 P00_CoolerCompressor_D_Comp_0000 395;
+BA_ "SystemSignalLongSymbol" SG_ 1168 P00_CoolerCompressor_D_Comp_0000 "P00_CoolerCompressor_D_CompressorMotorSpeedFeedback";
+BA_ "SPN" SG_ 1169 P01_CoolerCompressor_D_NumberOfF 398;
+BA_ "SystemSignalLongSymbol" SG_ 1169 P01_CoolerCompressor_D_NumberOfF "P01_CoolerCompressor_D_NumberOfFaults";
+BA_ "SPN" SG_ 1169 P01_CoolerCompressor_F_FaultCode 397;
+BA_ "SPN" SG_ 1169 P01_CoolerCompressor_D_Counter 396;
+BA_ "SPN" SG_ 1169 P01_CoolerCompressor_D_HardwareV 800;
+BA_ "SystemSignalLongSymbol" SG_ 1169 P01_CoolerCompressor_D_HardwareV "P01_CoolerCompressor_D_HardwareVersion";
+BA_ "SPN" SG_ 1169 P01_CoolerCompressor_D_SoftwareV 801;
+BA_ "SystemSignalLongSymbol" SG_ 1169 P01_CoolerCompressor_D_SoftwareV "P01_CoolerCompressor_D_SoftwareVersion";
+BA_ "SPN" SG_ 1169 P01_CoolerCompressor_D_PartNumbe 399;
+BA_ "SystemSignalLongSymbol" SG_ 1169 P01_CoolerCompressor_D_PartNumbe "P01_CoolerCompressor_D_PartNumber";
+VAL_ 529 P03_PCU_S_EnableCommand 1 "Enable" 0 "Disable" ;
+VAL_ 532 P02_PCU_S_PCUInitializationState 1 "Completed" 0 "Not completed" ;
+VAL_ 1168 P00_CoolerCompressor_F_Communica 1 "Fault" 0 "No fault" ;
+VAL_ 1168 P00_CoolerCompressor_S_Controlle 1 "Active" 0 "Inactive" ;
+VAL_ 1168 P00_CoolerCompressor_S_Initializ 1 "Completed" 0 "Not completed" ;
+VAL_ 1168 P00_CoolerCompressor_S_Cont_0000 1 "Invalid" 0 "Valid" ;
+VAL_ 1168 P00_CoolerCompressor_S_Cont_0001 1 "Invalid" 0 "Valid" ;
+VAL_ 1168 P00_CoolerCompressor_S_MotorSpee 1 "Invalid" 0 "Valid" ;
+VAL_ 1168 P00_CoolerCompressor_F_InternalF 1 "Fault" 0 "No fault" ;
+VAL_ 1168 P00_CoolerCompressor_F_OverTempe 1 "Fault" 0 "No fault" ;
+VAL_ 1168 P00_CoolerCompressor_F_Instantan 1 "Fault" 0 "No fault" ;
+VAL_ 1168 P00_CoolerCompressor_F_LockFault 1 "Fault" 0 "No fault" ;
+VAL_ 1168 P00_CoolerCompressor_F_HVInputUn 1 "Fault" 0 "No fault" ;
+VAL_ 1168 P00_CoolerCompressor_F_HVInputOv 1 "Fault" 0 "No fault" ;
+VAL_ 1168 P00_CoolerCompressor_F_LongTermO 1 "Fault" 0 "No fault" ;
+VAL_ 1169 P01_CoolerCompressor_F_FaultCode 0 "No fault" 128 "Lock fault" 64 "Internal fault" 32 "Communication fault" 16 "Over temperature fault" 8 "Instantaneous over current fault" 4 "Long term over current fault" 2 "High voltage input under voltage fault" 1 "High voltage input over voltage fault" ;
+

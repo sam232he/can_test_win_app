@@ -1,0 +1,312 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PEPS PCU BCM
+VAL_TABLE_ busNeeded 1 "Bus not need, requesr sleep" 0 "Bus needed" ;
+VAL_TABLE_ network 1 "Network sleep acknowledge" 0 "Network still alive" ;
+VAL_TABLE_ Ring 1 "Ring stable" 0 "Ring not stable" ;
+VAL_TABLE_ Limp_home 1 "Limp home" 0 "Not in limp home" ;
+VAL_TABLE_ alive_notAlive 1 "Node alive" 0 "Node does not alive" ;
+VAL_TABLE_ State_lockUnlock 1 "Unlock" 0 "Lock" ;
+VAL_TABLE_ status_closeOpen 1 "Open" 0 "Closed" ;
+VAL_TABLE_ KeyState 4 "Description for the value '0x4'" 3 "CRANK+IG;" 2 "IGN" 1 "ACC" 0 "Off" ;
+VAL_TABLE_ SecurityStatus 1 "In security" 0 "Not in security" ;
+VAL_TABLE_ State_offOn 1 "On" 0 "Off" ;
+VAL_TABLE_ ParkBrakeSW_LSC 1 "Brake" 0 "Normal" ;
+VAL_TABLE_ LockCtrl 180 "Smart Entry unlock ID n°4" 179 "Smart Entry unlock ID n°3" 178 "Smart Entry unlock ID n°2" 177 "Smart Entry unlock ID n°1" 164 "RKE unlock ID n°4" 163 "RKE unlock ID n°3" 162 "RKE unlock ID n°2" 161 "RKE unlock ID n°1" 129 "any unlock request different from RKE and Smart" 63 "Smart  30s autolock" 52 "Smart Entry lock ID n°4" 51 "Smart Entry lock ID n°3" 50 "Smart Entry lock ID n°2" 49 "Smart Entry lock ID n°1" 47 "RKE 30s autolock" 36 "RKE lock ID n°4" 35 "RKE lock ID n°3" 34 "RKE lock ID n°2" 33 "RKE lock ID n°1" 1 "any lock request different from RKE or Smart and relock" 0 "no lock/unlock action" ;
+VAL_TABLE_ backLightControl 3 "not used" 2 " Light with the maximum backlight level " 1 " Light with the backlight level" 0 "Off" ;
+VAL_TABLE_ DRLstatus 1 "On" 0 "Off" ;
+
+
+BO_ 872 BCM_P07_Response: 8 BCM
+ SG_ P07_BCM_S_AuthenticationCounterS : 8|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P07_BCM_S_AuthenticationState : 0|2@1+ (1,0) [0|3] ""  PEPS
+
+BO_ 871 BCM_P06_SendSKToIMMO: 8 BCM
+ SG_ P06_BCM_D_BCMLearnSeed7 : 56|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P06_BCM_D_BCMLearnSeed6 : 48|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P06_BCM_D_BCMLearnSeed5 : 40|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P06_BCM_D_BCMLearnSeed4 : 32|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P06_BCM_D_BCMLearnSeed3 : 24|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P06_BCM_D_BCMLearnSeed2 : 16|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P06_BCM_D_BCMLearnSeed1 : 8|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P06_BCM_D_BCMLearnSeed0 : 0|8@1+ (1,0) [0|255] ""  PEPS
+
+BO_ 751 BCM_P05_ODO: 8 BCM
+ SG_ P05_BCM_D_Odometer : 16|24@1+ (1,0) [0|1000000] ""  PCU
+
+BO_ 870 BCM_P04_AuthenticationChallenge: 8 BCM
+ SG_ P04_BCM_S_PEPSRequest7 : 56|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P04_BCM_S_PEPSRequest6 : 48|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P04_BCM_S_PEPSRequest5 : 40|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P04_BCM_S_PEPSRequest4 : 32|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P04_BCM_S_PEPSRequest3 : 24|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P04_BCM_S_PEPSRequest2 : 16|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P04_BCM_S_PEPSRequest1 : 8|8@1+ (1,0) [0|255] ""  PEPS
+ SG_ P04_BCM_S_PEPSRequest0 : 0|8@1+ (1,0) [0|255] ""  PEPS
+
+BO_ 800 BCM_P03_SBR: 8 BCM
+ SG_ P03_BCM_S_SeatbeltRRState : 1|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P03_BCM_S_SeatbeltRMState : 3|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P03_BCM_S_SeatbeltRLState : 2|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P03_BCM_S_SeatbeltFRState : 0|1@1+ (1,0) [0|1] ""  PCU
+
+BO_ 717 BCM_P01_DoorLockLight: 8 BCM
+ SG_ P01_BCM_S_DriveDoorStateLSC : 56|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_BCM_S_PassengerDoorState : 57|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_BCM_S_RearRightDoorState : 58|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_BCM_S_RearLeftDoorState : 59|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_BCM_S_HeadLampHighBeamStateL : 52|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_BCM_S_HeadLampLowBeamStateLS : 47|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_BCM_S_DriveUnlockState : 45|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_BCM_S_TrunkDoorState : 37|1@1+ (1,0) [0|1] ""  PCU
+
+BO_ 683 BCM_P00_LighKeySecurity: 8 BCM
+ SG_ P00_BCM_D_KeyOnCounterLSC : 48|16@1+ (1,0) [0|65535] ""  PCU
+ SG_ P00_BCM_S_DefrostControlLSC : 44|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_BCM_S_KeyStateLSC : 40|3@1+ (1,0) [0|7] ""  PCU
+ SG_ P00_BCM_S_PositionLampControlSta : 38|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_BCM_S_RearFogLampState : 37|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_BCM_S_LeftTurnIndicatorState : 32|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_BCM_S_RightTurnIndicatorStat : 33|1@1+ (1,0) [0|1] ""  PCU
+
+
+
+CM_ SG_ 872 P07_BCM_S_AuthenticationCounterS "Authentication status counter(0-255) the counter need to correspondence the counter of PEPS request or response";
+CM_ SG_ 872 P07_BCM_S_AuthenticationState "Authentication state";
+CM_ SG_ 871 P06_BCM_D_BCMLearnSeed7 "Body Control Madule (BCM) learn seed 7";
+CM_ SG_ 871 P06_BCM_D_BCMLearnSeed6 "Body Control Madule (BCM) learn seed 6";
+CM_ SG_ 871 P06_BCM_D_BCMLearnSeed5 "Body Control Madule (BCM) learn seed 5";
+CM_ SG_ 871 P06_BCM_D_BCMLearnSeed4 "Body Control Madule (BCM) learn seed 4";
+CM_ SG_ 871 P06_BCM_D_BCMLearnSeed3 "Body Control Madule (BCM) learn seed 3";
+CM_ SG_ 871 P06_BCM_D_BCMLearnSeed2 "Body Control Madule (BCM) learn seed 2";
+CM_ SG_ 871 P06_BCM_D_BCMLearnSeed1 "Body Control Madule (BCM) learn seed 1";
+CM_ SG_ 871 P06_BCM_D_BCMLearnSeed0 "Body Control Madule (BCM) learn seed 0";
+CM_ SG_ 751 P05_BCM_D_Odometer "Odometer";
+CM_ SG_ 870 P04_BCM_S_PEPSRequest7 "PEPS request 7";
+CM_ SG_ 870 P04_BCM_S_PEPSRequest6 "PEPS request 6";
+CM_ SG_ 870 P04_BCM_S_PEPSRequest5 "PEPS request 5";
+CM_ SG_ 870 P04_BCM_S_PEPSRequest4 "PEPS request 4";
+CM_ SG_ 870 P04_BCM_S_PEPSRequest3 "PEPS request 3";
+CM_ SG_ 870 P04_BCM_S_PEPSRequest2 "PEPS request 2";
+CM_ SG_ 870 P04_BCM_S_PEPSRequest1 "PEPS request 1";
+CM_ SG_ 870 P04_BCM_S_PEPSRequest0 "PEPS request 0";
+CM_ SG_ 800 P03_BCM_S_SeatbeltRRState "Rear right seatbelt state";
+CM_ SG_ 800 P03_BCM_S_SeatbeltRMState "Rear middle seatbelt state";
+CM_ SG_ 800 P03_BCM_S_SeatbeltRLState "Rear left seatbelt state";
+CM_ SG_ 800 P03_BCM_S_SeatbeltFRState "Front right seatbelt state";
+CM_ SG_ 717 P01_BCM_S_DriveDoorStateLSC "Driver door state";
+CM_ SG_ 717 P01_BCM_S_PassengerDoorState "Passenger door State";
+CM_ SG_ 717 P01_BCM_S_RearRightDoorState "Rear right door state";
+CM_ SG_ 717 P01_BCM_S_RearLeftDoorState "Rear left door state";
+CM_ SG_ 717 P01_BCM_S_HeadLampHighBeamStateL "Headlamp high beam state";
+CM_ SG_ 717 P01_BCM_S_HeadLampLowBeamStateLS "Headlamp low beam state";
+CM_ SG_ 717 P01_BCM_S_DriveUnlockState "Drive unlock state";
+CM_ SG_ 717 P01_BCM_S_TrunkDoorState "Trunk door state";
+CM_ SG_ 683 P00_BCM_D_KeyOnCounterLSC "Every ignition cycle, the counter +1";
+CM_ SG_ 683 P00_BCM_S_DefrostControlLSC "Rear defogger relay command";
+CM_ SG_ 683 P00_BCM_S_KeyStateLSC "Vehicle key state (Needed for power management feedback, ESCL management and Engine SW illumination. BCM to sent to have the redandancy design to confirm that PEPS and BCM have the same view of Vehicle State)";
+CM_ SG_ 683 P00_BCM_S_PositionLampControlSta "Position lamp control state";
+CM_ SG_ 683 P00_BCM_S_RearFogLampState "Rear fog lamp state";
+CM_ SG_ 683 P00_BCM_S_LeftTurnIndicatorState "Left turn indicator state";
+CM_ SG_ 683 P00_BCM_S_RightTurnIndicatorStat "Right turn indicator state";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ BO_  "J1939PgAppearanceOnBus" ENUM  "Default","CAN_Extended","CANFD_Extended";
+BA_DEF_ BO_  "TpJ1939VarDlc" ENUM  "No","Yes";
+BA_DEF_ SG_  "SigType" ENUM  "Default","Range","RangeSigned","ASCII","Discrete","Control","ReferencePGN","DTC","StringDelimiter","StringLength","StringLengthControl";
+BA_DEF_ SG_  "GenSigEVName" STRING ;
+BA_DEF_ SG_  "GenSigILSupport" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ BO_  "GenMsgFastOnStart" INT 0 100000;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 3600000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 1000000;
+BA_DEF_ SG_  "GenSigStartValue" INT 0 2147483647;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 100000;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "NmJ1939SystemInstance" INT 0 15;
+BA_DEF_ BU_  "NmJ1939System" INT 0 127;
+BA_DEF_ BU_  "NmJ1939ManufacturerCode" INT 0 2047;
+BA_DEF_ BU_  "NmJ1939IndustryGroup" INT 0 7;
+BA_DEF_ BU_  "NmJ1939IdentityNumber" INT 0 2097151;
+BA_DEF_ BU_  "NmJ1939FunctionInstance" INT 0 7;
+BA_DEF_ BU_  "NmJ1939Function" INT 0 255;
+BA_DEF_ BU_  "NmJ1939ECUInstance" INT 0 3;
+BA_DEF_ BU_  "NmJ1939AAC" INT 0 1;
+BA_DEF_ BU_  "NmStationAddress" INT 0 255;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclic","NotUsed","IfActive","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","noMsgSendType";
+BA_DEF_ BO_  "GenMsgRequestable" INT 0 1;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+BA_DEF_ SG_  "SPN" INT 0 524287;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "ProtocolType" STRING ;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZone" "";
+BA_DEF_DEF_  "FaultTrigger" "";
+BA_DEF_DEF_  "FaultAction" "";
+BA_DEF_DEF_  "J1939PgAppearanceOnBus" "Default";
+BA_DEF_DEF_  "TpJ1939VarDlc" "No";
+BA_DEF_DEF_  "SigType" "Default";
+BA_DEF_DEF_  "GenSigEVName" "Env@Nodename_@Signame";
+BA_DEF_DEF_  "GenSigILSupport" "Yes";
+BA_DEF_DEF_  "GenSigSendType" "NoSigSendType";
+BA_DEF_DEF_  "GenMsgFastOnStart" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "NmJ1939SystemInstance" 0;
+BA_DEF_DEF_  "NmJ1939System" 0;
+BA_DEF_DEF_  "NmJ1939ManufacturerCode" 0;
+BA_DEF_DEF_  "NmJ1939IndustryGroup" 0;
+BA_DEF_DEF_  "NmJ1939IdentityNumber" 0;
+BA_DEF_DEF_  "NmJ1939FunctionInstance" 0;
+BA_DEF_DEF_  "NmJ1939Function" 0;
+BA_DEF_DEF_  "NmJ1939ECUInstance" 0;
+BA_DEF_DEF_  "NmJ1939AAC" 0;
+BA_DEF_DEF_  "NmStationAddress" 254;
+BA_DEF_DEF_  "GenMsgSendType" "noMsgSendType";
+BA_DEF_DEF_  "GenMsgRequestable" 1;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "ProtocolType" "J1939";
+BA_DEF_DEF_  "VFrameFormat" "J1939PG";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN FD";
+BA_ "DBName" "BCM";
+BA_ "TXRX" BO_ 872 0;
+BA_ "VFrameFormat" BO_ 872 0;
+BA_ "TXRX" BO_ 871 0;
+BA_ "VFrameFormat" BO_ 871 0;
+BA_ "TXRX" BO_ 751 0;
+BA_ "GenMsgCycleTime" BO_ 751 100;
+BA_ "GenMsgSendType" BO_ 751 0;
+BA_ "VFrameFormat" BO_ 751 0;
+BA_ "TXRX" BO_ 870 0;
+BA_ "VFrameFormat" BO_ 870 0;
+BA_ "TXRX" BO_ 800 0;
+BA_ "GenMsgSendType" BO_ 800 0;
+BA_ "GenMsgCycleTime" BO_ 800 100;
+BA_ "VFrameFormat" BO_ 800 0;
+BA_ "GenMsgSendType" BO_ 717 0;
+BA_ "TXRX" BO_ 717 0;
+BA_ "GenMsgCycleTime" BO_ 717 100;
+BA_ "VFrameFormat" BO_ 717 0;
+BA_ "GenMsgSendType" BO_ 683 0;
+BA_ "TXRX" BO_ 683 0;
+BA_ "GenMsgCycleTime" BO_ 683 50;
+BA_ "VFrameFormat" BO_ 683 0;
+BA_ "SPN" SG_ 872 P07_BCM_S_AuthenticationCounterS 598;
+BA_ "SystemSignalLongSymbol" SG_ 872 P07_BCM_S_AuthenticationCounterS "P07_BCM_S_AuthenticationCounterState";
+BA_ "SPN" SG_ 872 P07_BCM_S_AuthenticationState 597;
+BA_ "SPN" SG_ 871 P06_BCM_D_BCMLearnSeed7 596;
+BA_ "SPN" SG_ 871 P06_BCM_D_BCMLearnSeed6 595;
+BA_ "SPN" SG_ 871 P06_BCM_D_BCMLearnSeed5 594;
+BA_ "SPN" SG_ 871 P06_BCM_D_BCMLearnSeed4 593;
+BA_ "SPN" SG_ 871 P06_BCM_D_BCMLearnSeed3 592;
+BA_ "SPN" SG_ 871 P06_BCM_D_BCMLearnSeed2 591;
+BA_ "SPN" SG_ 871 P06_BCM_D_BCMLearnSeed1 590;
+BA_ "SPN" SG_ 871 P06_BCM_D_BCMLearnSeed0 589;
+BA_ "SPN" SG_ 751 P05_BCM_D_Odometer 588;
+BA_ "SPN" SG_ 870 P04_BCM_S_PEPSRequest7 587;
+BA_ "SPN" SG_ 870 P04_BCM_S_PEPSRequest6 586;
+BA_ "SPN" SG_ 870 P04_BCM_S_PEPSRequest5 585;
+BA_ "SPN" SG_ 870 P04_BCM_S_PEPSRequest4 584;
+BA_ "SPN" SG_ 870 P04_BCM_S_PEPSRequest3 583;
+BA_ "SPN" SG_ 870 P04_BCM_S_PEPSRequest2 582;
+BA_ "SPN" SG_ 870 P04_BCM_S_PEPSRequest1 581;
+BA_ "SPN" SG_ 870 P04_BCM_S_PEPSRequest0 580;
+BA_ "SPN" SG_ 800 P03_BCM_S_SeatbeltRRState 577;
+BA_ "SPN" SG_ 800 P03_BCM_S_SeatbeltRMState 579;
+BA_ "SPN" SG_ 800 P03_BCM_S_SeatbeltRLState 578;
+BA_ "SPN" SG_ 800 P03_BCM_S_SeatbeltFRState 576;
+BA_ "SPN" SG_ 717 P01_BCM_S_DriveDoorStateLSC 560;
+BA_ "SPN" SG_ 717 P01_BCM_S_PassengerDoorState 561;
+BA_ "SPN" SG_ 717 P01_BCM_S_RearRightDoorState 562;
+BA_ "SPN" SG_ 717 P01_BCM_S_RearLeftDoorState 563;
+BA_ "SPN" SG_ 717 P01_BCM_S_HeadLampHighBeamStateL 559;
+BA_ "SystemSignalLongSymbol" SG_ 717 P01_BCM_S_HeadLampHighBeamStateL "P01_BCM_S_HeadLampHighBeamStateLSC";
+BA_ "SPN" SG_ 717 P01_BCM_S_HeadLampLowBeamStateLS 558;
+BA_ "SystemSignalLongSymbol" SG_ 717 P01_BCM_S_HeadLampLowBeamStateLS "P01_BCM_S_HeadLampLowBeamStateLSC";
+BA_ "SPN" SG_ 717 P01_BCM_S_DriveUnlockState 557;
+BA_ "SPN" SG_ 717 P01_BCM_S_TrunkDoorState 556;
+BA_ "SPN" SG_ 683 P00_BCM_D_KeyOnCounterLSC 554;
+BA_ "SPN" SG_ 683 P00_BCM_S_DefrostControlLSC 553;
+BA_ "SPN" SG_ 683 P00_BCM_S_KeyStateLSC 551;
+BA_ "SPN" SG_ 683 P00_BCM_S_PositionLampControlSta 550;
+BA_ "SystemSignalLongSymbol" SG_ 683 P00_BCM_S_PositionLampControlSta "P00_BCM_S_PositionLampControlState";
+BA_ "SPN" SG_ 683 P00_BCM_S_RearFogLampState 549;
+BA_ "SPN" SG_ 683 P00_BCM_S_LeftTurnIndicatorState 545;
+BA_ "SystemSignalLongSymbol" SG_ 683 P00_BCM_S_LeftTurnIndicatorState "P00_BCM_S_LeftTurnIndicatorStateLSC";
+BA_ "SPN" SG_ 683 P00_BCM_S_RightTurnIndicatorStat 546;
+BA_ "SystemSignalLongSymbol" SG_ 683 P00_BCM_S_RightTurnIndicatorStat "P00_BCM_S_RightTurnIndicatorStateLSC";
+VAL_ 872 P07_BCM_S_AuthenticationState 3 "Reserved" 2 "Fail" 1 "Success" 0 "Default" ;
+VAL_ 800 P03_BCM_S_SeatbeltRRState 1 "Unfastened" 0 "Fastened" ;
+VAL_ 800 P03_BCM_S_SeatbeltRMState 1 "Unfastened" 0 "Fastened" ;
+VAL_ 800 P03_BCM_S_SeatbeltRLState 1 "Unfastened" 0 "Fastened" ;
+VAL_ 800 P03_BCM_S_SeatbeltFRState 1 "Unfastened" 0 "Fastened" ;
+VAL_ 717 P01_BCM_S_DriveDoorStateLSC 1 "Open" 0 "Close" ;
+VAL_ 717 P01_BCM_S_PassengerDoorState 1 "Open" 0 "Close" ;
+VAL_ 717 P01_BCM_S_RearRightDoorState 1 "Open" 0 "Close" ;
+VAL_ 717 P01_BCM_S_RearLeftDoorState 1 "Open" 0 "Close" ;
+VAL_ 717 P01_BCM_S_HeadLampHighBeamStateL 1 "On" 0 "Off" ;
+VAL_ 717 P01_BCM_S_HeadLampLowBeamStateLS 1 "On" 0 "Off" ;
+VAL_ 717 P01_BCM_S_DriveUnlockState 1 "Unlock" 0 "Lock" ;
+VAL_ 717 P01_BCM_S_TrunkDoorState 1 "Open" 0 "Close" ;
+VAL_ 683 P00_BCM_S_DefrostControlLSC 1 "On" 0 "Off" ;
+VAL_ 683 P00_BCM_S_KeyStateLSC 7 "Reserve" 6 "Reserve" 5 "Reserve" 4 "Reserve" 3 "CRANK+IG" 2 "IGN" 1 "ACC" 0 "Off" ;
+VAL_ 683 P00_BCM_S_PositionLampControlSta 1 "On" 0 "Off" ;
+VAL_ 683 P00_BCM_S_RearFogLampState 1 "On" 0 "Off" ;
+VAL_ 683 P00_BCM_S_LeftTurnIndicatorState 1 "On" 0 "Off" ;
+VAL_ 683 P00_BCM_S_RightTurnIndicatorStat 1 "On" 0 "Off" ;
+

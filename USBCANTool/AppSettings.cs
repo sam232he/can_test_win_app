@@ -37,9 +37,6 @@ namespace USBCANTool
         public bool TxTerm { get; set; } = true;
         public bool RxNonIso { get; set; }
         public bool TxNonIso { get; set; }
-        public string FilterId { get; set; }
-        public int FilterDir { get; set; }
-        public bool GroupShow { get; set; }
         public SavedSlot[] Slots { get; set; }
     }
 

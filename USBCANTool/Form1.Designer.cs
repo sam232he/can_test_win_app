@@ -48,15 +48,9 @@ namespace USBCANTool
             this.btnClose = new System.Windows.Forms.Button();
             this.btnOpen = new System.Windows.Forms.Button();
             this.grpRewrite = new System.Windows.Forms.GroupBox();
-            this.grpRx = new System.Windows.Forms.GroupBox();
             this.grpLatestSignal = new System.Windows.Forms.GroupBox();
             this.lvLatestSignal = new System.Windows.Forms.ListView();
-            this.lblFilter = new System.Windows.Forms.Label();
-            this.txtFilterId = new System.Windows.Forms.TextBox();
-            this.cmbFilterDir = new System.Windows.Forms.ComboBox();
-            this.chkGroup = new System.Windows.Forms.CheckBox();
-            this.btnClear = new System.Windows.Forms.Button();
-            this.lvPackets = new System.Windows.Forms.ListView();
+            this.chkPauseDisplay = new System.Windows.Forms.CheckBox();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.grpDevice.SuspendLayout();
@@ -66,7 +60,6 @@ namespace USBCANTool
             ((System.ComponentModel.ISupportInitialize)(this.numTxChannel)).BeginInit();
             this.grpRewrite.SuspendLayout();
             this.grpLatestSignal.SuspendLayout();
-            this.grpRx.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -392,6 +385,7 @@ namespace USBCANTool
             // 
             // grpLatestSignal
             // 
+            this.grpLatestSignal.Controls.Add(this.chkPauseDisplay);
             this.grpLatestSignal.Controls.Add(this.lvLatestSignal);
             this.grpLatestSignal.Location = new System.Drawing.Point(12, 334);
             this.grpLatestSignal.Name = "grpLatestSignal";
@@ -406,96 +400,22 @@ namespace USBCANTool
             this.lvLatestSignal.FullRowSelect = true;
             this.lvLatestSignal.GridLines = true;
             this.lvLatestSignal.HideSelection = false;
-            this.lvLatestSignal.Location = new System.Drawing.Point(15, 35);
+            this.lvLatestSignal.Location = new System.Drawing.Point(15, 42);
             this.lvLatestSignal.Name = "lvLatestSignal";
-            this.lvLatestSignal.Size = new System.Drawing.Size(845, 220);
+            this.lvLatestSignal.Size = new System.Drawing.Size(845, 213);
             this.lvLatestSignal.TabIndex = 1;
             this.lvLatestSignal.UseCompatibleStateImageBehavior = false;
             this.lvLatestSignal.View = System.Windows.Forms.View.Details;
             // 
-            // grpRx
+            // chkPauseDisplay
             // 
-            this.grpRx.Controls.Add(this.lvPackets);
-            this.grpRx.Controls.Add(this.btnClear);
-            this.grpRx.Controls.Add(this.chkGroup);
-            this.grpRx.Controls.Add(this.cmbFilterDir);
-            this.grpRx.Controls.Add(this.txtFilterId);
-            this.grpRx.Controls.Add(this.lblFilter);
-            this.grpRx.Location = new System.Drawing.Point(12, 334);
-            this.grpRx.Name = "grpRx";
-            this.grpRx.Size = new System.Drawing.Size(880, 328);
-            this.grpRx.TabIndex = 2;
-            this.grpRx.TabStop = false;
-            this.grpRx.Text = "Packets";
-            // 
-            // lblFilter
-            // 
-            this.lblFilter.AutoSize = true;
-            this.lblFilter.Location = new System.Drawing.Point(15, 24);
-            this.lblFilter.Name = "lblFilter";
-            this.lblFilter.Size = new System.Drawing.Size(59, 12);
-            this.lblFilter.TabIndex = 0;
-            this.lblFilter.Text = "Filter ID";
-            // 
-            // txtFilterId
-            // 
-            this.txtFilterId.Font = new System.Drawing.Font("Consolas", 9F);
-            this.txtFilterId.Location = new System.Drawing.Point(80, 20);
-            this.txtFilterId.Name = "txtFilterId";
-            this.txtFilterId.Size = new System.Drawing.Size(180, 22);
-            this.txtFilterId.TabIndex = 1;
-            this.txtFilterId.TextChanged += new System.EventHandler(this.FilterChanged);
-            // 
-            // cmbFilterDir
-            // 
-            this.cmbFilterDir.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbFilterDir.FormattingEnabled = true;
-            this.cmbFilterDir.Items.AddRange(new object[] {
-            "All",
-            "RX",
-            "TX"});
-            this.cmbFilterDir.Location = new System.Drawing.Point(270, 21);
-            this.cmbFilterDir.Name = "cmbFilterDir";
-            this.cmbFilterDir.Size = new System.Drawing.Size(70, 20);
-            this.cmbFilterDir.TabIndex = 2;
-            this.cmbFilterDir.SelectedIndex = 0;
-            this.cmbFilterDir.SelectedIndexChanged += new System.EventHandler(this.FilterChanged);
-            // 
-            // chkGroup
-            // 
-            this.chkGroup.AutoSize = true;
-            this.chkGroup.Location = new System.Drawing.Point(355, 23);
-            this.chkGroup.Name = "chkGroup";
-            this.chkGroup.Size = new System.Drawing.Size(84, 16);
-            this.chkGroup.TabIndex = 3;
-            this.chkGroup.Text = "Group show";
-            this.chkGroup.UseVisualStyleBackColor = true;
-            this.chkGroup.CheckedChanged += new System.EventHandler(this.FilterChanged);
-            // 
-            // btnClear
-            // 
-            this.btnClear.Location = new System.Drawing.Point(770, 18);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(90, 26);
-            this.btnClear.TabIndex = 4;
-            this.btnClear.Text = "Clear";
-            this.btnClear.UseVisualStyleBackColor = true;
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
-            // 
-            // lvPackets
-            // 
-            this.lvPackets.Font = new System.Drawing.Font("Consolas", 9F);
-            this.lvPackets.FullRowSelect = true;
-            this.lvPackets.GridLines = true;
-            this.lvPackets.HideSelection = false;
-            this.lvPackets.Location = new System.Drawing.Point(15, 50);
-            this.lvPackets.Name = "lvPackets";
-            this.lvPackets.Size = new System.Drawing.Size(845, 262);
-            this.lvPackets.TabIndex = 5;
-            this.lvPackets.UseCompatibleStateImageBehavior = false;
-            this.lvPackets.View = System.Windows.Forms.View.Details;
-            this.lvPackets.VirtualMode = true;
-            this.lvPackets.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.lvPackets_RetrieveVirtualItem);
+            this.chkPauseDisplay.AutoSize = true;
+            this.chkPauseDisplay.Location = new System.Drawing.Point(15, 18);
+            this.chkPauseDisplay.Name = "chkPauseDisplay";
+            this.chkPauseDisplay.Size = new System.Drawing.Size(96, 16);
+            this.chkPauseDisplay.TabIndex = 3;
+            this.chkPauseDisplay.Text = "Pause display";
+            this.chkPauseDisplay.UseVisualStyleBackColor = true;
             // 
             // statusStrip
             // 
@@ -522,7 +442,6 @@ namespace USBCANTool
             this.ClientSize = new System.Drawing.Size(944, 650);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.grpLatestSignal);
-            this.Controls.Add(this.grpRx);
             this.Controls.Add(this.grpRewrite);
             this.Controls.Add(this.grpDevice);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -539,8 +458,6 @@ namespace USBCANTool
             this.grpRewrite.ResumeLayout(false);
             this.grpRewrite.PerformLayout();
             this.grpLatestSignal.ResumeLayout(false);
-            this.grpRx.ResumeLayout(false);
-            this.grpRx.PerformLayout();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -580,15 +497,9 @@ namespace USBCANTool
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnOpen;
         private System.Windows.Forms.GroupBox grpRewrite;
-        private System.Windows.Forms.GroupBox grpRx;
         private System.Windows.Forms.GroupBox grpLatestSignal;
         private System.Windows.Forms.ListView lvLatestSignal;
-        private System.Windows.Forms.Label lblFilter;
-        private System.Windows.Forms.TextBox txtFilterId;
-        private System.Windows.Forms.ComboBox cmbFilterDir;
-        private System.Windows.Forms.CheckBox chkGroup;
-        private System.Windows.Forms.Button btnClear;
-        private System.Windows.Forms.ListView lvPackets;
+        private System.Windows.Forms.CheckBox chkPauseDisplay;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
     }

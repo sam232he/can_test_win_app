@@ -1,0 +1,139 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU WaterPumpEDU
+
+
+BO_ 514 PCU_P01_Command: 8 PCU
+ SG_ P01_PCU_D_DutyCycleSetpoint : 15|8@0+ (0.4,0) [0|100] "%"  WaterPumpEDU
+ SG_ P01_PCU_S_EnableCommand : 1|2@0+ (1,0) [0|3] ""  WaterPumpEDU
+
+BO_ 530 WaterPumpEDU_P00_Status: 8 WaterPumpEDU
+ SG_ P00_WaterPumpEDU_D_DutyCycleFeed : 15|8@0+ (0.4,0) [0|100] "%"  PCU
+ SG_ P00_WaterPumpEDU_S_WorkingModeSt : 7|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P00_WaterPumpEDU_F_FaultLevel : 5|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P00_WaterPumpEDU_F_FaultCode : 3|4@0+ (1,0) [0|15] ""  PCU
+
+
+
+CM_ SG_ 514 P01_PCU_D_DutyCycleSetpoint "Duty cycle set point";
+CM_ SG_ 514 P01_PCU_S_EnableCommand "Enable command";
+CM_ SG_ 530 P00_WaterPumpEDU_D_DutyCycleFeed "Duty cycle feedback";
+CM_ SG_ 530 P00_WaterPumpEDU_S_WorkingModeSt "Working mode state";
+CM_ SG_ 530 P00_WaterPumpEDU_F_FaultLevel "Fault level";
+CM_ SG_ 530 P00_WaterPumpEDU_F_FaultCode "Fault code (fault group)";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ SG_  "SigType" ENUM  "Default","Range","RangeSigned","ASCII","Discrete","Control","ReferencePGN","DTC","StringDelimiter","StringLength","StringLengthControl","MessageCounter","MessageChecksum";
+BA_DEF_ SG_  "GenSigILSupport" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ BO_  "GenMsgFastOnStart" INT 0 100000;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 3600000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 1000000;
+BA_DEF_ SG_  "GenSigStartValue" INT 0 2147483647;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 100000;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclic","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","IfActive","noMsgSendType";
+BA_DEF_ BO_  "GenMsgRequestable" INT 0 1;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_ SG_  "SPN" INT 0 524287;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "ProtocolType" STRING ;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZone" "";
+BA_DEF_DEF_  "FaultAction" "";
+BA_DEF_DEF_  "FaultTrigger" "";
+BA_DEF_DEF_  "SigType" "Default";
+BA_DEF_DEF_  "GenSigILSupport" "Yes";
+BA_DEF_DEF_  "GenSigSendType" "NoSigSendType";
+BA_DEF_DEF_  "GenMsgFastOnStart" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "GenMsgSendType" "noMsgSendType";
+BA_DEF_DEF_  "GenMsgRequestable" 1;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "ProtocolType" "CAN";
+BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN";
+BA_ "DBName" "WaterPumpEDU";
+BA_ "GenMsgSendType" BO_ 514 0;
+BA_ "GenMsgCycleTime" BO_ 514 200;
+BA_ "VFrameFormat" BO_ 514 0;
+BA_ "TXRX" BO_ 514 1;
+BA_ "VFrameFormat" BO_ 530 0;
+BA_ "GenMsgSendType" BO_ 530 0;
+BA_ "GenMsgCycleTime" BO_ 530 200;
+BA_ "TXRX" BO_ 530 0;
+BA_ "SPN" SG_ 514 P01_PCU_D_DutyCycleSetpoint 2031;
+BA_ "GenSigSendType" SG_ 514 P01_PCU_D_DutyCycleSetpoint 0;
+BA_ "SPN" SG_ 514 P01_PCU_S_EnableCommand 2030;
+BA_ "GenSigSendType" SG_ 514 P01_PCU_S_EnableCommand 0;
+BA_ "GenSigSendType" SG_ 530 P00_WaterPumpEDU_D_DutyCycleFeed 0;
+BA_ "SPN" SG_ 530 P00_WaterPumpEDU_D_DutyCycleFeed 403;
+BA_ "SystemSignalLongSymbol" SG_ 530 P00_WaterPumpEDU_D_DutyCycleFeed "P00_WaterPumpEDU_D_DutyCycleFeedback";
+BA_ "GenSigSendType" SG_ 530 P00_WaterPumpEDU_S_WorkingModeSt 0;
+BA_ "SPN" SG_ 530 P00_WaterPumpEDU_S_WorkingModeSt 402;
+BA_ "SystemSignalLongSymbol" SG_ 530 P00_WaterPumpEDU_S_WorkingModeSt "P00_WaterPumpEDU_S_WorkingModeState";
+BA_ "GenSigSendType" SG_ 530 P00_WaterPumpEDU_F_FaultLevel 0;
+BA_ "SPN" SG_ 530 P00_WaterPumpEDU_F_FaultLevel 401;
+BA_ "GenSigSendType" SG_ 530 P00_WaterPumpEDU_F_FaultCode 0;
+BA_ "SPN" SG_ 530 P00_WaterPumpEDU_F_FaultCode 400;
+VAL_ 514 P01_PCU_S_EnableCommand 3 "Reserved" 2 "Reserved" 1 "On" 0 "Off" ;
+VAL_ 530 P00_WaterPumpEDU_S_WorkingModeSt 3 "Reserved" 2 "Reserved" 1 "On" 0 "Off" ;
+VAL_ 530 P00_WaterPumpEDU_F_FaultLevel 3 "Fault level 3" 2 "Fault level 2" 1 "Fault level 1" 0 "No fault" ;
+VAL_ 530 P00_WaterPumpEDU_F_FaultCode 15 "Null" 8 "CAN signal lost fault" 7 "Low voltage fault" 6 "Locked rotor fault" 5 "Over temperature fault" 4 "Over voltage fault" 3 "No loading fault" 2 "Over current fault" 1 "Short circuit fault" 0 "No fault" ;
+

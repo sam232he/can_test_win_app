@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -27,16 +28,15 @@ namespace USBCANTool
         private Color _ledColor = Color.Gray;
         private readonly object _canLock = new object();
         private readonly object _rewriteLock = new object();
-        private readonly object _pendingLock = new object();
+        private static readonly object BmsCounterLock = new object();
+        private static byte _bmsCounter;
         private readonly object _latestSignalLock = new object();
-        private readonly Queue<CanPacket> _pending = new Queue<CanPacket>();
         private readonly LatestSignal[] _latestSignals = new LatestSignal[RewriteSlotCount];
         private ListViewItem[] _slotSignalItems;
         private Thread _rxThread;
         private volatile bool _bridgeRunning;
         private volatile bool _bridgeTxFailed;
         private int _txFailStreak;
-        private DateTime _lastViewRebuild;
         private ZlgCanApi.ZCAN_Receive_Data[] _rxCanBuf;
         private ZlgCanApi.ZCAN_ReceiveFD_Data[] _rxFdBuf;
         private ZlgCanApi.ZCAN_Transmit_Data[] _txCanBuf;
@@ -52,8 +52,6 @@ namespace USBCANTool
         private int _echoBHead;
         private readonly object _echoLock = new object();
         private const int RxBatch = 512;
-        private const int MaxPending = 2000;
-        private const int MaxDrainPerTick = 400;
 
         private const int RewriteSlotCount = 10;
         private CheckBox[] _rewriteEnable;
@@ -61,22 +59,13 @@ namespace USBCANTool
         private ComboBox[] _rewriteFrame;
         private TextBox[] _rewriteId;
         private TextBox[] _rewriteData;
+        private Button[] _rewriteDbc;
         private RewriteSlot[] _rewriteSlots = new RewriteSlot[RewriteSlotCount];
         private bool _formattingRewrite;
         private bool _updatingUi;
         private bool _loadingSettings;
         private System.Windows.Forms.Timer _saveTimer;
 
-        private readonly List<CanPacket> _packets = new List<CanPacket>();
-        private readonly List<CanPacket> _view = new List<CanPacket>();
-        private readonly Dictionary<string, CanPacket> _groups = new Dictionary<string, CanPacket>();
-        private readonly List<CanPacket> _groupView = new List<CanPacket>();
-        private HashSet<uint> _filterIds;
-        private bool _filterIdInvalid;
-
-        private const int MaxPackets = 10000;
-        private const int PacketTrimChunk = 2000;
-        private bool _groupsNeedSort;
         private const uint DefaultDeviceType = ZlgCanApi.ZCAN_USBCAN2;
         private const string DefaultBaud = "500000";
 
@@ -123,10 +112,8 @@ namespace USBCANTool
             InitDeviceList();
             InitBaudList();
             InitDataBaudList();
-            InitPacketView();
-            InitLatestSignalView();
             InitRewriteSlots();
-            ParseFilterIds();
+            InitLatestSignalView();
             InitRxBuffers();
             _saveTimer = new System.Windows.Forms.Timer { Interval = 400 };
             _saveTimer.Tick += SaveTimer_Tick;
@@ -143,10 +130,11 @@ namespace USBCANTool
             cmbRxIso.SelectedIndexChanged += SettingsChanged;
             cmbTxIso.SelectedIndexChanged += SettingsChanged;
             LoadSettings();
-            grpRx.Visible = false;
+            UpdateLatestSignalRows();
+            chkPauseDisplay.CheckedChanged += chkPauseDisplay_CheckedChanged;
             statusStrip.Dock = DockStyle.Bottom;
             ClientSize = new Size(944, 650);
-            _uiTimer = new System.Windows.Forms.Timer { Interval = 200 };
+            _uiTimer = new System.Windows.Forms.Timer { Interval = 500 };
             _uiTimer.Tick += UiTimer_Tick;
             UpdateUiState(false);
 
@@ -163,7 +151,7 @@ namespace USBCANTool
             var content = new Panel
             {
                 AutoScroll = true,
-                AutoScrollMinSize = new Size(904, 620),
+                AutoScrollMinSize = new Size(1044, 620),
                 Dock = DockStyle.Fill
             };
             Controls.Remove(grpDevice);
@@ -172,22 +160,9 @@ namespace USBCANTool
             content.Controls.Add(grpDevice);
             content.Controls.Add(grpRewrite);
             content.Controls.Add(grpLatestSignal);
+            grpLatestSignal.Location = new Point(12, 334);
             Controls.Add(content);
             statusStrip.BringToFront();
-        }
-
-        private void InitPacketView()
-        {
-            lvPackets.Columns.Clear();
-            lvPackets.Columns.Add("Time", 100);
-            lvPackets.Columns.Add("Dir", 40);
-            lvPackets.Columns.Add("Ch", 35);
-            lvPackets.Columns.Add("ID", 90);
-            lvPackets.Columns.Add("Type", 80);
-            lvPackets.Columns.Add("DLC", 40);
-            lvPackets.Columns.Add("Data", 220);
-            lvPackets.Columns.Add("Count", 55);
-            lvPackets.Columns.Add("HW ts", 80);
         }
 
         private void InitLatestSignalView()
@@ -208,7 +183,6 @@ namespace USBCANTool
                 for (int column = 1; column < lvLatestSignal.Columns.Count; column++)
                     item.SubItems.Add("");
                 _slotSignalItems[i] = item;
-                lvLatestSignal.Items.Add(item);
             }
         }
 
@@ -219,31 +193,36 @@ namespace USBCANTool
             _rewriteFrame = new ComboBox[RewriteSlotCount];
             _rewriteId = new TextBox[RewriteSlotCount];
             _rewriteData = new TextBox[RewriteSlotCount];
+            _rewriteDbc = new Button[RewriteSlotCount];
 
             var font = new Font("Consolas", 9F);
             grpRewrite.Controls.Add(MakeHeader(12, 16, "En"));
             grpRewrite.Controls.Add(MakeHeader(40, 16, "ID"));
             grpRewrite.Controls.Add(MakeHeader(112, 16, "Fmt"));
             grpRewrite.Controls.Add(MakeHeader(170, 16, "Data (8 bytes)"));
-            grpRewrite.Controls.Add(MakeHeader(352, 16, "Mode"));
-            grpRewrite.Controls.Add(MakeHeader(432, 16, "En"));
-            grpRewrite.Controls.Add(MakeHeader(460, 16, "ID"));
-            grpRewrite.Controls.Add(MakeHeader(532, 16, "Fmt"));
-            grpRewrite.Controls.Add(MakeHeader(590, 16, "Data (8 bytes)"));
-            grpRewrite.Controls.Add(MakeHeader(772, 16, "Mode"));
+            grpRewrite.Size = new Size(1020, grpRewrite.Height);
+            grpRewrite.Controls.Add(MakeHeader(352, 16, "DBC"));
+            grpRewrite.Controls.Add(MakeHeader(412, 16, "Mode"));
+            grpRewrite.Controls.Add(MakeHeader(522, 16, "En"));
+            grpRewrite.Controls.Add(MakeHeader(550, 16, "ID"));
+            grpRewrite.Controls.Add(MakeHeader(622, 16, "Fmt"));
+            grpRewrite.Controls.Add(MakeHeader(680, 16, "Data (8 bytes)"));
+            grpRewrite.Controls.Add(MakeHeader(862, 16, "DBC"));
+            grpRewrite.Controls.Add(MakeHeader(922, 16, "Mode"));
 
             for (int i = 0; i < RewriteSlotCount; i++)
             {
                 int col = i / 5;
                 int row = i % 5;
-                int x = 12 + col * 420;
+                int x = 12 + col * 510;
                 int y = 34 + row * 26;
 
                 var chk = new CheckBox
                 {
                     Location = new Point(x, y + 2),
                     Size = new Size(22, 20),
-                    TabIndex = 20 + i * 5
+                    TabIndex = 20 + i * 5,
+                    Tag = i
                 };
                 chk.CheckedChanged += RewriteSlotChanged;
                 _rewriteEnable[i] = chk;
@@ -251,7 +230,7 @@ namespace USBCANTool
 
                 var mode = new Button
                 {
-                    Location = new Point(x + 340, y - 1),
+                    Location = new Point(x + 398, y - 1),
                     Size = new Size(72, 23),
                     TabIndex = 24 + i * 5,
                     Tag = i,
@@ -261,6 +240,19 @@ namespace USBCANTool
                 mode.Click += RewriteModeClicked;
                 _rewriteMode[i] = mode;
                 grpRewrite.Controls.Add(mode);
+
+                var dbc = new Button
+                {
+                    Location = new Point(x + 338, y - 1),
+                    Size = new Size(54, 23),
+                    TabIndex = 24 + i * 5,
+                    Tag = i,
+                    Text = "DBC",
+                    UseVisualStyleBackColor = true
+                };
+                dbc.Click += RewriteDbcClicked;
+                _rewriteDbc[i] = dbc;
+                grpRewrite.Controls.Add(dbc);
 
                 var txtId = new TextBox
                 {
@@ -305,6 +297,7 @@ namespace USBCANTool
                 grpRewrite.Controls.Add(txtData);
             }
 
+            UpdateRewriteDbcButtons();
             RebuildRewriteSlots();
         }
 
@@ -320,7 +313,12 @@ namespace USBCANTool
 
         private void RewriteSlotChanged(object sender, EventArgs e)
         {
+            var checkBox = sender as CheckBox;
+            if (checkBox != null && checkBox.Tag is int)
+                ClearLatestSignalSlot((int)checkBox.Tag);
+            UpdateRewriteDbcButtons();
             RebuildRewriteSlots();
+            UpdateLatestSignalRows();
         }
 
         private void RewriteModeClicked(object sender, EventArgs e)
@@ -342,7 +340,10 @@ namespace USBCANTool
                 ClampRewriteId(_rewriteId[index]);
             if (_rewriteData != null && index >= 0 && index < _rewriteData.Length && _rewriteData[index] != null)
                 FormatRewriteData(_rewriteData[index]);
+            ClearLatestSignalSlot(index);
+            UpdateRewriteDbcButtons();
             RebuildRewriteSlots();
+            UpdateLatestSignalRows();
         }
 
         private void RewriteIdChanged(object sender, EventArgs e)
@@ -354,7 +355,152 @@ namespace USBCANTool
             int index = (int)box.Tag;
             if (_rewriteData != null && index >= 0 && index < _rewriteData.Length && _rewriteData[index] != null)
                 FormatRewriteData(_rewriteData[index]);
+            ClearLatestSignalSlot(index);
+            UpdateRewriteDbcButtons();
             RebuildRewriteSlots();
+            UpdateLatestSignalRows();
+        }
+
+        private void UpdateRewriteDbcButtons()
+        {
+            if (_rewriteDbc == null)
+                return;
+
+            for (int i = 0; i < _rewriteDbc.Length; i++)
+            {
+                uint id;
+                bool hasId = _rewriteId[i] != null &&
+                    !string.IsNullOrWhiteSpace(_rewriteId[i].Text) &&
+                    TryParseCanId(_rewriteId[i].Text,
+                        _rewriteFrame[i] != null && _rewriteFrame[i].SelectedIndex == 1
+                            ? ZlgCanApi.CAN_EFF_MASK
+                            : ZlgCanApi.CAN_SFF_MASK,
+                        out id);
+                _rewriteDbc[i].Enabled = _rewriteEnable[i] != null && _rewriteEnable[i].Checked && hasId;
+            }
+        }
+
+        private void RewriteDbcClicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            if (button == null || !(button.Tag is int))
+                return;
+            int index = (int)button.Tag;
+            if (index < 0 || index >= RewriteSlotCount ||
+                _rewriteEnable[index] == null || !_rewriteEnable[index].Checked)
+                return;
+
+            bool extended = _rewriteFrame[index] != null && _rewriteFrame[index].SelectedIndex == 1;
+            uint id;
+            uint maxId = extended ? ZlgCanApi.CAN_EFF_MASK : ZlgCanApi.CAN_SFF_MASK;
+            if (_rewriteId[index] == null ||
+                !TryParseCanId(_rewriteId[index].Text, maxId, out id) ||
+                string.IsNullOrWhiteSpace(_rewriteId[index].Text))
+            {
+                MessageBox.Show(this, "Enter a valid CAN ID before searching the DBC database.",
+                    "DBC lookup", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string databaseDirectory = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory, "Database");
+            List<DbcMessage> matches = new List<DbcMessage>();
+            var errors = new List<string>();
+            int hiddenManagedSignals = 0;
+            try
+            {
+                Directory.CreateDirectory(databaseDirectory);
+                string[] files = Directory.GetFiles(databaseDirectory, "*.dbc", SearchOption.AllDirectories);
+                foreach (string file in files)
+                {
+                    try
+                    {
+                        foreach (DbcMessage message in DbcFileParser.Parse(file))
+                        {
+                            if (message.CanId != id || message.IsExtended != extended)
+                                continue;
+                            message.SourceFile = file;
+                            hiddenManagedSignals += message.Signals.RemoveAll(
+                                signal => SignalTouchesManagedByte(id, signal));
+                            matches.Add(message);
+                        }
+                    }
+                    catch (IOException ex)
+                    {
+                        errors.Add(Path.GetFileName(file) + ": " + ex.Message);
+                    }
+                    catch (UnauthorizedAccessException ex)
+                    {
+                        errors.Add(Path.GetFileName(file) + ": " + ex.Message);
+                    }
+                    catch (FormatException ex)
+                    {
+                        errors.Add(Path.GetFileName(file) + ": " + ex.Message);
+                    }
+                }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show(this, "Could not search the DBC database folder.\r\n" + ex.Message,
+                    "DBC lookup", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                MessageBox.Show(this, "Access to the DBC database folder was denied.\r\n" + ex.Message,
+                    "DBC lookup", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (matches.Count == 0)
+            {
+                string message = "No matching " + (extended ? "extended" : "standard") +
+                    " message for ID 0x" + id.ToString(extended ? "X8" : "X3") +
+                    " was found in:\r\n" + databaseDirectory;
+                if (errors.Count > 0)
+                    message += "\r\n\r\nSome DBC files could not be searched:\r\n" +
+                        string.Join("\r\n", errors.GetRange(0, Math.Min(errors.Count, 5)).ToArray());
+                MessageBox.Show(this, message, "DBC lookup", MessageBoxButtons.OK,
+                    errors.Count > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
+                return;
+            }
+
+            var notices = new List<string>();
+            if (IsBmsCounterCanId(id))
+                notices.Add("Counter byte 6 and CRC byte 7 are initialized to zero here; they are generated on transmit.");
+            else if (IsCrcCanId(id))
+                notices.Add("CRC byte 7 is initialized to zero here and recalculated for the payload.");
+            if (hiddenManagedSignals > 0)
+                notices.Add(hiddenManagedSignals + " DBC signal(s) overlapping auto-generated counter/CRC bytes are hidden.");
+            if (errors.Count > 0)
+                notices.Add(errors.Count + " DBC file(s) could not be searched.");
+            string scanWarning = string.Join(" ", notices.ToArray());
+            byte[] seedData = new byte[8];
+            byte[] enteredData = ParseDataBytes(_rewriteData[index].Text);
+            Array.Copy(enteredData, seedData, Math.Min(seedData.Length, enteredData.Length));
+            if (IsCrcCanId(id))
+                seedData[7] = 0;
+            if (IsBmsCounterCanId(id))
+                seedData[6] = 0;
+
+            using (var builder = new DbcSignalBuilderForm(matches, data =>
+            {
+                _rewriteMode[index].Text = "Set";
+                _rewriteData[index].Text = string.Join(" ",
+                    Array.ConvertAll(data, value => value.ToString("X2", CultureInfo.InvariantCulture)));
+                RebuildRewriteSlots();
+            }, scanWarning, seedData))
+            {
+                builder.ShowDialog(this);
+            }
+
+            if (errors.Count > 0)
+            {
+                MessageBox.Show(this,
+                    "Some DBC files could not be searched:\r\n" +
+                    string.Join("\r\n", errors.GetRange(0, Math.Min(errors.Count, 5)).ToArray()),
+                    "DBC lookup", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void RewriteDataChanged(object sender, EventArgs e)
@@ -421,10 +567,12 @@ namespace USBCANTool
             return null;
         }
 
-        private int TryRewriteCan(ref ZlgCanApi.can_frame frame, out string receivedData, out string forwardedData)
+        private int TryRewriteCan(ref ZlgCanApi.can_frame frame, out string receivedData,
+            out string forwardedData, out bool applyCounter)
         {
             receivedData = CanDataToHex(frame, frame.can_dlc);
             forwardedData = null;
+            applyCounter = false;
             if (ZlgCanApi.IS_RTR(frame.can_id) || ZlgCanApi.IS_ERR(frame.can_id))
                 return 0;
             RewriteSlot slot = TryGetRewriteSlot(ZlgCanApi.GET_ID(frame.can_id), ZlgCanApi.IS_EFF(frame.can_id));
@@ -433,6 +581,7 @@ namespace USBCANTool
 
             if (slot.UseUserData)
             {
+                applyCounter = true;
                 fixed (byte* data = frame.data)
                 {
                     for (int i = 0; i < 8; i++)
@@ -444,10 +593,12 @@ namespace USBCANTool
             return slot.Index;
         }
 
-        private int TryRewriteFd(ref ZlgCanApi.canfd_frame frame, out string receivedData, out string forwardedData)
+        private int TryRewriteFd(ref ZlgCanApi.canfd_frame frame, out string receivedData,
+            out string forwardedData, out bool applyCounter)
         {
             receivedData = FdDataToHex(frame, frame.len);
             forwardedData = null;
+            applyCounter = false;
             if (ZlgCanApi.IS_ERR(frame.can_id))
                 return 0;
             RewriteSlot slot = TryGetRewriteSlot(ZlgCanApi.GET_ID(frame.can_id), ZlgCanApi.IS_EFF(frame.can_id));
@@ -456,6 +607,7 @@ namespace USBCANTool
 
             if (slot.UseUserData)
             {
+                applyCounter = true;
                 fixed (byte* data = frame.data)
                 {
                     for (int i = 0; i < 8; i++)
@@ -472,6 +624,8 @@ namespace USBCANTool
         private void UpdateUiState(bool open)
         {
             _isOpen = open;
+            if (!open)
+                chkPauseDisplay.Checked = false;
             btnOpen.Enabled = !open;
             btnClose.Enabled = open;
             cmbRxDevice.Enabled = !open;
@@ -624,8 +778,7 @@ namespace USBCANTool
                     _echoAHead = 0;
                     _echoBHead = 0;
                 }
-                lock (_pendingLock)
-                    _pending.Clear();
+                ClearLatestSignalDisplay();
                 try { ZlgCanApi.ZCAN_ClearBuffer(_rxChannelHandle); } catch { }
                 try { ZlgCanApi.ZCAN_ClearBuffer(_txChannelHandle); } catch { }
                 UpdateUiState(true);
@@ -675,8 +828,7 @@ namespace USBCANTool
             if (_uiTimer != null)
                 _uiTimer.Stop();
             StopBridgeThreads();
-            lock (_pendingLock)
-                _pending.Clear();
+            ClearLatestSignalDisplay();
             CloseNative(true);
             UpdateUiState(false);
             SetIdle("Closed");
@@ -839,44 +991,6 @@ namespace USBCANTool
             return true;
         }
 
-        private static CanPacket MakeCanPacket(string dir, uint channel, ZlgCanApi.can_frame frame, ulong ts, bool isFd, bool brs)
-        {
-            return new CanPacket
-            {
-                Time = DateTime.Now,
-                Dir = dir,
-                Channel = channel,
-                Id = ZlgCanApi.GET_ID(frame.can_id),
-                Extended = ZlgCanApi.IS_EFF(frame.can_id),
-                Rtr = ZlgCanApi.IS_RTR(frame.can_id),
-                IsFd = isFd,
-                Brs = brs,
-                Dlc = frame.can_dlc > 8 ? (byte)8 : frame.can_dlc,
-                Data = CanDataToHex(frame, frame.can_dlc > 8 ? 8 : frame.can_dlc),
-                HwTimestamp = ts,
-                Count = 1
-            };
-        }
-
-        private static CanPacket MakeFdPacket(string dir, uint channel, ZlgCanApi.canfd_frame frame, ulong ts)
-        {
-            return new CanPacket
-            {
-                Time = DateTime.Now,
-                Dir = dir,
-                Channel = channel,
-                Id = ZlgCanApi.GET_ID(frame.can_id),
-                Extended = ZlgCanApi.IS_EFF(frame.can_id),
-                Rtr = false,
-                IsFd = true,
-                Brs = (frame.flags & ZlgCanApi.CANFD_BRS) != 0,
-                Dlc = frame.len > 64 ? (byte)64 : frame.len,
-                Data = FdDataToHex(frame, frame.len > 64 ? 64 : frame.len),
-                HwTimestamp = ts,
-                Count = 1
-            };
-        }
-
         private static string CanDataToHex(ZlgCanApi.can_frame frame, int n)
         {
             if (n < 0) n = 0;
@@ -987,32 +1101,9 @@ namespace USBCANTool
         {
             if (!_isOpen)
                 return;
-            bool received = false;
-            for (int i = 0; i < MaxDrainPerTick; i++)
-            {
-                CanPacket packet;
-                lock (_pendingLock)
-                {
-                    if (_pending.Count == 0)
-                        break;
-                    packet = _pending.Dequeue();
-                }
-                AddPacket(packet);
-                received = true;
-            }
-            if (received)
-                RebuildView();
-            LatestSignal[] latestSignals;
-            lock (_latestSignalLock)
-            {
-                latestSignals = (LatestSignal[])_latestSignals.Clone();
-                Array.Clear(_latestSignals, 0, _latestSignals.Length);
-            }
-            for (int i = 0; i < latestSignals.Length; i++)
-            {
-                if (latestSignals[i] != null)
-                    UpdateLatestSignal(latestSignals[i]);
-            }
+
+            if (!chkPauseDisplay.Checked)
+                RefreshLatestSignalDisplay();
             if (_bridgeTxFailed)
             {
                 _bridgeTxFailed = false;
@@ -1020,14 +1111,77 @@ namespace USBCANTool
             }
         }
 
-        private void EnqueuePacket(CanPacket packet)
+        private void RefreshLatestSignalDisplay()
         {
-            lock (_pendingLock)
+            LatestSignal[] latestSignals;
+            lock (_latestSignalLock)
             {
-                while (_pending.Count >= MaxPending)
-                    _pending.Dequeue();
-                _pending.Enqueue(packet);
+                latestSignals = (LatestSignal[])_latestSignals.Clone();
+                Array.Clear(_latestSignals, 0, _latestSignals.Length);
             }
+            for (int i = 0; i < latestSignals.Length; i++)
+                if (latestSignals[i] != null)
+                    UpdateLatestSignal(latestSignals[i]);
+        }
+
+        private void chkPauseDisplay_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!chkPauseDisplay.Checked && _isOpen)
+                RefreshLatestSignalDisplay();
+        }
+
+        private void UpdateLatestSignalRows()
+        {
+            if (_slotSignalItems == null || _rewriteEnable == null)
+                return;
+
+            lvLatestSignal.BeginUpdate();
+            lvLatestSignal.Items.Clear();
+            for (int i = 0; i < _slotSignalItems.Length; i++)
+            {
+                if (_rewriteEnable[i] != null && _rewriteEnable[i].Checked)
+                {
+                    bool extended = _rewriteFrame[i] != null && _rewriteFrame[i].SelectedIndex == 1;
+                    uint id;
+                    if (_rewriteId[i] != null && TryParseCanId(_rewriteId[i].Text,
+                        extended ? ZlgCanApi.CAN_EFF_MASK : ZlgCanApi.CAN_SFF_MASK, out id))
+                    {
+                        _slotSignalItems[i].SubItems[3].Text =
+                            (extended ? "EXT " : "STD ") + "0x" +
+                            id.ToString(extended ? "X8" : "X3");
+                    }
+                    else
+                    {
+                        _slotSignalItems[i].SubItems[3].Text = "";
+                    }
+                    lvLatestSignal.Items.Add(_slotSignalItems[i]);
+                }
+            }
+            lvLatestSignal.EndUpdate();
+        }
+
+        private void ClearLatestSignalSlot(int index)
+        {
+            if (index < 0 || index >= _latestSignals.Length)
+                return;
+
+            lock (_latestSignalLock)
+                _latestSignals[index] = null;
+
+            if (_slotSignalItems == null || _slotSignalItems[index] == null)
+                return;
+            for (int i = 1; i < _slotSignalItems[index].SubItems.Count; i++)
+                _slotSignalItems[index].SubItems[i].Text = "";
+        }
+
+        private void ClearLatestSignalDisplay()
+        {
+            lock (_latestSignalLock)
+                Array.Clear(_latestSignals, 0, _latestSignals.Length);
+
+            for (int i = 0; i < _latestSignals.Length; i++)
+                ClearLatestSignalSlot(i);
+            UpdateLatestSignalRows();
         }
 
         private bool PollSide(IntPtr src, IntPtr dest, bool srcProtocolFd, bool destProtocolFd)
@@ -1057,14 +1211,12 @@ namespace USBCANTool
                 if (IsOurEcho(src, f.can_id, data, f.can_dlc))
                     continue;
                 any = true;
-                EnqueuePacket(MakeCanPacket(src == _rxChannelHandle ? "RX" : "TX",
-                    src == _rxChannelHandle ? _rxChannelIndex : _txChannelIndex,
-                    f, _rxCanBuf[i].timestamp, false, false));
                 string receivedData;
                 string forwardedData;
-                int slotIndex = TryRewriteCan(ref f, out receivedData, out forwardedData);
+                bool applyCounter;
+                int slotIndex = TryRewriteCan(ref f, out receivedData, out forwardedData, out applyCounter);
                 EnsureMinimumCanLength(ref f);
-                ApplyBmsCrc(ref f);
+                ApplyBmsCrc(ref f, applyCounter);
                 if (slotIndex != 0)
                     forwardedData = CanDataToHex(f, f.can_dlc);
                 bool sent = ForwardCan(dest, f);
@@ -1103,17 +1255,15 @@ namespace USBCANTool
                 if (IsOurEcho(src, f.can_id, data, f.len))
                     continue;
                 any = true;
-                EnqueuePacket(MakeFdPacket(src == _rxChannelHandle ? "RX" : "TX",
-                    src == _rxChannelHandle ? _rxChannelIndex : _txChannelIndex,
-                    f, _rxFdBuf[i].timestamp));
                 string receivedData;
                 string forwardedData;
-                int slotIndex = TryRewriteFd(ref f, out receivedData, out forwardedData);
+                bool applyCounter;
+                int slotIndex = TryRewriteFd(ref f, out receivedData, out forwardedData, out applyCounter);
                 bool sent;
                 if (destProtocolFd)
                 {
                     EnsureMinimumFdLength(ref f);
-                    ApplyBmsCrc(ref f);
+                    ApplyBmsCrc(ref f, applyCounter);
                     forwardedData = FdDataToHex(f, f.len);
                     sent = ForwardFd(dest, f);
                     if (sent)
@@ -1123,7 +1273,7 @@ namespace USBCANTool
                 {
                     var classic = FdToClassic(f);
                     EnsureMinimumCanLength(ref classic);
-                    ApplyBmsCrc(ref classic);
+                    ApplyBmsCrc(ref classic, applyCounter);
                     forwardedData = CanDataToHex(classic, classic.can_dlc);
                     sent = ForwardCan(dest, classic);
                     if (sent)
@@ -1161,7 +1311,9 @@ namespace USBCANTool
 
         private void UpdateLatestSignal(LatestSignal entry)
         {
-            if (entry.Slot < 1 || entry.Slot > _slotSignalItems.Length)
+            if (entry.Slot < 1 || entry.Slot > _slotSignalItems.Length ||
+                _rewriteEnable[entry.Slot - 1] == null ||
+                !_rewriteEnable[entry.Slot - 1].Checked)
                 return;
             ListViewItem item = _slotSignalItems[entry.Slot - 1];
             item.SubItems[1].Text = entry.Time.ToString("HH:mm:ss.fff");
@@ -1340,6 +1492,37 @@ namespace USBCANTool
             }
         }
 
+        private static bool IsBmsCounterCanId(uint canId)
+        {
+            if (ZlgCanApi.IS_EFF(canId) || ZlgCanApi.IS_RTR(canId) || ZlgCanApi.IS_ERR(canId))
+                return false;
+
+            switch (ZlgCanApi.GET_ID(canId))
+            {
+                case 0x61B:
+                case 0x64B:
+                case 0x62B:
+                case 0x63B:
+                case 0x66B:
+                case 0x67B:
+                case 0x6AB:
+                case 0x61A:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private static byte GetNextBmsCounter()
+        {
+            lock (BmsCounterLock)
+            {
+                byte counter = _bmsCounter;
+                _bmsCounter++;
+                return counter;
+            }
+        }
+
         private static byte CalculateBmsCrc(byte* data, int length)
         {
             byte crc = 0x00;
@@ -1369,6 +1552,24 @@ namespace USBCANTool
             return IsBmsCrcCanId(canId) || IsDcdcCrcCanId(canId);
         }
 
+        private static bool SignalTouchesManagedByte(uint canId, DbcSignal signal)
+        {
+            int position = signal.StartBit;
+            for (int bit = 0; bit < signal.BitLength; bit++)
+            {
+                int byteIndex = position / 8;
+                if ((byteIndex == 7 && IsCrcCanId(canId)) ||
+                    (byteIndex == 6 && IsBmsCounterCanId(canId)))
+                    return true;
+
+                if (signal.IsLittleEndian)
+                    position++;
+                else
+                    position = (position & 7) == 0 ? position + 15 : position - 1;
+            }
+            return false;
+        }
+
         private static byte CalculateCrc(uint canId, byte* data, int length)
         {
             return IsDcdcCrcCanId(canId)
@@ -1376,24 +1577,28 @@ namespace USBCANTool
                 : CalculateBmsCrc(data, length);
         }
 
-        private static void ApplyBmsCrc(ref ZlgCanApi.can_frame frame)
+        private static void ApplyBmsCrc(ref ZlgCanApi.can_frame frame, bool applyCounter)
         {
             if (!IsCrcCanId(frame.can_id) || frame.can_dlc != 8)
                 return;
 
             fixed (byte* data = frame.data)
             {
+                if (applyCounter && IsBmsCounterCanId(frame.can_id))
+                    data[6] = GetNextBmsCounter();
                 data[7] = CalculateCrc(frame.can_id, data, frame.can_dlc);
             }
         }
 
-        private static void ApplyBmsCrc(ref ZlgCanApi.canfd_frame frame)
+        private static void ApplyBmsCrc(ref ZlgCanApi.canfd_frame frame, bool applyCounter)
         {
             if (!IsCrcCanId(frame.can_id) || frame.len != 8)
                 return;
 
             fixed (byte* data = frame.data)
             {
+                if (applyCounter && IsBmsCounterCanId(frame.can_id))
+                    data[6] = GetNextBmsCounter();
                 data[7] = CalculateCrc(frame.can_id, data, frame.len);
             }
         }
@@ -1472,226 +1677,6 @@ namespace USBCANTool
             {
                 return false;
             }
-        }
-
-        private void AddPacket(CanPacket packet)
-        {
-            _packets.Add(packet);
-            UpdateGroup(packet);
-            if (_packets.Count > MaxPackets)
-                TrimPackets();
-        }
-
-        private void UpdateGroup(CanPacket packet)
-        {
-            string key = packet.GroupKey;
-            CanPacket grouped;
-            if (_groups.TryGetValue(key, out grouped))
-            {
-                grouped.Time = packet.Time;
-                grouped.Dlc = packet.Dlc;
-                grouped.Data = packet.Data;
-                grouped.HwTimestamp = packet.HwTimestamp;
-                grouped.Count++;
-                return;
-            }
-
-            _groups[key] = packet.Clone();
-            _groupsNeedSort = true;
-        }
-
-        private void TrimPackets()
-        {
-            int keep = MaxPackets - PacketTrimChunk;
-            if (keep < 1)
-                keep = MaxPackets;
-            int drop = _packets.Count - keep;
-            if (drop <= 0)
-                return;
-            _packets.RemoveRange(0, drop);
-            RebuildGroupsFromPackets();
-        }
-
-        private void RebuildGroupsFromPackets()
-        {
-            _groups.Clear();
-            for (int i = 0; i < _packets.Count; i++)
-            {
-                CanPacket packet = _packets[i];
-                string key = packet.GroupKey;
-                CanPacket grouped;
-                if (_groups.TryGetValue(key, out grouped))
-                {
-                    grouped.Time = packet.Time;
-                    grouped.Dlc = packet.Dlc;
-                    grouped.Data = packet.Data;
-                    grouped.HwTimestamp = packet.HwTimestamp;
-                    grouped.Count++;
-                }
-                else
-                {
-                    var clone = packet.Clone();
-                    clone.Count = 1;
-                    _groups[key] = clone;
-                }
-            }
-            _groupsNeedSort = true;
-        }
-
-        private void FilterChanged(object sender, EventArgs e)
-        {
-            ParseFilterIds();
-            _groupsNeedSort = true;
-            RebuildView();
-            ScheduleSave();
-        }
-
-        private void ParseFilterIds()
-        {
-            _filterIdInvalid = false;
-            _filterIds = null;
-            string raw = txtFilterId.Text;
-            if (string.IsNullOrWhiteSpace(raw))
-                return;
-
-            var set = new HashSet<uint>();
-            string[] parts = raw.Split(new[] { ',', ' ', ';', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string part in parts)
-            {
-                string s = part.Trim();
-                if (s.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-                    s = s.Substring(2);
-                uint id;
-                if (!uint.TryParse(s, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out id))
-                {
-                    _filterIdInvalid = true;
-                    _filterIds = new HashSet<uint>();
-                    return;
-                }
-                set.Add(id);
-            }
-            _filterIds = set;
-        }
-
-        private bool PassesFilter(CanPacket p)
-        {
-            if (_filterIdInvalid)
-                return false;
-            if (_filterIds != null && !_filterIds.Contains(p.Id))
-                return false;
-            if (cmbFilterDir.SelectedIndex == 1 && p.Dir != "RX")
-                return false;
-            if (cmbFilterDir.SelectedIndex == 2 && p.Dir != "TX")
-                return false;
-            return true;
-        }
-
-        private bool HasActiveFilter()
-        {
-            return _filterIdInvalid || _filterIds != null || cmbFilterDir.SelectedIndex != 0;
-        }
-
-        private void RebuildView()
-        {
-            _view.Clear();
-            _groupView.Clear();
-
-            if (chkGroup.Checked)
-            {
-                if (_groupsNeedSort || _groupView.Count == 0 || HasActiveFilter())
-                {
-                    _groupView.Clear();
-                    foreach (var kv in _groups)
-                    {
-                        if (PassesFilter(kv.Value))
-                            _groupView.Add(kv.Value);
-                    }
-                    _groupView.Sort((a, b) => a.Id.CompareTo(b.Id));
-                    _groupsNeedSort = false;
-                }
-                lvPackets.VirtualListSize = _groupView.Count;
-            }
-            else if (HasActiveFilter())
-            {
-                for (int i = 0; i < _packets.Count; i++)
-                {
-                    if (PassesFilter(_packets[i]))
-                        _view.Add(_packets[i]);
-                }
-                lvPackets.VirtualListSize = _view.Count;
-            }
-            else
-            {
-                lvPackets.VirtualListSize = _packets.Count;
-            }
-
-            lvPackets.Invalidate();
-            DateTime now = DateTime.Now;
-            if (lvPackets.VirtualListSize > 0 && !chkGroup.Checked &&
-                (now - _lastViewRebuild).TotalMilliseconds >= 80)
-            {
-                _lastViewRebuild = now;
-                lvPackets.EnsureVisible(lvPackets.VirtualListSize - 1);
-            }
-        }
-
-        private void lvPackets_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
-        {
-            CanPacket p;
-            if (chkGroup.Checked)
-            {
-                if (e.ItemIndex < 0 || e.ItemIndex >= _groupView.Count)
-                {
-                    e.Item = new ListViewItem("");
-                    return;
-                }
-                p = _groupView[e.ItemIndex];
-            }
-            else if (HasActiveFilter())
-            {
-                if (e.ItemIndex < 0 || e.ItemIndex >= _view.Count)
-                {
-                    e.Item = new ListViewItem("");
-                    return;
-                }
-                p = _view[e.ItemIndex];
-            }
-            else
-            {
-                if (e.ItemIndex < 0 || e.ItemIndex >= _packets.Count)
-                {
-                    e.Item = new ListViewItem("");
-                    return;
-                }
-                p = _packets[e.ItemIndex];
-            }
-
-            var item = new ListViewItem(p.Time.ToString("HH:mm:ss.fff"));
-            item.SubItems.Add(p.Dir);
-            item.SubItems.Add(p.Channel.ToString());
-            item.SubItems.Add("0x" + p.Id.ToString("X"));
-            string type;
-            if (p.IsFd)
-                type = (p.Extended ? "FD EXT" : "FD") + (p.Brs ? " BRS" : "");
-            else
-                type = (p.Extended ? "EXT" : "STD") + (p.Rtr ? " RTR" : "");
-            item.SubItems.Add(type);
-            item.SubItems.Add(p.Dlc.ToString());
-            item.SubItems.Add(p.Data);
-            item.SubItems.Add(p.Count.ToString());
-            item.SubItems.Add(p.HwTimestamp == 0 ? "" : p.HwTimestamp.ToString());
-            e.Item = item;
-        }
-
-        private void btnClear_Click(object sender, EventArgs e)
-        {
-            _packets.Clear();
-            _groups.Clear();
-            _view.Clear();
-            _groupView.Clear();
-            _groupsNeedSort = true;
-            lvPackets.VirtualListSize = 0;
-            lvPackets.Refresh();
         }
 
         private void InitBaudList()
@@ -2085,46 +2070,6 @@ namespace USBCANTool
             }
         }
 
-        private sealed class CanPacket
-        {
-            public DateTime Time;
-            public string Dir;
-            public uint Channel;
-            public uint Id;
-            public bool Extended;
-            public bool Rtr;
-            public bool IsFd;
-            public bool Brs;
-            public byte Dlc;
-            public string Data;
-            public ulong HwTimestamp;
-            public int Count;
-
-            public string GroupKey
-            {
-                get { return Dir + "|" + Channel + "|" + Id + "|" + Extended + "|" + Rtr + "|" + IsFd + "|" + Brs; }
-            }
-
-            public CanPacket Clone()
-            {
-                return new CanPacket
-                {
-                    Time = Time,
-                    Dir = Dir,
-                    Channel = Channel,
-                    Id = Id,
-                    Extended = Extended,
-                    Rtr = Rtr,
-                    IsFd = IsFd,
-                    Brs = Brs,
-                    Dlc = Dlc,
-                    Data = Data,
-                    HwTimestamp = HwTimestamp,
-                    Count = Count
-                };
-            }
-        }
-
         private void SettingsChanged(object sender, EventArgs e)
         {
             ScheduleSave();
@@ -2183,11 +2128,6 @@ namespace USBCANTool
                 cmbRxIso.SelectedIndex = saved.RxNonIso ? 1 : 0;
                 cmbTxIso.SelectedIndex = saved.TxNonIso ? 1 : 0;
 
-                txtFilterId.Text = saved.FilterId ?? "";
-                if (saved.FilterDir >= 0 && saved.FilterDir < cmbFilterDir.Items.Count)
-                    cmbFilterDir.SelectedIndex = saved.FilterDir;
-                chkGroup.Checked = saved.GroupShow;
-
                 if (saved.Slots != null)
                 {
                     int n = Math.Min(RewriteSlotCount, saved.Slots.Length);
@@ -2220,7 +2160,6 @@ namespace USBCANTool
             RefreshArbBaud(cmbRxDevice, cmbRxBaud);
             RefreshArbBaud(cmbTxDevice, cmbTxBaud);
             ApplyProtocolUi();
-            ParseFilterIds();
             RebuildRewriteSlots();
         }
 
@@ -2294,9 +2233,6 @@ namespace USBCANTool
                 TxTerm = chkTxTerm.Checked,
                 RxNonIso = cmbRxIso.SelectedIndex == 1,
                 TxNonIso = cmbTxIso.SelectedIndex == 1,
-                FilterId = txtFilterId.Text,
-                FilterDir = cmbFilterDir.SelectedIndex,
-                GroupShow = chkGroup.Checked,
                 Slots = new SavedSlot[RewriteSlotCount]
             };
 

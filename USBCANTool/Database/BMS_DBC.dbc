@@ -1,0 +1,716 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU BMS
+
+
+BO_ 1723 BMS_P11_CellsInformation: 8 BMS
+ SG_ P11_BMS_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P11_BMS_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P11_BMS_D_TemperatureID : 24|8@1+ (1,0) [0|36] ""  PCU
+ SG_ P11_BMS_D_Temperature : 32|8@1+ (1,-40) [-40|125] "°C"  PCU
+ SG_ P11_BMS_D_CellVoltage : 8|16@1+ (1,0) [0|5000] "mV"  PCU
+ SG_ P11_BMS_D_CellVoltageID : 0|8@1+ (1,0) [0|96] ""  PCU
+
+BO_ 1675 BMS_P08_Faults2: 8 BMS
+ SG_ P08_BMS_F_NegativeHighVoltageIso : 34|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_NegativeHVILFault : 32|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_GasDetectionFault : 30|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P08_BMS_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P08_BMS_F_WeakPackFault : 28|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_WaterDetectionFault : 12|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_InternalHardwareFault : 14|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_InCellCommunicationFau : 20|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_PositiveHVILFault : 8|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_PositiveHighVoltageIso : 26|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_ExternalCommunication1 : 2|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_ExternalCommunication0 : 0|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_DischrgLimitEnforcemen : 6|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_CurrentSensorFault : 18|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_ContactorStuckFault : 10|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_ChargeLimitEnforcement : 4|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_CellVoltageOver5VFault : 24|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_CellVoltageUnder90mVFa : 22|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P08_BMS_F_CellBalanceStuckoffFau : 16|2@1+ (1,0) [0|3] ""  PCU
+
+BO_ 1659 BMS_P07_Faults1: 8 BMS
+ SG_ P07_BMS_F_FaultCode : 32|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P07_BMS_F_ThermistorOpenWireFaul : 20|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P07_BMS_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P07_BMS_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P07_BMS_F_WeakCellFault : 22|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P07_BMS_F_UnderVoltageFault : 10|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P07_BMS_F_UnderTemperatureFault : 16|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P07_BMS_F_OverVoltageFault : 8|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P07_BMS_F_OverTemperatureFault : 14|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P07_BMS_F_OverCurrentFault : 12|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P07_BMS_F_InternalSoftwareFault : 24|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P07_BMS_F_HeatSinkThermistorFaul : 26|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P07_BMS_F_CellOpenWireFault : 18|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P07_BMS_F_BatteryThermistorFault : 28|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P07_BMS_F_GlobalFault : 0|8@1+ (1,0) [0|1] ""  PCU
+
+BO_ 1562 PCU_P00_Command: 8 PCU
+ SG_ P00_PCU_D_DCLDerateMin : 40|8@1+ (10,0) [0|2530] "A"  BMS
+ SG_ P00_PCU_D_DCLDerateTime : 32|8@1+ (1,0) [0|253] "s"  BMS
+ SG_ P00_PCU_S_FastChargeContactorSta : 14|2@1+ (1,0) [0|3] ""  BMS
+ SG_ P00_PCU_D_CurrentConsumer : 24|8@1+ (1,-100) [-100|155] "A"  BMS
+ SG_ P00_PCU_D_CRC : 56|8@1+ (1,0) [0|255] ""  BMS
+ SG_ P00_PCU_D_Counter : 48|8@1+ (1,0) [0|255] ""  BMS
+ SG_ P00_PCU_D_VehicleSpeed : 16|8@1+ (1,0) [0|253] "km/h"  BMS
+ SG_ P00_PCU_S_ModeCommand : 0|3@1+ (1,0) [0|7] ""  BMS
+ SG_ P00_PCU_S_NegativeContactorComma : 12|2@1+ (1,0) [0|3] ""  BMS
+ SG_ P00_PCU_S_PositiveContactorComma : 10|2@1+ (1,0) [0|3] ""  BMS
+ SG_ P00_PCU_S_PrechargeContactorComm : 8|2@1+ (1,0) [0|3] ""  BMS
+
+BO_ 1563 BMS_P00_State: 8 BMS
+ SG_ P00_BMS_S_SlowChargeWakeUpState : 7|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_BMS_S_QuickChargeWakeUpState : 6|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_BMS_S_KeyOnState : 5|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P00_BMS_D_BatteryPackCycle : 32|16@1+ (1,0) [0|65534] "cycle"  PCU
+ SG_ P00_BMS_S_PositiveScramState : 16|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P00_BMS_S_NegativeScramState : 18|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P00_BMS_S_NegativeContactorStatu : 12|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P00_BMS_S_PositiveContactorStatu : 10|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P00_BMS_S_PrechargeContactorStat : 8|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P00_BMS_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P00_BMS_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P00_BMS_S_CellBalancingState : 24|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P00_BMS_S_ReadyState : 3|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P00_BMS_S_ModeState : 0|3@1+ (1,0) [0|7] ""  PCU
+
+BO_ 1691 BMS_P09_Isolation: 8 BMS
+ SG_ P09_BMS_D_NegativeIsolationResis : 16|16@1+ (1,0) [0|50000] "kohm"  PCU
+ SG_ P09_BMS_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P09_BMS_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P09_BMS_D_PositiveIsolationResis : 0|16@1+ (1,0) [0|50000] "kohm"  PCU
+
+BO_ 1643 BMS_P05_Information: 8 BMS
+ SG_ P05_BMS_D_SOE : 8|8@1+ (0.5,0) [0|100] "%"  PCU
+ SG_ P05_BMS_D_Capacity : 24|8@1+ (0.5,0) [0|126.5] "Ah"  PCU
+ SG_ P05_BMS_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P05_BMS_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P05_BMS_D_SOC : 0|8@1+ (0.5,0) [0|100] "%"  PCU
+ SG_ P05_BMS_D_SOH : 16|8@1+ (0.5,0) [0|100] "%"  PCU
+ SG_ P05_BMS_D_BatteryPackHighVoltage : 32|16@1+ (0.1,0) [0|1000] "V"  PCU
+
+BO_ 1627 BMS_P04_OpenCellVoltage: 8 BMS
+ SG_ P00_BMS_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P04_BMS_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P04_BMS_D_LowOpenCellVoltageID : 40|8@1+ (1,0) [0|96] ""  PCU
+ SG_ P04_BMS_D_LowOpenCellVoltage : 24|16@1+ (1,0) [0|5000] "mV"  PCU
+ SG_ P04_BMS_D_HighOpenCellVoltageID : 16|8@1+ (1,0) [0|96] ""  PCU
+ SG_ P04_BMS_D_HighOpenCellVoltage : 0|16@1+ (1,0) [0|5000] "mV"  PCU
+
+BO_ 1611 BMS_P03_CellsVoltage: 8 BMS
+ SG_ P03_BMS_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P03_BMS_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P03_BMS_D_LowestCellVoltageID : 40|8@1+ (1,0) [0|96] ""  PCU
+ SG_ P03_BMS_D_LowestCellVoltage : 24|16@1+ (1,0) [0|5000] "mV"  PCU
+ SG_ P03_BMS_D_HighCellVoltageID : 16|8@1+ (1,0) [0|96] ""  PCU
+ SG_ P03_BMS_D_HighestCellVoltage : 0|16@1+ (1,0) [0|5000] "mV"  PCU
+
+BO_ 1595 BMS_P02_CellsTemperature: 8 BMS
+ SG_ P02_BMS_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P02_BMS_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P02_BMS_D_LowestTemperatureID : 24|8@1+ (1,0) [0|36] ""  PCU
+ SG_ P02_BMS_D_LowestTemperature : 16|8@1+ (1,-40) [-40|125] "°C"  PCU
+ SG_ P02_BMS_D_HighestTemperatureID : 8|8@1+ (1,0) [0|36] ""  PCU
+ SG_ P02_BMS_D_HighestTemperature : 0|8@1+ (1,-40) [-40|125] "°C"  PCU
+
+BO_ 1579 BMS_P01_CurrentLimit: 8 BMS
+ SG_ P01_BMS_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P01_BMS_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P01_BMS_D_DCL : 32|16@1+ (0.01,0) [0|650] "A"  PCU
+ SG_ P01_BMS_D_CCL : 16|16@1+ (0.01,0) [0|650] "A"  PCU
+ SG_ P01_BMS_D_Current : 0|16@1+ (0.1,-1000) [-1000|1000] "A"  PCU
+
+BO_ 1707 BMS_P10_FastChargeStatus: 8 BMS
+ SG_ P10_BMS_S_FastChargeContactorCom : 5|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P10_BMS_D_FastChargeMaxInstantan : 16|8@1+ (1,0) [0|250] "kW"  PCU
+ SG_ P10_BMS_F_FastChargeFaultCode : 24|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P10_BMS_S_FastChargePlugState : 3|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P10_BMS_S_FastChargingState : 0|3@1+ (1,0) [0|6] ""  PCU
+ SG_ P10_BMS_D_FastChargeRemainingTim : 32|16@1+ (1,0) [0|1440] "min"  PCU
+ SG_ P10_BMS_D_FastChargeInstantaneou : 8|8@1+ (1,0) [0|250] "kW"  PCU
+ SG_ P10_BMS_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P10_BMS_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+
+
+
+CM_ SG_ 1723 P11_BMS_D_CRC "8 bit CRC";
+CM_ SG_ 1723 P11_BMS_D_Counter "8 bit up counter";
+CM_ SG_ 1723 P11_BMS_D_TemperatureID "Cell ID (corresponding to cell temperature)";
+CM_ SG_ 1723 P11_BMS_D_Temperature "Cell temperature (corresponding to cell ID)";
+CM_ SG_ 1723 P11_BMS_D_CellVoltage "Cell voltage (corresponding to cell ID)";
+CM_ SG_ 1723 P11_BMS_D_CellVoltageID "Cell ID (corresponding to cell voltage)";
+CM_ SG_ 1675 P08_BMS_F_NegativeHighVoltageIso "High voltage negative bus isolation fault";
+CM_ SG_ 1675 P08_BMS_F_NegativeHVILFault "Negative HV Interlock (HVIL) fault";
+CM_ SG_ 1675 P08_BMS_F_GasDetectionFault "Gas detection fault";
+CM_ SG_ 1675 P08_BMS_D_CRC "8 bit CRC";
+CM_ SG_ 1675 P08_BMS_D_Counter "8 bit up counter";
+CM_ SG_ 1675 P08_BMS_F_WeakPackFault "Weak battery pack fault";
+CM_ SG_ 1675 P08_BMS_F_WaterDetectionFault "Water detection fault";
+CM_ SG_ 1675 P08_BMS_F_InternalHardwareFault "Internal hardware fault";
+CM_ SG_ 1675 P08_BMS_F_InCellCommunicationFau "Module Management Unit (MMU) communication fault";
+CM_ SG_ 1675 P08_BMS_F_PositiveHVILFault "Positive HV Interlock (HVIL) fault";
+CM_ SG_ 1675 P08_BMS_F_PositiveHighVoltageIso "High voltage positive bus isolation fault";
+CM_ SG_ 1675 P08_BMS_F_ExternalCommunication1 "External communication 1 fault";
+CM_ SG_ 1675 P08_BMS_F_ExternalCommunication0 "External communication 0 fault";
+CM_ SG_ 1675 P08_BMS_F_DischrgLimitEnforcemen "Discharge limit enforcement fault";
+CM_ SG_ 1675 P08_BMS_F_CurrentSensorFault "Current sensor fault";
+CM_ SG_ 1675 P08_BMS_F_ContactorStuckFault "Contactor welding fault";
+CM_ SG_ 1675 P08_BMS_F_ChargeLimitEnforcement "Charge limit enforcement fault";
+CM_ SG_ 1675 P08_BMS_F_CellVoltageOver5VFault "Cell voltage over 5V fault";
+CM_ SG_ 1675 P08_BMS_F_CellVoltageUnder90mVFa "Cell voltage under 90mv fault";
+CM_ SG_ 1675 P08_BMS_F_CellBalanceStuckoffFau "Cell balancing stuck fault";
+CM_ SG_ 1659 P07_BMS_F_FaultCode "Fault code (fault group)";
+CM_ SG_ 1659 P07_BMS_F_ThermistorOpenWireFaul "Thermistor open wire fault";
+CM_ SG_ 1659 P07_BMS_D_CRC "8 bit CRC";
+CM_ SG_ 1659 P07_BMS_D_Counter "8 bit up counter";
+CM_ SG_ 1659 P07_BMS_F_WeakCellFault "Weak cell fault";
+CM_ SG_ 1659 P07_BMS_F_UnderVoltageFault "Under voltage fault";
+CM_ SG_ 1659 P07_BMS_F_UnderTemperatureFault "Under temperature fault";
+CM_ SG_ 1659 P07_BMS_F_OverVoltageFault "Over voltage fault";
+CM_ SG_ 1659 P07_BMS_F_OverTemperatureFault "Over temperature fault";
+CM_ SG_ 1659 P07_BMS_F_OverCurrentFault "Over current fault";
+CM_ SG_ 1659 P07_BMS_F_InternalSoftwareFault "Internal software fault";
+CM_ SG_ 1659 P07_BMS_F_HeatSinkThermistorFaul "Heat sink thermistor fault";
+CM_ SG_ 1659 P07_BMS_F_CellOpenWireFault "Cell open wire fault";
+CM_ SG_ 1659 P07_BMS_F_BatteryThermistorFault "Thermistor fault";
+CM_ SG_ 1659 P07_BMS_F_GlobalFault "Battery Management System (BMS) global fault";
+CM_ SG_ 1562 P00_PCU_D_DCLDerateMin "Minimum derated Discharge Current Limit (DCL)";
+CM_ SG_ 1562 P00_PCU_D_DCLDerateTime "Discharge Current Limit (DCL) derate time";
+CM_ SG_ 1562 P00_PCU_S_FastChargeContactorSta "Fast charge contactor status";
+CM_ SG_ 1562 P00_PCU_D_CurrentConsumer "Vehicle current consumption (charging mode)";
+CM_ SG_ 1562 P00_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 1562 P00_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 1562 P00_PCU_D_VehicleSpeed "Vehicle speed";
+CM_ SG_ 1562 P00_PCU_S_ModeCommand "Battery Management System (BMS) operating mode command";
+CM_ SG_ 1562 P00_PCU_S_NegativeContactorComma "Negative contactor command";
+CM_ SG_ 1562 P00_PCU_S_PositiveContactorComma "Positive contactor command";
+CM_ SG_ 1562 P00_PCU_S_PrechargeContactorComm "Precharge contactor command";
+CM_ SG_ 1563 P00_BMS_S_SlowChargeWakeUpState "Slow charge wake up state";
+CM_ SG_ 1563 P00_BMS_S_QuickChargeWakeUpState "Fast charge wake up state";
+CM_ SG_ 1563 P00_BMS_S_KeyOnState "Key on state";
+CM_ SG_ 1563 P00_BMS_D_BatteryPackCycle "Battery pack cycle";
+CM_ SG_ 1563 P00_BMS_S_PositiveScramState "Emergency switch state - negative";
+CM_ SG_ 1563 P00_BMS_S_NegativeScramState "Emergency switch state - positive";
+CM_ SG_ 1563 P00_BMS_S_NegativeContactorStatu "Negative contactor status";
+CM_ SG_ 1563 P00_BMS_S_PositiveContactorStatu "Positive contactor status";
+CM_ SG_ 1563 P00_BMS_S_PrechargeContactorStat "Precharge contactor status";
+CM_ SG_ 1563 P00_BMS_D_CRC "8 bit CRC";
+CM_ SG_ 1563 P00_BMS_D_Counter "8 bit up counter";
+CM_ SG_ 1563 P00_BMS_S_CellBalancingState "Cell balancing state";
+CM_ SG_ 1563 P00_BMS_S_ReadyState "Battery Management System (BMS) ready to work state";
+CM_ SG_ 1563 P00_BMS_S_ModeState "Operating mode state";
+CM_ SG_ 1691 P09_BMS_D_NegativeIsolationResis "Negative high voltage isolation resistance";
+CM_ SG_ 1691 P09_BMS_D_CRC "8 bit CRC";
+CM_ SG_ 1691 P09_BMS_D_Counter "8 bit up counter";
+CM_ SG_ 1691 P09_BMS_D_PositiveIsolationResis "Positive high voltage isolation resistance";
+CM_ SG_ 1643 P05_BMS_D_SOE "State of Energy (SOE)";
+CM_ SG_ 1643 P05_BMS_D_Capacity "Cell capacity";
+CM_ SG_ 1643 P05_BMS_D_Counter "8 bit up counter";
+CM_ SG_ 1643 P05_BMS_D_CRC "8 bit CRC";
+CM_ SG_ 1643 P05_BMS_D_SOC "State of Charge (SOC)";
+CM_ SG_ 1643 P05_BMS_D_SOH "State of Health (SOH)";
+CM_ SG_ 1643 P05_BMS_D_BatteryPackHighVoltage "Battery pack voltage";
+CM_ SG_ 1627 P00_BMS_D_CRC "8 bit CRC";
+CM_ SG_ 1627 P04_BMS_D_Counter "8 bit up counter";
+CM_ SG_ 1627 P04_BMS_D_LowOpenCellVoltageID "Lowest cell no load voltage sensor ID";
+CM_ SG_ 1627 P04_BMS_D_LowOpenCellVoltage "Lowest cell no load voltage";
+CM_ SG_ 1627 P04_BMS_D_HighOpenCellVoltageID "Highest cell no load voltage sensor ID";
+CM_ SG_ 1627 P04_BMS_D_HighOpenCellVoltage "Highest cell no load voltage";
+CM_ SG_ 1611 P03_BMS_D_CRC "8 bit CRC";
+CM_ SG_ 1611 P03_BMS_D_Counter "8 bit up counter";
+CM_ SG_ 1611 P03_BMS_D_LowestCellVoltageID "Lowest cell voltage sensor ID";
+CM_ SG_ 1611 P03_BMS_D_LowestCellVoltage "Lowest cell voltage";
+CM_ SG_ 1611 P03_BMS_D_HighCellVoltageID "Highest cell voltage sensor ID";
+CM_ SG_ 1611 P03_BMS_D_HighestCellVoltage "Highest cell voltage";
+CM_ SG_ 1595 P02_BMS_D_CRC "8 bit CRC";
+CM_ SG_ 1595 P02_BMS_D_Counter "8 bit up counter";
+CM_ SG_ 1595 P02_BMS_D_LowestTemperatureID "Lowest cell temperature sensor ID";
+CM_ SG_ 1595 P02_BMS_D_LowestTemperature "Lowest cell temperature";
+CM_ SG_ 1595 P02_BMS_D_HighestTemperatureID "Highest cell temperature sensor ID";
+CM_ SG_ 1595 P02_BMS_D_HighestTemperature "Highest cell temperature";
+CM_ SG_ 1579 P01_BMS_D_CRC "8 bit CRC";
+CM_ SG_ 1579 P01_BMS_D_Counter "8 bit up counter";
+CM_ SG_ 1579 P01_BMS_D_DCL "Discharge Current Limit (DCL)";
+CM_ SG_ 1579 P01_BMS_D_CCL "Charge Current Limit (CCL)";
+CM_ SG_ 1579 P01_BMS_D_Current "Battery pack current";
+CM_ SG_ 1707 P10_BMS_S_FastChargeContactorCom "Fast charge contactor command";
+CM_ SG_ 1707 P10_BMS_D_FastChargeMaxInstantan "Fast charge maximum instantaneous power";
+CM_ SG_ 1707 P10_BMS_F_FastChargeFaultCode "Fast charge fault code (fault group)";
+CM_ SG_ 1707 P10_BMS_S_FastChargePlugState "Fast charge plug connection state";
+CM_ SG_ 1707 P10_BMS_S_FastChargingState "Fast charging state";
+CM_ SG_ 1707 P10_BMS_D_FastChargeRemainingTim "Fast charge time remaining to full charge";
+CM_ SG_ 1707 P10_BMS_D_FastChargeInstantaneou "Fast charge instantaneous power";
+CM_ SG_ 1707 P10_BMS_D_CRC "8 bit CRC";
+CM_ SG_ 1707 P10_BMS_D_Counter "8 bit up counter";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ BO_  "TpJ1939VarDlc" ENUM  "No","Yes";
+BA_DEF_ SG_  "SigType" ENUM  "Default","Range","RangeSigned","ASCII","Discrete","Control","ReferencePGN","DTC","StringDelimiter","StringLength","StringLengthControl","MessageCounter","MessageChecksum";
+BA_DEF_ SG_  "GenSigEVName" STRING ;
+BA_DEF_ SG_  "GenSigILSupport" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ BO_  "GenMsgFastOnStart" INT 0 100000;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 3600000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 1000000;
+BA_DEF_ SG_  "GenSigStartValue" INT 0 2147483647;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 100000;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "NmJ1939SystemInstance" INT 0 15;
+BA_DEF_ BU_  "NmJ1939System" INT 0 127;
+BA_DEF_ BU_  "NmJ1939ManufacturerCode" INT 0 2047;
+BA_DEF_ BU_  "NmJ1939IndustryGroup" INT 0 7;
+BA_DEF_ BU_  "NmJ1939IdentityNumber" INT 0 2097151;
+BA_DEF_ BU_  "NmJ1939FunctionInstance" INT 0 7;
+BA_DEF_ BU_  "NmJ1939Function" INT 0 255;
+BA_DEF_ BU_  "NmJ1939ECUInstance" INT 0 3;
+BA_DEF_ BU_  "NmJ1939AAC" INT 0 1;
+BA_DEF_ BU_  "NmStationAddress" INT 0 255;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclic","NotUsed","IfActive","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","noMsgSendType";
+BA_DEF_ BO_  "GenMsgRequestable" INT 0 1;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+BA_DEF_ SG_  "SPN" INT 0 524287;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "ProtocolType" STRING ;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG";
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "TpJ1939VarDlc" "No";
+BA_DEF_DEF_  "SigType" "Default";
+BA_DEF_DEF_  "GenSigEVName" "Env@Nodename_@Signame";
+BA_DEF_DEF_  "GenSigILSupport" "Yes";
+BA_DEF_DEF_  "GenSigSendType" "NoSigSendType";
+BA_DEF_DEF_  "GenMsgFastOnStart" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "NmJ1939SystemInstance" 0;
+BA_DEF_DEF_  "NmJ1939System" 0;
+BA_DEF_DEF_  "NmJ1939ManufacturerCode" 0;
+BA_DEF_DEF_  "NmJ1939IndustryGroup" 0;
+BA_DEF_DEF_  "NmJ1939IdentityNumber" 0;
+BA_DEF_DEF_  "NmJ1939FunctionInstance" 0;
+BA_DEF_DEF_  "NmJ1939Function" 0;
+BA_DEF_DEF_  "NmJ1939ECUInstance" 0;
+BA_DEF_DEF_  "NmJ1939AAC" 0;
+BA_DEF_DEF_  "NmStationAddress" 254;
+BA_DEF_DEF_  "GenMsgSendType" "noMsgSendType";
+BA_DEF_DEF_  "GenMsgRequestable" 1;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "ProtocolType" "J1939";
+BA_DEF_DEF_  "VFrameFormat" "J1939PG";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN";
+BA_ "ProtocolType" "CAN Standard";
+BA_ "DBName" "BMS";
+BA_ "NmStationAddress" BU_ PCU 90;
+BA_ "NmStationAddress" BU_ BMS 130;
+BA_ "VFrameFormat" BO_ 1723 0;
+BA_ "GenMsgCycleTime" BO_ 1723 100;
+BA_ "GenMsgSendType" BO_ 1723 0;
+BA_ "GenMsgCycleTimeFast" BO_ 1723 0;
+BA_ "TXRX" BO_ 1723 0;
+BA_ "VFrameFormat" BO_ 1675 0;
+BA_ "GenMsgCycleTime" BO_ 1675 100;
+BA_ "GenMsgSendType" BO_ 1675 0;
+BA_ "TXRX" BO_ 1675 0;
+BA_ "VFrameFormat" BO_ 1659 0;
+BA_ "GenMsgCycleTime" BO_ 1659 100;
+BA_ "GenMsgSendType" BO_ 1659 0;
+BA_ "TXRX" BO_ 1659 0;
+BA_ "VFrameFormat" BO_ 1562 0;
+BA_ "GenMsgCycleTime" BO_ 1562 20;
+BA_ "GenMsgSendType" BO_ 1562 0;
+BA_ "TXRX" BO_ 1562 1;
+BA_ "VFrameFormat" BO_ 1563 0;
+BA_ "GenMsgCycleTimeFast" BO_ 1563 0;
+BA_ "GenMsgSendType" BO_ 1563 0;
+BA_ "GenMsgCycleTime" BO_ 1563 20;
+BA_ "TXRX" BO_ 1563 0;
+BA_ "VFrameFormat" BO_ 1691 0;
+BA_ "GenMsgCycleTime" BO_ 1691 100;
+BA_ "GenMsgSendType" BO_ 1691 0;
+BA_ "TXRX" BO_ 1691 0;
+BA_ "VFrameFormat" BO_ 1643 0;
+BA_ "GenMsgCycleTime" BO_ 1643 100;
+BA_ "GenMsgSendType" BO_ 1643 0;
+BA_ "TXRX" BO_ 1643 0;
+BA_ "VFrameFormat" BO_ 1627 0;
+BA_ "GenMsgCycleTime" BO_ 1627 100;
+BA_ "GenMsgSendType" BO_ 1627 0;
+BA_ "TXRX" BO_ 1627 0;
+BA_ "VFrameFormat" BO_ 1611 0;
+BA_ "GenMsgCycleTime" BO_ 1611 100;
+BA_ "GenMsgSendType" BO_ 1611 0;
+BA_ "TXRX" BO_ 1611 0;
+BA_ "VFrameFormat" BO_ 1595 0;
+BA_ "GenMsgCycleTime" BO_ 1595 100;
+BA_ "GenMsgSendType" BO_ 1595 0;
+BA_ "TXRX" BO_ 1595 0;
+BA_ "VFrameFormat" BO_ 1579 0;
+BA_ "GenMsgCycleTime" BO_ 1579 100;
+BA_ "GenMsgSendType" BO_ 1579 0;
+BA_ "GenMsgCycleTimeFast" BO_ 1579 0;
+BA_ "TXRX" BO_ 1579 0;
+BA_ "VFrameFormat" BO_ 1707 0;
+BA_ "GenMsgCycleTime" BO_ 1707 100;
+BA_ "GenMsgSendType" BO_ 1707 0;
+BA_ "GenMsgCycleTimeFast" BO_ 1707 0;
+BA_ "TXRX" BO_ 1707 0;
+BA_ "GenSigSendType" SG_ 1723 P11_BMS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 1723 P11_BMS_D_Counter 0;
+BA_ "SPN" SG_ 1723 P11_BMS_D_TemperatureID 109;
+BA_ "GenSigStartValue" SG_ 1723 P11_BMS_D_TemperatureID 0;
+BA_ "GenSigSendType" SG_ 1723 P11_BMS_D_TemperatureID 0;
+BA_ "SPN" SG_ 1723 P11_BMS_D_Temperature 110;
+BA_ "GenSigStartValue" SG_ 1723 P11_BMS_D_Temperature 40;
+BA_ "GenSigSendType" SG_ 1723 P11_BMS_D_Temperature 0;
+BA_ "SPN" SG_ 1723 P11_BMS_D_CellVoltage 108;
+BA_ "GenSigStartValue" SG_ 1723 P11_BMS_D_CellVoltage 0;
+BA_ "GenSigSendType" SG_ 1723 P11_BMS_D_CellVoltage 0;
+BA_ "SPN" SG_ 1723 P11_BMS_D_CellVoltageID 107;
+BA_ "GenSigStartValue" SG_ 1723 P11_BMS_D_CellVoltageID 0;
+BA_ "GenSigSendType" SG_ 1723 P11_BMS_D_CellVoltageID 0;
+BA_ "SPN" SG_ 1675 P08_BMS_F_NegativeHighVoltageIso 95;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_NegativeHighVoltageIso 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_NegativeHighVoltageIso 0;
+BA_ "SystemSignalLongSymbol" SG_ 1675 P08_BMS_F_NegativeHighVoltageIso "P08_BMS_F_NegativeHighVoltageIsolationFault";
+BA_ "SPN" SG_ 1675 P08_BMS_F_NegativeHVILFault 94;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_NegativeHVILFault 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_NegativeHVILFault 0;
+BA_ "SPN" SG_ 1675 P08_BMS_F_GasDetectionFault 93;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_GasDetectionFault 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_GasDetectionFault 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_D_Counter 0;
+BA_ "SPN" SG_ 1675 P08_BMS_F_WeakPackFault 92;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_WeakPackFault 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_WeakPackFault 0;
+BA_ "SPN" SG_ 1675 P08_BMS_F_WaterDetectionFault 84;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_WaterDetectionFault 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_WaterDetectionFault 0;
+BA_ "SPN" SG_ 1675 P08_BMS_F_InternalHardwareFault 85;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_InternalHardwareFault 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_InternalHardwareFault 0;
+BA_ "SPN" SG_ 1675 P08_BMS_F_InCellCommunicationFau 88;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_InCellCommunicationFau 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_InCellCommunicationFau 0;
+BA_ "SystemSignalLongSymbol" SG_ 1675 P08_BMS_F_InCellCommunicationFau "P08_BMS_F_InCellCommunicationFault";
+BA_ "SPN" SG_ 1675 P08_BMS_F_PositiveHVILFault 82;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_PositiveHVILFault 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_PositiveHVILFault 0;
+BA_ "SPN" SG_ 1675 P08_BMS_F_PositiveHighVoltageIso 91;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_PositiveHighVoltageIso 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_PositiveHighVoltageIso 0;
+BA_ "SystemSignalLongSymbol" SG_ 1675 P08_BMS_F_PositiveHighVoltageIso "P08_BMS_F_PositiveHighVoltageIsolationFault";
+BA_ "SPN" SG_ 1675 P08_BMS_F_ExternalCommunication1 79;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_ExternalCommunication1 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_ExternalCommunication1 0;
+BA_ "SystemSignalLongSymbol" SG_ 1675 P08_BMS_F_ExternalCommunication1 "P08_BMS_F_ExternalCommunication1Fault";
+BA_ "SPN" SG_ 1675 P08_BMS_F_ExternalCommunication0 78;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_ExternalCommunication0 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_ExternalCommunication0 0;
+BA_ "SystemSignalLongSymbol" SG_ 1675 P08_BMS_F_ExternalCommunication0 "P08_BMS_F_ExternalCommunication0Fault";
+BA_ "SPN" SG_ 1675 P08_BMS_F_DischrgLimitEnforcemen 81;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_DischrgLimitEnforcemen 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_DischrgLimitEnforcemen 0;
+BA_ "SystemSignalLongSymbol" SG_ 1675 P08_BMS_F_DischrgLimitEnforcemen "P08_BMS_F_DischrgLimitEnforcementFault";
+BA_ "SPN" SG_ 1675 P08_BMS_F_CurrentSensorFault 87;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_CurrentSensorFault 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_CurrentSensorFault 0;
+BA_ "SPN" SG_ 1675 P08_BMS_F_ContactorStuckFault 83;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_ContactorStuckFault 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_ContactorStuckFault 0;
+BA_ "SPN" SG_ 1675 P08_BMS_F_ChargeLimitEnforcement 80;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_ChargeLimitEnforcement 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_ChargeLimitEnforcement 0;
+BA_ "SystemSignalLongSymbol" SG_ 1675 P08_BMS_F_ChargeLimitEnforcement "P08_BMS_F_ChargeLimitEnforcementFault";
+BA_ "SPN" SG_ 1675 P08_BMS_F_CellVoltageOver5VFault 90;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_CellVoltageOver5VFault 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_CellVoltageOver5VFault 0;
+BA_ "SPN" SG_ 1675 P08_BMS_F_CellVoltageUnder90mVFa 89;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_CellVoltageUnder90mVFa 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_CellVoltageUnder90mVFa 0;
+BA_ "SystemSignalLongSymbol" SG_ 1675 P08_BMS_F_CellVoltageUnder90mVFa "P08_BMS_F_CellVoltageUnder90mVFault";
+BA_ "SPN" SG_ 1675 P08_BMS_F_CellBalanceStuckoffFau 86;
+BA_ "GenSigStartValue" SG_ 1675 P08_BMS_F_CellBalanceStuckoffFau 0;
+BA_ "GenSigSendType" SG_ 1675 P08_BMS_F_CellBalanceStuckoffFau 0;
+BA_ "SystemSignalLongSymbol" SG_ 1675 P08_BMS_F_CellBalanceStuckoffFau "P08_BMS_F_CellBalanceStuckoffFault";
+BA_ "SPN" SG_ 1659 P07_BMS_F_FaultCode 77;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_FaultCode 0;
+BA_ "SPN" SG_ 1659 P07_BMS_F_ThermistorOpenWireFaul 72;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_ThermistorOpenWireFaul 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_ThermistorOpenWireFaul 0;
+BA_ "SystemSignalLongSymbol" SG_ 1659 P07_BMS_F_ThermistorOpenWireFaul "P07_BMS_F_ThermistorOpenWireFault";
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_D_Counter 0;
+BA_ "SPN" SG_ 1659 P07_BMS_F_WeakCellFault 73;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_WeakCellFault 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_WeakCellFault 0;
+BA_ "SPN" SG_ 1659 P07_BMS_F_UnderVoltageFault 67;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_UnderVoltageFault 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_UnderVoltageFault 0;
+BA_ "SPN" SG_ 1659 P07_BMS_F_UnderTemperatureFault 70;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_UnderTemperatureFault 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_UnderTemperatureFault 0;
+BA_ "SPN" SG_ 1659 P07_BMS_F_OverVoltageFault 66;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_OverVoltageFault 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_OverVoltageFault 0;
+BA_ "SPN" SG_ 1659 P07_BMS_F_OverTemperatureFault 69;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_OverTemperatureFault 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_OverTemperatureFault 0;
+BA_ "SPN" SG_ 1659 P07_BMS_F_OverCurrentFault 68;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_OverCurrentFault 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_OverCurrentFault 0;
+BA_ "SPN" SG_ 1659 P07_BMS_F_InternalSoftwareFault 74;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_InternalSoftwareFault 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_InternalSoftwareFault 0;
+BA_ "SPN" SG_ 1659 P07_BMS_F_HeatSinkThermistorFaul 75;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_HeatSinkThermistorFaul 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_HeatSinkThermistorFaul 0;
+BA_ "SystemSignalLongSymbol" SG_ 1659 P07_BMS_F_HeatSinkThermistorFaul "P07_BMS_F_HeatSinkThermistorFault";
+BA_ "SPN" SG_ 1659 P07_BMS_F_CellOpenWireFault 71;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_CellOpenWireFault 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_CellOpenWireFault 0;
+BA_ "SPN" SG_ 1659 P07_BMS_F_BatteryThermistorFault 76;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_BatteryThermistorFault 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_BatteryThermistorFault 0;
+BA_ "SPN" SG_ 1659 P07_BMS_F_GlobalFault 65;
+BA_ "GenSigStartValue" SG_ 1659 P07_BMS_F_GlobalFault 0;
+BA_ "GenSigSendType" SG_ 1659 P07_BMS_F_GlobalFault 0;
+BA_ "SPN" SG_ 1562 P00_PCU_D_DCLDerateMin 2503;
+BA_ "SPN" SG_ 1562 P00_PCU_D_DCLDerateTime 2502;
+BA_ "SPN" SG_ 1562 P00_PCU_S_FastChargeContactorSta 2039;
+BA_ "SystemSignalLongSymbol" SG_ 1562 P00_PCU_S_FastChargeContactorSta "P00_PCU_S_FastChargeContactorStatus";
+BA_ "SPN" SG_ 1562 P00_PCU_D_CurrentConsumer 2501;
+BA_ "GenSigStartValue" SG_ 1562 P00_PCU_D_CurrentConsumer 100;
+BA_ "GenSigSendType" SG_ 1562 P00_PCU_D_CRC 0;
+BA_ "GenSigSendType" SG_ 1562 P00_PCU_D_Counter 0;
+BA_ "SPN" SG_ 1562 P00_PCU_D_VehicleSpeed 2500;
+BA_ "GenSigSendType" SG_ 1562 P00_PCU_D_VehicleSpeed 0;
+BA_ "SPN" SG_ 1562 P00_PCU_S_ModeCommand 2035;
+BA_ "GenSigSendType" SG_ 1562 P00_PCU_S_ModeCommand 0;
+BA_ "SPN" SG_ 1562 P00_PCU_S_NegativeContactorComma 2038;
+BA_ "GenSigSendType" SG_ 1562 P00_PCU_S_NegativeContactorComma 0;
+BA_ "SystemSignalLongSymbol" SG_ 1562 P00_PCU_S_NegativeContactorComma "P00_PCU_S_NegativeContactorCommand";
+BA_ "SPN" SG_ 1562 P00_PCU_S_PositiveContactorComma 2037;
+BA_ "GenSigSendType" SG_ 1562 P00_PCU_S_PositiveContactorComma 0;
+BA_ "SystemSignalLongSymbol" SG_ 1562 P00_PCU_S_PositiveContactorComma "P00_PCU_S_PositiveContactorCommand";
+BA_ "SPN" SG_ 1562 P00_PCU_S_PrechargeContactorComm 2036;
+BA_ "GenSigSendType" SG_ 1562 P00_PCU_S_PrechargeContactorComm 0;
+BA_ "SystemSignalLongSymbol" SG_ 1562 P00_PCU_S_PrechargeContactorComm "P00_PCU_S_PrechargeContactorCommand";
+BA_ "SPN" SG_ 1563 P00_BMS_S_SlowChargeWakeUpState 113;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_S_SlowChargeWakeUpState 0;
+BA_ "SPN" SG_ 1563 P00_BMS_S_QuickChargeWakeUpState 112;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_S_QuickChargeWakeUpState 0;
+BA_ "SPN" SG_ 1563 P00_BMS_S_KeyOnState 111;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_S_KeyOnState 0;
+BA_ "SPN" SG_ 1563 P00_BMS_D_BatteryPackCycle 43;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_D_BatteryPackCycle 0;
+BA_ "SPN" SG_ 1563 P00_BMS_S_PositiveScramState 40;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_S_PositiveScramState 0;
+BA_ "SPN" SG_ 1563 P00_BMS_S_NegativeScramState 41;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_S_NegativeScramState 0;
+BA_ "SPN" SG_ 1563 P00_BMS_S_NegativeContactorStatu 39;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_S_NegativeContactorStatu 0;
+BA_ "SystemSignalLongSymbol" SG_ 1563 P00_BMS_S_NegativeContactorStatu "P00_BMS_S_NegativeContactorStatus";
+BA_ "SPN" SG_ 1563 P00_BMS_S_PositiveContactorStatu 38;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_S_PositiveContactorStatu 0;
+BA_ "SystemSignalLongSymbol" SG_ 1563 P00_BMS_S_PositiveContactorStatu "P00_BMS_S_PositiveContactorStatus";
+BA_ "SPN" SG_ 1563 P00_BMS_S_PrechargeContactorStat 37;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_S_PrechargeContactorStat 0;
+BA_ "SystemSignalLongSymbol" SG_ 1563 P00_BMS_S_PrechargeContactorStat "P00_BMS_S_PrechargeContactorStatus";
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_D_Counter 0;
+BA_ "SPN" SG_ 1563 P00_BMS_S_CellBalancingState 42;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_S_CellBalancingState 0;
+BA_ "SPN" SG_ 1563 P00_BMS_S_ReadyState 36;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_S_ReadyState 0;
+BA_ "SPN" SG_ 1563 P00_BMS_S_ModeState 35;
+BA_ "GenSigSendType" SG_ 1563 P00_BMS_S_ModeState 0;
+BA_ "SPN" SG_ 1691 P09_BMS_D_NegativeIsolationResis 97;
+BA_ "GenSigSendType" SG_ 1691 P09_BMS_D_NegativeIsolationResis 0;
+BA_ "SystemSignalLongSymbol" SG_ 1691 P09_BMS_D_NegativeIsolationResis "P09_BMS_D_NegativeIsolationResistance";
+BA_ "GenSigSendType" SG_ 1691 P09_BMS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 1691 P09_BMS_D_Counter 0;
+BA_ "SPN" SG_ 1691 P09_BMS_D_PositiveIsolationResis 96;
+BA_ "GenSigSendType" SG_ 1691 P09_BMS_D_PositiveIsolationResis 0;
+BA_ "SystemSignalLongSymbol" SG_ 1691 P09_BMS_D_PositiveIsolationResis "P09_BMS_D_PositiveIsolationResistance";
+BA_ "SPN" SG_ 1643 P05_BMS_D_SOE 61;
+BA_ "GenSigSendType" SG_ 1643 P05_BMS_D_SOE 0;
+BA_ "SPN" SG_ 1643 P05_BMS_D_Capacity 63;
+BA_ "GenSigSendType" SG_ 1643 P05_BMS_D_Capacity 0;
+BA_ "SPN" SG_ 1643 P05_BMS_D_Counter 0;
+BA_ "GenSigSendType" SG_ 1643 P05_BMS_D_Counter 0;
+BA_ "GenSigSendType" SG_ 1643 P05_BMS_D_CRC 0;
+BA_ "SPN" SG_ 1643 P05_BMS_D_SOC 60;
+BA_ "GenSigSendType" SG_ 1643 P05_BMS_D_SOC 0;
+BA_ "SPN" SG_ 1643 P05_BMS_D_SOH 62;
+BA_ "GenSigSendType" SG_ 1643 P05_BMS_D_SOH 0;
+BA_ "SPN" SG_ 1643 P05_BMS_D_BatteryPackHighVoltage 64;
+BA_ "GenSigSendType" SG_ 1643 P05_BMS_D_BatteryPackHighVoltage 0;
+BA_ "GenSigSendType" SG_ 1627 P00_BMS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 1627 P04_BMS_D_Counter 0;
+BA_ "SPN" SG_ 1627 P04_BMS_D_LowOpenCellVoltageID 59;
+BA_ "GenSigSendType" SG_ 1627 P04_BMS_D_LowOpenCellVoltageID 0;
+BA_ "SPN" SG_ 1627 P04_BMS_D_LowOpenCellVoltage 58;
+BA_ "GenSigSendType" SG_ 1627 P04_BMS_D_LowOpenCellVoltage 0;
+BA_ "SPN" SG_ 1627 P04_BMS_D_HighOpenCellVoltageID 57;
+BA_ "GenSigSendType" SG_ 1627 P04_BMS_D_HighOpenCellVoltageID 0;
+BA_ "SPN" SG_ 1627 P04_BMS_D_HighOpenCellVoltage 56;
+BA_ "GenSigSendType" SG_ 1627 P04_BMS_D_HighOpenCellVoltage 0;
+BA_ "GenSigSendType" SG_ 1611 P03_BMS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 1611 P03_BMS_D_Counter 0;
+BA_ "SPN" SG_ 1611 P03_BMS_D_LowestCellVoltageID 55;
+BA_ "GenSigSendType" SG_ 1611 P03_BMS_D_LowestCellVoltageID 0;
+BA_ "SPN" SG_ 1611 P03_BMS_D_LowestCellVoltage 54;
+BA_ "GenSigSendType" SG_ 1611 P03_BMS_D_LowestCellVoltage 0;
+BA_ "SPN" SG_ 1611 P03_BMS_D_HighCellVoltageID 53;
+BA_ "GenSigSendType" SG_ 1611 P03_BMS_D_HighCellVoltageID 0;
+BA_ "SPN" SG_ 1611 P03_BMS_D_HighestCellVoltage 52;
+BA_ "GenSigSendType" SG_ 1611 P03_BMS_D_HighestCellVoltage 0;
+BA_ "GenSigSendType" SG_ 1595 P02_BMS_D_CRC 0;
+BA_ "GenSigStartValue" SG_ 1595 P02_BMS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 1595 P02_BMS_D_Counter 0;
+BA_ "GenSigStartValue" SG_ 1595 P02_BMS_D_Counter 0;
+BA_ "SPN" SG_ 1595 P02_BMS_D_LowestTemperatureID 50;
+BA_ "GenSigSendType" SG_ 1595 P02_BMS_D_LowestTemperatureID 0;
+BA_ "SPN" SG_ 1595 P02_BMS_D_LowestTemperature 49;
+BA_ "GenSigSendType" SG_ 1595 P02_BMS_D_LowestTemperature 0;
+BA_ "GenSigStartValue" SG_ 1595 P02_BMS_D_LowestTemperature 40;
+BA_ "SPN" SG_ 1595 P02_BMS_D_HighestTemperatureID 48;
+BA_ "GenSigSendType" SG_ 1595 P02_BMS_D_HighestTemperatureID 0;
+BA_ "SPN" SG_ 1595 P02_BMS_D_HighestTemperature 47;
+BA_ "GenSigSendType" SG_ 1595 P02_BMS_D_HighestTemperature 0;
+BA_ "GenSigStartValue" SG_ 1595 P02_BMS_D_HighestTemperature 40;
+BA_ "GenSigSendType" SG_ 1579 P01_BMS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 1579 P01_BMS_D_Counter 0;
+BA_ "SPN" SG_ 1579 P01_BMS_D_DCL 46;
+BA_ "GenSigSendType" SG_ 1579 P01_BMS_D_DCL 0;
+BA_ "SPN" SG_ 1579 P01_BMS_D_CCL 45;
+BA_ "GenSigSendType" SG_ 1579 P01_BMS_D_CCL 0;
+BA_ "SPN" SG_ 1579 P01_BMS_D_Current 44;
+BA_ "GenSigSendType" SG_ 1579 P01_BMS_D_Current 0;
+BA_ "GenSigStartValue" SG_ 1579 P01_BMS_D_Current 10000;
+BA_ "SPN" SG_ 1707 P10_BMS_S_FastChargeContactorCom 102;
+BA_ "SystemSignalLongSymbol" SG_ 1707 P10_BMS_S_FastChargeContactorCom "P10_BMS_S_FastChargeContactorCommand";
+BA_ "SPN" SG_ 1707 P10_BMS_D_FastChargeMaxInstantan 104;
+BA_ "GenSigStartValue" SG_ 1707 P10_BMS_D_FastChargeMaxInstantan 0;
+BA_ "GenSigSendType" SG_ 1707 P10_BMS_D_FastChargeMaxInstantan 0;
+BA_ "SystemSignalLongSymbol" SG_ 1707 P10_BMS_D_FastChargeMaxInstantan "P10_BMS_D_FastChargeMaxInstantaneousPower";
+BA_ "SPN" SG_ 1707 P10_BMS_F_FastChargeFaultCode 105;
+BA_ "GenSigSendType" SG_ 1707 P10_BMS_F_FastChargeFaultCode 0;
+BA_ "SPN" SG_ 1707 P10_BMS_S_FastChargePlugState 101;
+BA_ "GenSigSendType" SG_ 1707 P10_BMS_S_FastChargePlugState 0;
+BA_ "SPN" SG_ 1707 P10_BMS_S_FastChargingState 100;
+BA_ "GenSigSendType" SG_ 1707 P10_BMS_S_FastChargingState 0;
+BA_ "SPN" SG_ 1707 P10_BMS_D_FastChargeRemainingTim 106;
+BA_ "GenSigSendType" SG_ 1707 P10_BMS_D_FastChargeRemainingTim 0;
+BA_ "SystemSignalLongSymbol" SG_ 1707 P10_BMS_D_FastChargeRemainingTim "P10_BMS_D_FastChargeRemainingTime";
+BA_ "SPN" SG_ 1707 P10_BMS_D_FastChargeInstantaneou 103;
+BA_ "GenSigSendType" SG_ 1707 P10_BMS_D_FastChargeInstantaneou 0;
+BA_ "SystemSignalLongSymbol" SG_ 1707 P10_BMS_D_FastChargeInstantaneou "P10_BMS_D_FastChargeInstantaneousPower";
+BA_ "GenSigSendType" SG_ 1707 P10_BMS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 1707 P10_BMS_D_Counter 0;
+VAL_ 1675 P08_BMS_F_NegativeHighVoltageIso 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_NegativeHVILFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_GasDetectionFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_WeakPackFault 3 "Fault" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_WaterDetectionFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_InternalHardwareFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_InCellCommunicationFau 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_PositiveHVILFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_PositiveHighVoltageIso 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_ExternalCommunication1 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_ExternalCommunication0 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_DischrgLimitEnforcemen 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_CurrentSensorFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_ContactorStuckFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_ChargeLimitEnforcement 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_CellVoltageOver5VFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_CellVoltageUnder90mVFa 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1675 P08_BMS_F_CellBalanceStuckoffFau 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_FaultCode 0 "No fault" 76 "Custom" 75 "Electronic lock fault 3" 74 "AC charging inlet NTC sensor fault 3" 70 "Battery system self-test fault 3" 63 "Charging pile communication fault 3" 62 "Vehicle CAN communication fault 3" 61 "Internal CAN communication fault 3" 60 "Main positive contactor welding fault 2" 59 "Main positive contactor open circiut fault 2" 58 "Main negative contactor welding fault 2" 50 "Charging inlet NTC sensor fault 3" 49 "Fast charging inlet over temperature fault 2" 48 "Fast charging inlet over temperature fault 3" 47 "Charging insulation fault 3" 45 "Running insulation fault 2" 44 "Running insulation fault 3" 43 "SOC jump failure 1" 42 "SOC too low fault 1" 41 "SOC too low fault 2" 40 "SOC too low fault 3" 39 "High SOC fault 1" 38 "Excessive discharge current during charging fault 1" 37 "Excessive charging current fault 2" 36 "Excessive charging current fault 3" 35 "Excessive feedback current fault 1" 34 "Excessive feedback current fault 2" 33 "Excessive feedback current fault 3" 31 "Excessive discharge current fault 2" 30 "Excessive discharge current fault 3" 29 "Total voltage too low fault 1-2" 28 "Total voltage too low fault 1-1" 27 "Total voltage too low fault 2-2" 26 "Total voltage too low fault 2-1" 15 "Cell voltage too low fault 2-2" 14 "Cell voltage too low fault 2-1" 13 "Cell voltage too low fault 3-2" 12 "Cell voltage too low fault 3-1" 11 "Excessive cell voltage fault 1" 10 "Excessive cell voltage fault 2" 73 "AC charging inlet overtemperature fault 3" 72 "CP abnormal fault 3" 71 "Abnormal CC connection fault 3" 69 "BMS hardware fault 3" 67 "Fire temperature fault" 66 "High battery temperature fault" 65 "Excessive cell voltage fault" 64 "Cell voltage too low fault" 57 "Main negative contactor open circiut fault 2" 56 "Total voltage mismatch fault 1" 55 "Abnormal CC2 connection fault 3" 54 "Total voltage acquisition fault 3" 53 "High voltage inter lock fault 3" 52 "BMS low voltage power supply abnormal fault 3" 51 "Shunt fault 3" 32 "Excessive discharge current fault 1" 25 "Total voltage too low fault 3-2" 24 "Total voltage too low fault 3-1" 23 "Total voltage too high fault 1" 22 "Total voltage too high fault 2" 21 "Total voltage too high fault 3" 20 "Cell voltage difference too large fault 1" 19 "Cell voltage difference too large fault 2" 18 "Cell voltage difference too large fault 3" 17 "Cell voltage too low fault 1-2" 16 "Cell voltage too low fault 1-1" 9 "Excessive cell voltage fault 3" 6 "Excessive cell/pole temperature difference fault 3" 7 "Excessive cell/pole temperature difference fault 2" 8 "Excessive cell/pole temperature difference fault 1" 5 "Cell temperature too low fault 1" 4 "Cell temperature too low fault 2" 3 "Cell temperature too low fault 3" 2 "Cell temperature too high fault 2" 1 "Cell temperature too high fault 3" ;
+VAL_ 1659 P07_BMS_F_ThermistorOpenWireFaul 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_WeakCellFault 3 "Fault" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_UnderVoltageFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_UnderTemperatureFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_OverVoltageFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_OverTemperatureFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_OverCurrentFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_InternalSoftwareFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_HeatSinkThermistorFaul 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_CellOpenWireFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_BatteryThermistorFault 3 "Error" 2 "Alarm" 1 "Warning" 0 "No fault" ;
+VAL_ 1659 P07_BMS_F_GlobalFault 0 "No fault" 1 "Fault" ;
+VAL_ 1562 P00_PCU_S_FastChargeContactorSta 3 "SNA" 2 "Error" 1 "Connect" 0 "Disconnect" ;
+VAL_ 1562 P00_PCU_S_ModeCommand 4 "Error" 7 "SNA" 3 "Slow charge" 2 "Fast charge" 1 "Discharge" 0 "Power up" ;
+VAL_ 1562 P00_PCU_S_NegativeContactorComma 3 "SNA" 2 "Error" 1 "Connect" 0 "Disconnect" ;
+VAL_ 1562 P00_PCU_S_PositiveContactorComma 3 "SNA" 2 "Error" 1 "Connect" 0 "Disconnect" ;
+VAL_ 1562 P00_PCU_S_PrechargeContactorComm 3 "SNA" 2 "Error" 1 "Connect" 0 "Disconnect" ;
+VAL_ 1563 P00_BMS_S_SlowChargeWakeUpState 1 "On" 0 "Off" ;
+VAL_ 1563 P00_BMS_S_QuickChargeWakeUpState 1 "On" 0 "Off" ;
+VAL_ 1563 P00_BMS_S_KeyOnState 1 "On" 0 "Off" ;
+VAL_ 1563 P00_BMS_S_PositiveScramState 3 "SNA" 2 "Error" 1 "Close" 0 "Open" ;
+VAL_ 1563 P00_BMS_S_NegativeScramState 3 "SNA" 2 "Error" 1 "Close" 0 "Open" ;
+VAL_ 1563 P00_BMS_S_NegativeContactorStatu 3 "SNA" 2 "Connect" 1 "Disconnect" 0 "Not available" ;
+VAL_ 1563 P00_BMS_S_PositiveContactorStatu 3 "SNA" 2 "Connect" 1 "Disconnect" 0 "Not available" ;
+VAL_ 1563 P00_BMS_S_PrechargeContactorStat 3 "SNA" 2 "Connect" 1 "Disconnect" 0 "Not available" ;
+VAL_ 1563 P00_BMS_S_CellBalancingState 3 "SNA" 2 "Fault" 1 "Active" 0 "Inactive" ;
+VAL_ 1563 P00_BMS_S_ReadyState 3 "SNA" 2 "Error" 0 "Not ready" 1 "Ready " ;
+VAL_ 1563 P00_BMS_S_ModeState 4 "Error" 7 "SNA" 3 "Slow charge" 2 "Fast charge" 1 "Discharge" 0 "Power up" ;
+VAL_ 1707 P10_BMS_S_FastChargeContactorCom 3 "SNA" 1 "Close" 0 "Open" ;
+VAL_ 1707 P10_BMS_F_FastChargeFaultCode 0 "No fault" 14 "Other fault" 13 "Voltage abnormal fault" 12 "Excessive current fault" 11 "Voltage detection at check point 2 fault" 10 "High voltage contactor fault" 9 "Battery pack over temperature fault" 8 "Charging connector malfunction fault" 7 "BMS output connector overtemperature fault" 6 "High voltage output contactor over temperature fault" 5 "High voltage system insulation fault" 4 "Charging process actively suspended fault" 3 "Reach setting value of signal voltage" 2 "Reach setting value of total voltage" 1 "Reach required SOC value" ;
+VAL_ 1707 P10_BMS_S_FastChargePlugState 3 "SNA" 2 "Fault" 1 "Plug" 0 "Unplug" ;
+VAL_ 1707 P10_BMS_S_FastChargingState 6 "SNA" 5 "Error" 4 "Stop" 3 "Charging" 2 "Precharge" 1 "Isolation" 0 "Initialize" ;
+

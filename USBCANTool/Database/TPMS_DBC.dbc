@@ -1,0 +1,233 @@
+VERSION "1.0"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU TPMS
+
+
+BO_ 791 TPMS_P01_TirePressure: 8 TPMS
+ SG_ P01_TPMS_S_StudyModeActiveState : 50|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_TPMS_F_StudyResultFault : 52|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_TPMS_F_RearLeftTemperatureHi : 48|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_TPMS_S_FrontLeftPressureStat : 32|3@1+ (1,0) [0|7] ""  PCU
+ SG_ P01_TPMS_F_SystemFault : 51|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_TPMS_D_RearRightTirePressure : 24|8@1+ (2.75,0) [0|448.25] "kPa"  PCU
+ SG_ P01_TPMS_F_RearRightTemperatureH : 49|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_TPMS_S_RearRightPressureStat : 43|3@1+ (1,0) [0|7] ""  PCU
+ SG_ P01_TPMS_D_RearLeftTirePressure : 16|8@1+ (2.75,0) [0|448.25] "kPa"  PCU
+ SG_ P01_TPMS_S_RearLeftPressureState : 40|3@1+ (1,0) [0|7] ""  PCU
+ SG_ P01_TPMS_D_FrontRightTirePressur : 8|8@1+ (2.75,0) [0|448.25] "kPa"  PCU
+ SG_ P01_TPMS_F_FrontRightTemperature : 47|1@1+ (1,0) [0|1] ""  PCU
+ SG_ P01_TPMS_S_FrontRightPressureSta : 35|3@1+ (1,0) [0|7] ""  PCU
+ SG_ P01_TPMS_D_FrontLeftTirePressure : 0|8@1+ (2.75,0) [0|448.25] "kPa"  PCU
+ SG_ P01_TPMS_F_FrontLeftTemperatureH : 46|1@1+ (1,0) [0|1] ""  PCU
+
+BO_ 930 TPMS_P00_TireTemperature: 8 TPMS
+ SG_ P00_TPMS_D_RearRightTireTemperat : 24|8@1+ (1,-40) [-40|125] "°C"  PCU
+ SG_ P00_TPMS_D_RearLeftTireTemperatu : 16|8@1+ (1,-40) [-40|125] "°C"  PCU
+ SG_ P00_TPMS_D_FrontRightTireTempera : 8|8@1+ (1,-40) [-40|125] "°C"  PCU
+ SG_ P00_TPMS_D_FrontLeftTireTemperat : 0|8@1+ (1,-40) [-40|125] "°C"  PCU
+
+
+
+CM_ SG_ 791 P01_TPMS_S_StudyModeActiveState "Electronic Control Unit (ECU) studying mode on system state";
+CM_ SG_ 791 P01_TPMS_F_StudyResultFault "Electronic Control Unit (ECU) system studying result fault";
+CM_ SG_ 791 P01_TPMS_F_RearLeftTemperatureHi "Rear left tire high temperature warning";
+CM_ SG_ 791 P01_TPMS_S_FrontLeftPressureStat "Front left tire pressure warning state";
+CM_ SG_ 791 P01_TPMS_F_SystemFault "System global fault";
+CM_ SG_ 791 P01_TPMS_D_RearRightTirePressure "Rear right tire pressure";
+CM_ SG_ 791 P01_TPMS_F_RearRightTemperatureH "Rear right tire high temperature warning";
+CM_ SG_ 791 P01_TPMS_S_RearRightPressureStat "Rear right tire pressure warning state";
+CM_ SG_ 791 P01_TPMS_D_RearLeftTirePressure "Rear left tire pressure";
+CM_ SG_ 791 P01_TPMS_S_RearLeftPressureState "Rear left tire pressure warning state";
+CM_ SG_ 791 P01_TPMS_D_FrontRightTirePressur "Front right tire pressure";
+CM_ SG_ 791 P01_TPMS_F_FrontRightTemperature "Front right tire high temperature warning";
+CM_ SG_ 791 P01_TPMS_S_FrontRightPressureSta "Front right  tire pressure warning state";
+CM_ SG_ 791 P01_TPMS_D_FrontLeftTirePressure "Front left tire pressure";
+CM_ SG_ 791 P01_TPMS_F_FrontLeftTemperatureH "Front left tire high temperature warning";
+CM_ SG_ 930 P00_TPMS_D_RearRightTireTemperat "Rear right tire temperature";
+CM_ SG_ 930 P00_TPMS_D_RearLeftTireTemperatu "Rear left tire temperature";
+CM_ SG_ 930 P00_TPMS_D_FrontRightTireTempera "Front right tire temperature";
+CM_ SG_ 930 P00_TPMS_D_FrontLeftTireTemperat "Front left tire temperature";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ SG_  "SigType" ENUM  "Default","Range","RangeSigned","ASCII","Discrete","Control","ReferencePGN","DTC","StringDelimiter","StringLength","StringLengthControl";
+BA_DEF_ SG_  "GenSigEVName" STRING ;
+BA_DEF_ SG_  "GenSigILSupport" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ BO_  "GenMsgFastOnStart" INT 0 100000;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 3600000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 1000000;
+BA_DEF_ SG_  "GenSigStartValue" INT 0 2147483647;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 100000;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "NmStationAddress" INT 0 255;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclic","NotUsed","IfActive","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","noMsgSendType";
+BA_DEF_ BO_  "GenMsgRequestable" INT 0 1;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+BA_DEF_ SG_  "SPN" INT 0 524287;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "ProtocolType" STRING ;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZone" "";
+BA_DEF_DEF_  "FaultAction" "";
+BA_DEF_DEF_  "FaultTrigger" "";
+BA_DEF_DEF_  "SigType" "Default";
+BA_DEF_DEF_  "GenSigEVName" "Env@Nodename_@Signame";
+BA_DEF_DEF_  "GenSigILSupport" "Yes";
+BA_DEF_DEF_  "GenSigSendType" "NoSigSendType";
+BA_DEF_DEF_  "GenMsgFastOnStart" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "NmStationAddress" 254;
+BA_DEF_DEF_  "GenMsgSendType" "noMsgSendType";
+BA_DEF_DEF_  "GenMsgRequestable" 1;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "ProtocolType" "CAN";
+BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN";
+BA_ "DBName" "TPMS";
+BA_ "NmStationAddress" BU_ PCU 1;
+BA_ "NmStationAddress" BU_ TPMS 2;
+BA_ "TXRX" BO_ 791 0;
+BA_ "GenMsgSendType" BO_ 791 0;
+BA_ "GenMsgCycleTime" BO_ 791 500;
+BA_ "VFrameFormat" BO_ 791 0;
+BA_ "TXRX" BO_ 930 0;
+BA_ "GenMsgCycleTime" BO_ 930 500;
+BA_ "VFrameFormat" BO_ 930 0;
+BA_ "GenMsgSendType" BO_ 930 0;
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_S_StudyModeActiveState 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_S_StudyModeActiveState 0;
+BA_ "SPN" SG_ 791 P01_TPMS_S_StudyModeActiveState 476;
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_F_StudyResultFault 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_F_StudyResultFault 0;
+BA_ "SPN" SG_ 791 P01_TPMS_F_StudyResultFault 478;
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_F_RearLeftTemperatureHi 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_F_RearLeftTemperatureHi 0;
+BA_ "SPN" SG_ 791 P01_TPMS_F_RearLeftTemperatureHi 474;
+BA_ "SystemSignalLongSymbol" SG_ 791 P01_TPMS_F_RearLeftTemperatureHi "P01_TPMS_F_RearLeftTemperatureHighWarning";
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_S_FrontLeftPressureStat 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_S_FrontLeftPressureStat 0;
+BA_ "SPN" SG_ 791 P01_TPMS_S_FrontLeftPressureStat 468;
+BA_ "SystemSignalLongSymbol" SG_ 791 P01_TPMS_S_FrontLeftPressureStat "P01_TPMS_S_FrontLeftPressureState";
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_F_SystemFault 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_F_SystemFault 0;
+BA_ "SPN" SG_ 791 P01_TPMS_F_SystemFault 477;
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_D_RearRightTirePressure 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_D_RearRightTirePressure 0;
+BA_ "SPN" SG_ 791 P01_TPMS_D_RearRightTirePressure 467;
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_F_RearRightTemperatureH 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_F_RearRightTemperatureH 0;
+BA_ "SPN" SG_ 791 P01_TPMS_F_RearRightTemperatureH 475;
+BA_ "SystemSignalLongSymbol" SG_ 791 P01_TPMS_F_RearRightTemperatureH "P01_TPMS_F_RearRightTemperatureHighWarning";
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_S_RearRightPressureStat 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_S_RearRightPressureStat 0;
+BA_ "SPN" SG_ 791 P01_TPMS_S_RearRightPressureStat 471;
+BA_ "SystemSignalLongSymbol" SG_ 791 P01_TPMS_S_RearRightPressureStat "P01_TPMS_S_RearRightPressureState";
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_D_RearLeftTirePressure 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_D_RearLeftTirePressure 0;
+BA_ "SPN" SG_ 791 P01_TPMS_D_RearLeftTirePressure 466;
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_S_RearLeftPressureState 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_S_RearLeftPressureState 0;
+BA_ "SPN" SG_ 791 P01_TPMS_S_RearLeftPressureState 470;
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_D_FrontRightTirePressur 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_D_FrontRightTirePressur 0;
+BA_ "SPN" SG_ 791 P01_TPMS_D_FrontRightTirePressur 465;
+BA_ "SystemSignalLongSymbol" SG_ 791 P01_TPMS_D_FrontRightTirePressur "P01_TPMS_D_FrontRightTirePressure";
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_F_FrontRightTemperature 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_F_FrontRightTemperature 0;
+BA_ "SPN" SG_ 791 P01_TPMS_F_FrontRightTemperature 473;
+BA_ "SystemSignalLongSymbol" SG_ 791 P01_TPMS_F_FrontRightTemperature "P01_TPMS_F_FrontRightTemperatureHighWarning";
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_S_FrontRightPressureSta 0;
+BA_ "SPN" SG_ 791 P01_TPMS_S_FrontRightPressureSta 469;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_S_FrontRightPressureSta 0;
+BA_ "SystemSignalLongSymbol" SG_ 791 P01_TPMS_S_FrontRightPressureSta "P01_TPMS_S_FrontRightPressureState";
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_D_FrontLeftTirePressure 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_D_FrontLeftTirePressure 0;
+BA_ "SPN" SG_ 791 P01_TPMS_D_FrontLeftTirePressure 464;
+BA_ "GenSigSendType" SG_ 791 P01_TPMS_F_FrontLeftTemperatureH 0;
+BA_ "GenSigStartValue" SG_ 791 P01_TPMS_F_FrontLeftTemperatureH 0;
+BA_ "SPN" SG_ 791 P01_TPMS_F_FrontLeftTemperatureH 472;
+BA_ "SystemSignalLongSymbol" SG_ 791 P01_TPMS_F_FrontLeftTemperatureH "P01_TPMS_F_FrontLeftTemperatureHighWarning";
+BA_ "GenSigSendType" SG_ 930 P00_TPMS_D_RearRightTireTemperat 0;
+BA_ "SPN" SG_ 930 P00_TPMS_D_RearRightTireTemperat 463;
+BA_ "GenSigStartValue" SG_ 930 P00_TPMS_D_RearRightTireTemperat 40;
+BA_ "SystemSignalLongSymbol" SG_ 930 P00_TPMS_D_RearRightTireTemperat "P00_TPMS_D_RearRightTireTemperature";
+BA_ "GenSigSendType" SG_ 930 P00_TPMS_D_RearLeftTireTemperatu 0;
+BA_ "SPN" SG_ 930 P00_TPMS_D_RearLeftTireTemperatu 462;
+BA_ "GenSigStartValue" SG_ 930 P00_TPMS_D_RearLeftTireTemperatu 40;
+BA_ "SystemSignalLongSymbol" SG_ 930 P00_TPMS_D_RearLeftTireTemperatu "P00_TPMS_D_RearLeftTireTemperature";
+BA_ "GenSigSendType" SG_ 930 P00_TPMS_D_FrontRightTireTempera 0;
+BA_ "SPN" SG_ 930 P00_TPMS_D_FrontRightTireTempera 461;
+BA_ "GenSigStartValue" SG_ 930 P00_TPMS_D_FrontRightTireTempera 40;
+BA_ "SystemSignalLongSymbol" SG_ 930 P00_TPMS_D_FrontRightTireTempera "P00_TPMS_D_FrontRightTireTemperature";
+BA_ "GenSigSendType" SG_ 930 P00_TPMS_D_FrontLeftTireTemperat 0;
+BA_ "SPN" SG_ 930 P00_TPMS_D_FrontLeftTireTemperat 460;
+BA_ "GenSigStartValue" SG_ 930 P00_TPMS_D_FrontLeftTireTemperat 40;
+BA_ "SystemSignalLongSymbol" SG_ 930 P00_TPMS_D_FrontLeftTireTemperat "P00_TPMS_D_FrontLeftTireTemperature";
+VAL_ 791 P01_TPMS_S_StudyModeActiveState 1 "Active" 0 "Inactive" ;
+VAL_ 791 P01_TPMS_F_StudyResultFault 1 "Fault" 0 "No fault" ;
+VAL_ 791 P01_TPMS_F_RearLeftTemperatureHi 1 "Warning" 0 "Normal" ;
+VAL_ 791 P01_TPMS_S_FrontLeftPressureStat 7 "High/Low pressure micro warning " 6 "Sensor failure" 5 "Sensor battery low" 4 "Low pressure warning" 3 "High pressure warning" 2 "Quik leakage" 1 "No sensor" 0 "Normal" ;
+VAL_ 791 P01_TPMS_F_SystemFault 1 "Fault" 0 "No fault" ;
+VAL_ 791 P01_TPMS_F_RearRightTemperatureH 1 "Warning" 0 "Normal" ;
+VAL_ 791 P01_TPMS_S_RearRightPressureStat 7 "High/Low pressure micro warning " 6 "Sensor failure" 5 "Sensor battery low" 4 "Low pressure warning" 3 "High pressure warning" 2 "Quik leakage" 1 "No sensor" 0 "Normal" ;
+VAL_ 791 P01_TPMS_S_RearLeftPressureState 7 "High/Low pressure micro warning " 6 "Sensor failure" 5 "Sensor battery low" 4 "Low pressure warning" 3 "High pressure warning" 2 "Quik leakage" 1 "No sensor" 0 "Normal" ;
+VAL_ 791 P01_TPMS_F_FrontRightTemperature 1 "Warning" 0 "Normal" ;
+VAL_ 791 P01_TPMS_S_FrontRightPressureSta 7 "High/Low pressure micro warning " 6 "Sensor failure" 5 "Sensor battery low" 4 "Low pressure warning" 3 "High pressure warning" 2 "Quik leakage" 1 "No sensor" 0 "Normal" ;
+VAL_ 791 P01_TPMS_F_FrontLeftTemperatureH 1 "Warning" 0 "Normal" ;
+

@@ -95,6 +95,12 @@ if (Test-Path $cfg) {
     Copy-Item -LiteralPath $cfg -Destination (Join-Path $PayloadDir "USBCANTool.exe.config") -Force
 }
 
+$databaseSource = Join-Path $appDir "Database"
+if (-not (Test-Path -LiteralPath $databaseSource -PathType Container)) {
+    throw "App Database folder not found: $databaseSource"
+}
+Copy-Item -LiteralPath $databaseSource -Destination $PayloadDir -Recurse -Force
+
 $zlgSrc = Join-Path $NativeDir "zlgcan.dll"
 if (-not (Test-Path $zlgSrc)) { $zlgSrc = Join-Path $sdk "zlgcan.dll" }
 Copy-Item -LiteralPath $zlgSrc -Destination (Join-Path $PayloadDir "zlgcan.dll") -Force

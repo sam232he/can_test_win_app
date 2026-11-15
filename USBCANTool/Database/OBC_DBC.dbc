@@ -1,0 +1,387 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU OBC
+VAL_TABLE_ P12_PCU_SOCChargeLockEnableSwSts 3 "Reserved" 2 "Enable" 1 "Disable" 0 "No action" ;
+VAL_TABLE_ SOC_ChargeLockEnableSwSts 3 "Reserved" 2 "Enable" 1 "Disable" 0 "No action" ;
+VAL_TABLE_ P10_PCU_S_KeySts 3 "START" 2 "ON" 1 "Reserved" 0 "OFF" ;
+VAL_TABLE_ P08_PCU_S_RemoteChargeLockReq 3 "Reserved" 2 "Lock request" 1 "Unlock request" 0 "No request" ;
+VAL_TABLE_ P00_PCU_S_SlowChargeAchieve 1 "OK" 0 "Not OK" ;
+VAL_TABLE_ P00_PCU_F_ThermalRunawayFault 3 "Reserved" 2 "Reserved" 1 "Fault" 0 "No fault" ;
+VAL_TABLE_ P03_PCU_InverterEnableSts 3 "Reserved" 2 "Enable" 1 "Disable" 0 "Inactive/Initial value" ;
+VAL_TABLE_ P03_PCU_S_ChgModeReq 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Discharging request" 3 "Precharging request" 2 "Heating request" 1 "Charge request" 0 "No request" ;
+VAL_TABLE_ P02_PCU_F_CoolingPumpCtrlFault 1 "Fault" 0 "No Fault" ;
+VAL_TABLE_ P04_PCU_S_VehSpdVD 1 "Invalid" 0 "Valid" ;
+VAL_TABLE_ P01_PCU_S_EnableReq 1 "Enable" 0 "Disable" ;
+VAL_TABLE_ P01_PCU_S_ChgPauseReq 3 "Reserved" 2 "Reserved" 1 "Stop charge request" 0 "No request" ;
+VAL_TABLE_ ValDes_OBC_FaultSts 1 "Fault" 0 "No fault" ;
+VAL_TABLE_ ValDes_OBC_S2_SwSts 1 "Close" 0 "Open" ;
+VAL_TABLE_ ValDes_OBC_ChgInterfaceOverTemp 3 "Reserved" 2 "Reserved" 1 "Fault" 0 "No fault" ;
+VAL_TABLE_ ValDes_OBC_ChargerInterfaceTemp_ 1 "Invalid" 0 "Valid" ;
+VAL_TABLE_ ValDes_OBC_WorkingMode 5 "Sleep" 4 "Fault" 3 "Heat" 2 "Charge" 1 "Standby" 0 "Initial Value" ;
+VAL_TABLE_ ValDes_OBC_Inverter_CC_ConnectSt 3 "Reserved" 2 "Partial Connected" 1 "Connected" 0 "Not connected" ;
+VAL_TABLE_ ValDes_OBC_InverterFaultSts 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "Level3 fault" 2 "Level2 fault" 1 "Level1 fault" 0 "No fault" ;
+VAL_TABLE_ ValDes_OBC_InverterDischgSts 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "Discharge finished" 2 "Discharging" 1 "Discharge ready" 0 "Discharge disable" ;
+VAL_TABLE_ ValDes_OBC_SOC_ChargeLockEnableS 2 "Enable" 1 "Disable" 0 "Inactive" ;
+VAL_TABLE_ ValDes_OBC_ChgKL15_Sts 1 "On" 0 "Off" ;
+VAL_TABLE_ ValDes_OBC_ChargerOverTemp 3 "Reserved" 2 "Over temperature Lever2" 1 "Over temperature Lever1" 0 "No fault" ;
+VAL_TABLE_ ValDes_OBC_ChargerTemp_VD 1 "Invalid" 0 "Valid" ;
+VAL_TABLE_ ValDes_OBC_CoolingReq 3 "Reserved" 2 "Reserved" 1 "Cooling request" 0 "No request" ;
+VAL_TABLE_ ValDes_OBC_ElectronicLockFault 1 "Fault" 0 "No fault" ;
+VAL_TABLE_ ValDes_OBC_ElectronicLockSts 1 "Lock" 0 "Unlock" ;
+VAL_TABLE_ ValDes_OBC_CC_ConnectSts 3 "Reserved" 2 "Partial connected" 1 "Connected" 0 "Not connected" ;
+VAL_TABLE_ ValDes_OBC_SystemFaultSts 7 "Reserved" 6 "Reserved" 5 "Reserved" 4 "Reserved" 3 "Level3 fault" 2 "Level2 fault" 1 "Level1 fault" 0 "No fault" ;
+VAL_TABLE_ ValDes_OBC_ChgSts 7 "Reserved" 6 "Reserved" 5 "Charging pause" 4 "Heating" 3 "Charge finished" 2 "Charging" 1 "Ready" 0 "No charge" ;
+VAL_TABLE_ ValDes_NM_DCDC_UserData_GtwyReq 1 "Gateway Request" 0 "No Gateway Request" ;
+VAL_TABLE_ ValDes_NM_DCDC_UserData_NM_State 7 "Reserved" 6 "0x6:NormOprState_fromRdySlpState" 5 "NormOprState_fromRepeatMsgState" 4 "RepeatMsgState_fromReadySlpState" 3 "RepeatMsgState_from NormOprState" 2 "RepeatMsgState_fromPrepareBusSlp" 1 "RepeatMsgState_from BusSleepMode" 0 "Inactive/Initial value" ;
+VAL_TABLE_ ValDes_NM_DCDC_ActiveWakeupBit 1 "Local active wakeup" 0 "Passive wakeup" ;
+VAL_TABLE_ ValDes_ActivationSts 1 "Active" 0 "Inactive" ;
+VAL_TABLE_ ValDes_DCDC_CoolingReq 1 "Cooling request" 0 "No request" ;
+VAL_TABLE_ ValDes_DCDC_ConversionMode 3 "Reserved" 2 "AC-LV" 1 "HV-LV" 0 "Inactive/Initial value" ;
+VAL_TABLE_ ValDes_FaultSts 1 "Fault" 0 "No fault" ;
+VAL_TABLE_ ValDes_DCDC_WorkingMode 1 "On" 0 "Off" ;
+
+
+BO_ 1093 PCU_P02_Command: 6 PCU
+ SG_ P02_PCU_S_InverterEnableCommand : 43|2@0+ (1,0) [0|2] ""  OBC
+ SG_ P02_PCU_S_ChargeModeCommand : 27|4@0+ (1,0) [0|4] ""  OBC
+ SG_ P02_PCU_D_HVOutputCurrentSetPoin : 9|10@0+ (0.1,0) [0|32] "A"  OBC
+ SG_ P02_PCU_D_HVOutputVoltageSetPoin : 7|10@0+ (1,0) [230|450] "V"  OBC
+
+BO_ 1122 OBC_P01_Status: 8 OBC
+ SG_ P01_OBC_D_InverterPower : 51|12@0+ (1,0) [0|3300] "W"  PCU
+ SG_ P01_OBC_F_InverterInternalFault : 47|3@0+ (1,0) [0|7] ""  PCU
+ SG_ P01_OBC_S_InverterDischargeStatu : 44|3@0+ (1,0) [0|3] ""  PCU
+ SG_ P01_OBC_S_InverterPlugtState : 41|2@0+ (1,0) [0|2] ""  PCU
+ SG_ P01_OBC_S_WorkingModeStatus : 35|3@0+ (1,0) [0|5] ""  PCU
+ SG_ P01_OBC_F_AbnormalUpdateRateFaul : 32|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_BatteryPackReverseFaul : 31|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_NoBatteryDetectFault : 30|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_HVOutputOverCurrentFau : 29|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_KL30UnderVoltageFault : 28|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_LVOverVoltageFault : 27|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_LVUnderVoltageFault : 26|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_InputOverVoltageFault : 25|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_InputUnderVoltageFault : 24|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_HVOutputShortCircuitFa : 23|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_HVOutputOverVoltageFau : 22|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_HVOutputUnderVoltageFa : 21|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_S_ACChargeContactorStatu : 20|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_PlugOverTemperatureFau : 19|2@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_S_PlugTemperatureValidSt : 17|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_F_CPDutyCycleFault : 16|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_OBC_D_PlugTemperature : 15|8@0+ (1,-40) [-40|200] "°C"  PCU
+ SG_ P01_OBC_D_CPDutyCycle : 7|8@0+ (1,0) [0|100] "%"  PCU
+
+BO_ 1121 OBC_P00_VoltageCurrent: 8 OBC
+ SG_ P00_OBC_D_InputACVoltage : 63|8@0+ (2,0) [0|500] "V"  PCU
+ SG_ P00_OBC_S_AfterChargeEnableState : 53|2@0+ (1,0) [0|2] ""  PCU
+ SG_ P00_OBC_D_Counter : 51|4@0+ (1,0) [0|15] ""  PCU
+ SG_ P00_OBC_D_InternalTemperature : 47|8@0- (1,-40) [-40|200] "°C"  PCU
+ SG_ P00_OBC_S_KL15State : 39|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_OBC_F_OverTemperatureFault : 38|2@0+ (1,0) [0|2] ""  PCU
+ SG_ P00_OBC_S_InternalTemperatureVal : 36|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_OBC_S_CoolingState : 35|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P00_OBC_F_PlugLockFault : 33|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_OBC_S_PlugLockState : 32|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_OBC_S_PlugConnetionState : 31|2@0+ (1,0) [0|2] ""  PCU
+ SG_ P00_OBC_F_SystemFault : 29|3@0+ (1,0) [0|7] ""  PCU
+ SG_ P00_OBC_S_ChargeStatus : 26|3@0+ (1,0) [0|5] ""  PCU
+ SG_ P00_OBC_D_HVOutputCurrentFeedbac : 9|10@0+ (0.1,0) [0|50] "A"  PCU
+ SG_ P00_OBC_D_HVOutputVoltageFeedbac : 7|10@0+ (1,0) [0|1000] "V"  PCU
+
+
+
+CM_ "JAC_CANBus1_500Kbs";
+CM_ BO_ 1093 "BMS to OBC charge control related signal";
+CM_ SG_ 1093 P02_PCU_S_InverterEnableCommand "Inverter enable command (V2L)";
+CM_ SG_ 1093 P02_PCU_S_ChargeModeCommand "Charge mode command";
+CM_ SG_ 1093 P02_PCU_D_HVOutputCurrentSetPoin "High voltage output current Set point";
+CM_ SG_ 1093 P02_PCU_D_HVOutputVoltageSetPoin "High voltage output voltage Set point";
+CM_ BO_ 1122 "OBC related temperature signal, CP signal and internal fault related signal";
+CM_ SG_ 1122 P01_OBC_D_InverterPower "Inverter maximum allowed load power (AC plug)";
+CM_ SG_ 1122 P01_OBC_F_InverterInternalFault "Inverter internal fault";
+CM_ SG_ 1122 P01_OBC_S_InverterDischargeStatu "Inverter discharge status";
+CM_ SG_ 1122 P01_OBC_S_InverterPlugtState "Invert plug connection state (Connection Confirmation (CC) pin state)";
+CM_ SG_ 1122 P01_OBC_S_WorkingModeStatus "Working mode status";
+CM_ SG_ 1122 P01_OBC_F_AbnormalUpdateRateFaul "Abnormal command update rate fault";
+CM_ SG_ 1122 P01_OBC_F_BatteryPackReverseFaul "Reverse battery pack connection fault";
+CM_ SG_ 1122 P01_OBC_F_NoBatteryDetectFault "Output battery pack not connected fault";
+CM_ SG_ 1122 P01_OBC_F_HVOutputOverCurrentFau "High voltage output over current fault";
+CM_ SG_ 1122 P01_OBC_F_KL30UnderVoltageFault "Control system supply under voltage fault";
+CM_ SG_ 1122 P01_OBC_F_LVOverVoltageFault "AUX output overvoltage fault";
+CM_ SG_ 1122 P01_OBC_F_LVUnderVoltageFault "AUX output undervoltage fault";
+CM_ SG_ 1122 P01_OBC_F_InputOverVoltageFault "Input over voltage fault (AC plug)";
+CM_ SG_ 1122 P01_OBC_F_InputUnderVoltageFault "Input under voltage fault (AC plug)";
+CM_ SG_ 1122 P01_OBC_F_HVOutputShortCircuitFa "High voltage output short circuit fault";
+CM_ SG_ 1122 P01_OBC_F_HVOutputOverVoltageFau "High voltage output over voltage fault";
+CM_ SG_ 1122 P01_OBC_F_HVOutputUnderVoltageFa "High voltage output under voltage fault";
+CM_ SG_ 1122 P01_OBC_S_ACChargeContactorStatu "Charge contactor status (AC plug)";
+CM_ SG_ 1122 P01_OBC_F_PlugOverTemperatureFau "AC plug over temperature fault";
+CM_ SG_ 1122 P01_OBC_S_PlugTemperatureValidSt "Plug temperature sensor validation state";
+CM_ SG_ 1122 P01_OBC_F_CPDutyCycleFault "Abnormal Control Pilot (CP) duty cycle fault";
+CM_ SG_ 1122 P01_OBC_D_PlugTemperature "AC Plug temperature";
+CM_ SG_ 1122 P01_OBC_D_CPDutyCycle "Control Pilot (CP) duty cycle";
+CM_ BO_ 1121 "OBC charging voltage, current, charging mode and charging state and other related signals";
+CM_ SG_ 1121 P00_OBC_D_InputACVoltage "Input voltage (AC plug)";
+CM_ SG_ 1121 P00_OBC_S_AfterChargeEnableState "After charge electronic lock enable state";
+CM_ SG_ 1121 P00_OBC_D_Counter "Up counter (0-15)";
+CM_ SG_ 1121 P00_OBC_D_InternalTemperature "Internal temperature";
+CM_ SG_ 1121 P00_OBC_S_KL15State "Slow charge ignition (KL15) state";
+CM_ SG_ 1121 P00_OBC_F_OverTemperatureFault "Over temperature fault";
+CM_ SG_ 1121 P00_OBC_S_InternalTemperatureVal "Internal temperature sensor validation state";
+CM_ SG_ 1121 P00_OBC_S_CoolingState "Cooling Request state";
+CM_ SG_ 1121 P00_OBC_F_PlugLockFault "AC plug electronic lock fault";
+CM_ SG_ 1121 P00_OBC_S_PlugLockState "Plug electronic lock state";
+CM_ SG_ 1121 P00_OBC_S_PlugConnetionState "Plug connection state (Connection Confirmation (CC) pin state)";
+CM_ SG_ 1121 P00_OBC_F_SystemFault "System fault";
+CM_ SG_ 1121 P00_OBC_S_ChargeStatus "Charge process status";
+CM_ SG_ 1121 P00_OBC_D_HVOutputCurrentFeedbac "High voltage output current feedback";
+CM_ SG_ 1121 P00_OBC_D_HVOutputVoltageFeedbac "High voltage output voltage feedback";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ BO_  "J1939FdTpADS" INT 0 52;
+BA_DEF_ BO_  "J1939FdTpADT" INT 0 255;
+BA_DEF_ BO_  "J1939PgAppearanceOnBus" ENUM  "Default","CAN_Extended","CANFD_Extended";
+BA_DEF_ BO_  "J1939CPgSendTimeout" INT -1 3600000;
+BA_DEF_ BO_  "J1939CPgTOS" INT 0 7;
+BA_DEF_ BO_  "J1939CPgTF" INT 0 7;
+BA_DEF_ BU_  "J1939MultiPgSendTimeout" INT 0 3600000;
+BA_DEF_ BU_  "J1939MultiPgSizeThreshold" INT 0 64;
+BA_DEF_ BU_  "J1939MultiPgBroadcastType" ENUM  "FBFF","FEFF";
+BA_DEF_  "DatabaseVersion" STRING ;
+BA_DEF_ BO_  "FsJ1939UseCrcAndCounter" STRING ;
+BA_DEF_ BO_  "FsJ1939NeedsSHM" ENUM  "No","Yes";
+BA_DEF_ BO_  "FsJ1939Delay" INT 0 1000;
+BA_DEF_ BO_  "TpJ1939VarDlc" ENUM  "No","Yes";
+BA_DEF_ SG_  "SigType" ENUM  "Default","Range","RangeSigned","ASCII","Discrete","Control","ReferencePGN","DTC","StringDelimiter","StringLength","StringLengthControl","MessageCounter","MessageChecksum";
+BA_DEF_ SG_  "GenSigILSupport" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ BO_  "GenMsgFastOnStart" INT 0 100000;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 3600000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 1000000;
+BA_DEF_ SG_  "GenSigStartValue" INT 0 2147483647;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 100000;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "NmJ1939SystemInstance" INT 0 15;
+BA_DEF_ BU_  "NmJ1939System" INT 0 127;
+BA_DEF_ BU_  "NmJ1939ManufacturerCode" INT 0 2047;
+BA_DEF_ BU_  "NmJ1939IndustryGroup" INT 0 7;
+BA_DEF_ BU_  "NmJ1939IdentityNumber" INT 0 2097151;
+BA_DEF_ BU_  "NmJ1939FunctionInstance" INT 0 7;
+BA_DEF_ BU_  "NmJ1939Function" INT 0 255;
+BA_DEF_ BU_  "NmJ1939ECUInstance" INT 0 7;
+BA_DEF_ BU_  "NmJ1939AAC" INT 0 1;
+BA_DEF_ BU_  "NmStationAddress" INT 0 255;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclic","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","IfActive","noMsgSendType";
+BA_DEF_ BO_  "GenMsgRequestable" INT 0 1;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+BA_DEF_ SG_  "SPN" INT 0 524287;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "ProtocolType" STRING ;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZone" "";
+BA_DEF_DEF_  "FaultAction" "";
+BA_DEF_DEF_  "FaultTrigger" "";
+BA_DEF_DEF_  "J1939FdTpADS" 0;
+BA_DEF_DEF_  "J1939FdTpADT" 0;
+BA_DEF_DEF_  "J1939PgAppearanceOnBus" "Default";
+BA_DEF_DEF_  "J1939CPgSendTimeout" -1;
+BA_DEF_DEF_  "J1939CPgTOS" 2;
+BA_DEF_DEF_  "J1939CPgTF" 0;
+BA_DEF_DEF_  "J1939MultiPgSendTimeout" 2;
+BA_DEF_DEF_  "J1939MultiPgSizeThreshold" 56;
+BA_DEF_DEF_  "J1939MultiPgBroadcastType" "FBFF";
+BA_DEF_DEF_  "DatabaseVersion" "";
+BA_DEF_DEF_  "FsJ1939UseCrcAndCounter" "";
+BA_DEF_DEF_  "FsJ1939NeedsSHM" "No";
+BA_DEF_DEF_  "FsJ1939Delay" 0;
+BA_DEF_DEF_  "TpJ1939VarDlc" "No";
+BA_DEF_DEF_  "SigType" "Default";
+BA_DEF_DEF_  "GenSigILSupport" "Yes";
+BA_DEF_DEF_  "GenSigSendType" "NoSigSendType";
+BA_DEF_DEF_  "GenMsgFastOnStart" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "NmJ1939SystemInstance" 0;
+BA_DEF_DEF_  "NmJ1939System" 0;
+BA_DEF_DEF_  "NmJ1939ManufacturerCode" 0;
+BA_DEF_DEF_  "NmJ1939IndustryGroup" 0;
+BA_DEF_DEF_  "NmJ1939IdentityNumber" 0;
+BA_DEF_DEF_  "NmJ1939FunctionInstance" 0;
+BA_DEF_DEF_  "NmJ1939Function" 0;
+BA_DEF_DEF_  "NmJ1939ECUInstance" 0;
+BA_DEF_DEF_  "NmJ1939AAC" 0;
+BA_DEF_DEF_  "NmStationAddress" 254;
+BA_DEF_DEF_  "GenMsgSendType" "noMsgSendType";
+BA_DEF_DEF_  "GenMsgRequestable" 1;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "ProtocolType" "J1939";
+BA_DEF_DEF_  "VFrameFormat" "J1939PG";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN";
+BA_ "DBName" "OBC";
+BA_ "GenMsgSendType" BO_ 1093 0;
+BA_ "TXRX" BO_ 1093 1;
+BA_ "GenMsgCycleTime" BO_ 1093 500;
+BA_ "VFrameFormat" BO_ 1093 0;
+BA_ "TXRX" BO_ 1122 0;
+BA_ "GenMsgCycleTime" BO_ 1122 500;
+BA_ "GenMsgSendType" BO_ 1122 0;
+BA_ "VFrameFormat" BO_ 1122 0;
+BA_ "TXRX" BO_ 1121 0;
+BA_ "GenMsgCycleTime" BO_ 1121 500;
+BA_ "GenMsgSendType" BO_ 1121 0;
+BA_ "VFrameFormat" BO_ 1121 0;
+BA_ "SPN" SG_ 1093 P02_PCU_S_InverterEnableCommand 2043;
+BA_ "GenSigSendType" SG_ 1093 P02_PCU_S_InverterEnableCommand 0;
+BA_ "SPN" SG_ 1093 P02_PCU_S_ChargeModeCommand 2042;
+BA_ "GenSigSendType" SG_ 1093 P02_PCU_S_ChargeModeCommand 0;
+BA_ "SPN" SG_ 1093 P02_PCU_D_HVOutputCurrentSetPoin 2041;
+BA_ "GenSigSendType" SG_ 1093 P02_PCU_D_HVOutputCurrentSetPoin 0;
+BA_ "SystemSignalLongSymbol" SG_ 1093 P02_PCU_D_HVOutputCurrentSetPoin "P02_PCU_D_HVOutputCurrentSetPoint";
+BA_ "GenSigStartValue" SG_ 1093 P02_PCU_D_HVOutputVoltageSetPoin 230;
+BA_ "SPN" SG_ 1093 P02_PCU_D_HVOutputVoltageSetPoin 2040;
+BA_ "GenSigSendType" SG_ 1093 P02_PCU_D_HVOutputVoltageSetPoin 0;
+BA_ "SystemSignalLongSymbol" SG_ 1093 P02_PCU_D_HVOutputVoltageSetPoin "P02_PCU_D_HVOutputVoltageSetPoint";
+BA_ "SPN" SG_ 1122 P01_OBC_D_InverterPower 152;
+BA_ "SPN" SG_ 1122 P01_OBC_F_InverterInternalFault 151;
+BA_ "SPN" SG_ 1122 P01_OBC_S_InverterDischargeStatu 150;
+BA_ "SystemSignalLongSymbol" SG_ 1122 P01_OBC_S_InverterDischargeStatu "P01_OBC_S_InverterDischargeStatus";
+BA_ "SPN" SG_ 1122 P01_OBC_S_InverterPlugtState 149;
+BA_ "SPN" SG_ 1122 P01_OBC_S_WorkingModeStatus 148;
+BA_ "SPN" SG_ 1122 P01_OBC_F_AbnormalUpdateRateFaul 147;
+BA_ "SystemSignalLongSymbol" SG_ 1122 P01_OBC_F_AbnormalUpdateRateFaul "P01_OBC_F_AbnormalUpdateRateFault";
+BA_ "SPN" SG_ 1122 P01_OBC_F_BatteryPackReverseFaul 146;
+BA_ "SystemSignalLongSymbol" SG_ 1122 P01_OBC_F_BatteryPackReverseFaul "P01_OBC_F_BatteryPackReverseFault";
+BA_ "SPN" SG_ 1122 P01_OBC_F_NoBatteryDetectFault 145;
+BA_ "SPN" SG_ 1122 P01_OBC_F_HVOutputOverCurrentFau 144;
+BA_ "SystemSignalLongSymbol" SG_ 1122 P01_OBC_F_HVOutputOverCurrentFau "P01_OBC_F_HVOutputOverCurrentFault";
+BA_ "SPN" SG_ 1122 P01_OBC_F_KL30UnderVoltageFault 143;
+BA_ "SPN" SG_ 1122 P01_OBC_F_LVOverVoltageFault 142;
+BA_ "SPN" SG_ 1122 P01_OBC_F_LVUnderVoltageFault 141;
+BA_ "SPN" SG_ 1122 P01_OBC_F_InputOverVoltageFault 140;
+BA_ "SPN" SG_ 1122 P01_OBC_F_InputUnderVoltageFault 139;
+BA_ "SPN" SG_ 1122 P01_OBC_F_HVOutputShortCircuitFa 138;
+BA_ "SystemSignalLongSymbol" SG_ 1122 P01_OBC_F_HVOutputShortCircuitFa "P01_OBC_F_HVOutputShortCircuitFault";
+BA_ "SPN" SG_ 1122 P01_OBC_F_HVOutputOverVoltageFau 137;
+BA_ "SystemSignalLongSymbol" SG_ 1122 P01_OBC_F_HVOutputOverVoltageFau "P01_OBC_F_HVOutputOverVoltageFault";
+BA_ "SPN" SG_ 1122 P01_OBC_F_HVOutputUnderVoltageFa 136;
+BA_ "SystemSignalLongSymbol" SG_ 1122 P01_OBC_F_HVOutputUnderVoltageFa "P01_OBC_F_HVOutputUnderVoltageFault";
+BA_ "SPN" SG_ 1122 P01_OBC_S_ACChargeContactorStatu 135;
+BA_ "SystemSignalLongSymbol" SG_ 1122 P01_OBC_S_ACChargeContactorStatu "P01_OBC_S_ACChargeContactorStatus";
+BA_ "SPN" SG_ 1122 P01_OBC_F_PlugOverTemperatureFau 134;
+BA_ "SystemSignalLongSymbol" SG_ 1122 P01_OBC_F_PlugOverTemperatureFau "P01_OBC_F_PlugOverTemperatureFault";
+BA_ "SPN" SG_ 1122 P01_OBC_S_PlugTemperatureValidSt 133;
+BA_ "SystemSignalLongSymbol" SG_ 1122 P01_OBC_S_PlugTemperatureValidSt "P01_OBC_S_PlugTemperatureValidState";
+BA_ "SPN" SG_ 1122 P01_OBC_F_CPDutyCycleFault 132;
+BA_ "SPN" SG_ 1122 P01_OBC_D_PlugTemperature 131;
+BA_ "GenSigStartValue" SG_ 1122 P01_OBC_D_PlugTemperature 65;
+BA_ "SPN" SG_ 1122 P01_OBC_D_CPDutyCycle 130;
+BA_ "GenSigStartValue" SG_ 1121 P00_OBC_D_InputACVoltage 0;
+BA_ "SPN" SG_ 1121 P00_OBC_D_InputACVoltage 129;
+BA_ "SPN" SG_ 1121 P00_OBC_S_AfterChargeEnableState 128;
+BA_ "SPN" SG_ 1121 P00_OBC_D_Counter 127;
+BA_ "SPN" SG_ 1121 P00_OBC_D_InternalTemperature 126;
+BA_ "GenSigStartValue" SG_ 1121 P00_OBC_D_InternalTemperature 65;
+BA_ "SPN" SG_ 1121 P00_OBC_S_KL15State 125;
+BA_ "SPN" SG_ 1121 P00_OBC_F_OverTemperatureFault 124;
+BA_ "SPN" SG_ 1121 P00_OBC_S_InternalTemperatureVal 123;
+BA_ "SystemSignalLongSymbol" SG_ 1121 P00_OBC_S_InternalTemperatureVal "P00_OBC_S_InternalTemperatureValidState";
+BA_ "SPN" SG_ 1121 P00_OBC_S_CoolingState 122;
+BA_ "SPN" SG_ 1121 P00_OBC_F_PlugLockFault 121;
+BA_ "SPN" SG_ 1121 P00_OBC_S_PlugLockState 120;
+BA_ "SPN" SG_ 1121 P00_OBC_S_PlugConnetionState 119;
+BA_ "SPN" SG_ 1121 P00_OBC_F_SystemFault 118;
+BA_ "SPN" SG_ 1121 P00_OBC_S_ChargeStatus 117;
+BA_ "SPN" SG_ 1121 P00_OBC_D_HVOutputCurrentFeedbac 116;
+BA_ "SystemSignalLongSymbol" SG_ 1121 P00_OBC_D_HVOutputCurrentFeedbac "P00_OBC_D_HVOutputCurrentFeedback";
+BA_ "GenSigStartValue" SG_ 1121 P00_OBC_D_HVOutputVoltageFeedbac 0;
+BA_ "SPN" SG_ 1121 P00_OBC_D_HVOutputVoltageFeedbac 115;
+BA_ "SystemSignalLongSymbol" SG_ 1121 P00_OBC_D_HVOutputVoltageFeedbac "P00_OBC_D_HVOutputVoltageFeedback";
+VAL_ 1093 P02_PCU_S_InverterEnableCommand 2 "Enable" 1 "Disable" 0 "Inactive/Initial value" ;
+VAL_ 1093 P02_PCU_S_ChargeModeCommand 4 "Discharging request" 3 "Precharging request" 2 "Heating request" 1 "Charge request" 0 "No request" ;
+VAL_ 1122 P01_OBC_F_InverterInternalFault 3 "Fault level 3" 2 "Fault level 2" 1 "Fault level 1" 0 "No fault" ;
+VAL_ 1122 P01_OBC_S_InverterDischargeStatu 3 "Discharge finished" 2 "Discharging" 1 "Discharge ready" 0 "Discharge disable" ;
+VAL_ 1122 P01_OBC_S_InverterPlugtState 2 "Partial Connected" 1 "Connected" 0 "Not connected" ;
+VAL_ 1122 P01_OBC_S_WorkingModeStatus 5 "Sleep" 4 "Fault" 3 "Heat" 2 "Charge" 1 "Standby" 0 "Initial Value" ;
+VAL_ 1122 P01_OBC_F_AbnormalUpdateRateFaul 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_F_BatteryPackReverseFaul 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_F_NoBatteryDetectFault 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_F_HVOutputOverCurrentFau 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_F_KL30UnderVoltageFault 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_F_LVOverVoltageFault 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_F_LVUnderVoltageFault 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_F_InputOverVoltageFault 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_F_InputUnderVoltageFault 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_F_HVOutputShortCircuitFa 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_F_HVOutputOverVoltageFau 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_F_HVOutputUnderVoltageFa 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_S_ACChargeContactorStatu 1 "Close" 0 "Open" ;
+VAL_ 1122 P01_OBC_F_PlugOverTemperatureFau 1 "Fault" 0 "No fault" ;
+VAL_ 1122 P01_OBC_S_PlugTemperatureValidSt 1 "Invalid" 0 "Valid" ;
+VAL_ 1122 P01_OBC_F_CPDutyCycleFault 1 "Fault" 0 "No fault" ;
+VAL_ 1121 P00_OBC_S_AfterChargeEnableState 2 "Enable" 1 "Disable" 0 "Inactive" ;
+VAL_ 1121 P00_OBC_S_KL15State 1 "On" 0 "Off" ;
+VAL_ 1121 P00_OBC_F_OverTemperatureFault 2 "Over temperature Lever 2" 1 "Over temperature Lever 1" 0 "No fault" ;
+VAL_ 1121 P00_OBC_S_InternalTemperatureVal 1 "Invalid" 0 "Valid" ;
+VAL_ 1121 P00_OBC_S_CoolingState 1 "Cooling request" 0 "No request" ;
+VAL_ 1121 P00_OBC_F_PlugLockFault 1 "Fault" 0 "No fault" ;
+VAL_ 1121 P00_OBC_S_PlugLockState 1 "Lock" 0 "Unlock" ;
+VAL_ 1121 P00_OBC_S_PlugConnetionState 2 "Partial connected" 1 "Connected" 0 "Not connected" ;
+VAL_ 1121 P00_OBC_F_SystemFault 3 "Fault level 3" 2 "Fault level 2" 1 "Fault level 1" 0 "No fault" ;
+VAL_ 1121 P00_OBC_S_ChargeStatus 5 "Charging pause" 4 "Heating" 3 "Charge finished" 2 "Charging" 1 "Ready" 0 "No charge" ;
+

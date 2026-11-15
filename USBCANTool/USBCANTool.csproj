@@ -90,10 +90,18 @@
     </Compile>
     <Compile Include="ZlgCanApi.cs" />
     <Compile Include="AppSettings.cs" />
+    <Compile Include="DbcSignalBuilderForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Database\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Form1.resx">

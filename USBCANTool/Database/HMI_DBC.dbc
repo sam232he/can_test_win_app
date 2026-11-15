@@ -1,0 +1,264 @@
+VERSION "HIPBNYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY/4/%%%/4/'%**4YYY///"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU HMI
+
+
+BO_ 1597 HMI_P02_GPSCOG: 8 HMI
+ SG_ P02_HMI_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P02_HMI_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P02_HMI_D_COG : 0|24@1+ (0.001,0) [0|167.77215] "°"  PCU
+
+BO_ 1581 HMI_P01_GPSLocation: 8 HMI
+ SG_ P01_HMI_D_CRC : 56|8@1- (1,0) [0|255] ""  PCU
+ SG_ P01_HMI_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P01_HMI_D_Longtitude : 24|24@1+ (1E-005,0) [0|167.77215] "°"  PCU
+ SG_ P01_HMI_D_Latitude : 0|24@1+ (1E-005,0) [0|167.77215] "°"  PCU
+
+BO_ 970 PCU_P02_Startup: 8 PCU
+ SG_ P02_PCU_D_V2LTimeFeedback : 32|8@1+ (1,0) [0|23] "h"  HMI
+ SG_ P02_PCU_D_ChargeLimitFeedback : 16|8@1+ (1,0) [20|100] "%"  HMI
+ SG_ P02_PCU_D_V2LSOCFeedback : 24|8@1+ (1,0) [50|100] "%"  HMI
+ SG_ P02_PCU_D_CRC : 56|8@1+ (1,0) [0|255] ""  HMI
+ SG_ P02_PCU_D_Counter : 48|8@1+ (1,0) [0|255] ""  HMI
+ SG_ P02_PCU_D_RegenLevelFeedback : 8|8@1+ (1,0) [0|100] "%"  HMI
+ SG_ P02_PCU_S_ChargeStopStatus : 0|2@1+ (1,0) [0|3] ""  HMI
+ SG_ P02_PCU_S_V2LEnableStatus : 2|2@1+ (1,0) [0|1] ""  HMI
+
+BO_ 1566 HMI_P00_Setting: 8 HMI
+ SG_ P00_HMI_D_CRC : 56|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P00_HMI_D_Counter : 48|8@1+ (1,0) [0|255] ""  PCU
+ SG_ P00_HMI_S_AVASSilentCommand : 6|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P00_HMI_D_V2LSOCSetpoint : 24|8@1+ (1,0) [20|100] "%"  PCU
+ SG_ P00_HMI_D_V2LTimeSetpoint : 32|8@1+ (1,0) [0|23] "h"  PCU
+ SG_ P00_HMI_D_ChargeLimitSetpoint : 16|8@1+ (1,0) [50|100] "%"  PCU
+ SG_ P00_HMI_S_ChargeStopCommand : 0|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P00_HMI_D_RegenLevelSetpoint : 8|8@1+ (1,0) [0|100] "%"  PCU
+ SG_ P00_HMI_S_LimpHomeCommand : 4|2@1+ (1,0) [0|3] ""  PCU
+ SG_ P00_HMI_S_V2LEnableCommand : 2|2@1+ (1,0) [0|3] ""  PCU
+
+BO_ 954 PCU_P01_Information2: 8 PCU
+ SG_ P01_PCU_D_CRC : 56|8@1+ (1,0) [0|255] ""  HMI
+ SG_ P01_PCU_D_Counter : 48|8@1+ (1,0) [0|255] ""  HMI
+ SG_ P01_PCU_D_BatteryPackVoltage : 0|16@1+ (1,0) [0|1000] "V"  HMI
+ SG_ P01_PCU_D_LVBatteryVoltage : 16|16@1+ (0.1,0) [0|20] "V"  HMI
+ SG_ P01_PCU_D_BatteryPackCurrent : 32|16@1+ (0.1,-1000) [-1000|1000] "A"  HMI
+
+BO_ 938 PCU_P00_Information1: 8 PCU
+ SG_ P00_PCU_S_SportModeState : 36|1@1+ (1,0) [0|1] ""  HMI
+ SG_ P00_PCU_S_DriveReadyState : 35|1@1+ (1,0) [0|1] ""  HMI
+ SG_ P00_PCU_D_CRC : 56|8@1+ (1,0) [0|255] ""  HMI
+ SG_ P00_PCU_D_Counter : 48|8@1+ (1,0) [0|255] ""  HMI
+ SG_ P00_PCU_D_MotorTemperature : 16|8@1+ (1,-40) [-40|210] "°C"  HMI
+ SG_ P00_PCU_S_VehicleModeState : 32|3@1+ (1,0) [0|5] ""  HMI
+ SG_ P00_PCU_D_BatteryPackTemperature : 24|8@1+ (1,-40) [-28|85] "°C"  HMI
+ SG_ P00_PCU_D_MCUTemperature : 8|8@1+ (1,-40) [-40|210] "°C"  HMI
+ SG_ P00_PCU_D_DCDCTemperature : 0|8@1+ (1,-40) [-40|210] "°C"  HMI
+
+
+
+CM_ SG_ 1597 P02_HMI_D_CRC "8 bit CRC";
+CM_ SG_ 1597 P02_HMI_D_Counter "8 bit up counter";
+CM_ SG_ 1597 P02_HMI_D_COG "Course Over Ground (COG) from north";
+CM_ SG_ 1581 P01_HMI_D_CRC "8 bit CRC";
+CM_ SG_ 1581 P01_HMI_D_Counter "8 bit up counter";
+CM_ SG_ 1581 P01_HMI_D_Longtitude "Vehicle longtitude";
+CM_ SG_ 1581 P01_HMI_D_Latitude "Vehicle latitude";
+CM_ SG_ 970 P02_PCU_D_V2LTimeFeedback "Vehicle to Load (V2L) time feedback";
+CM_ SG_ 970 P02_PCU_D_ChargeLimitFeedback "Charge limit feedback";
+CM_ SG_ 970 P02_PCU_D_V2LSOCFeedback "Vehicle to Load (V2L) State of Charge (SOC) feedback";
+CM_ SG_ 970 P02_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 970 P02_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 970 P02_PCU_D_RegenLevelFeedback "Regenerative brake level feedback";
+CM_ SG_ 970 P02_PCU_S_ChargeStopStatus "Charge stop status";
+CM_ SG_ 970 P02_PCU_S_V2LEnableStatus "Vehicle to Load (V2L) enable status";
+CM_ SG_ 1566 P00_HMI_D_CRC "8 bit CRC";
+CM_ SG_ 1566 P00_HMI_D_Counter "8 bit up counter";
+CM_ SG_ 1566 P00_HMI_S_AVASSilentCommand "AVAS silent command";
+CM_ SG_ 1566 P00_HMI_D_V2LSOCSetpoint "Vehicle to Load (V2L) State of Charge (SOC) set point";
+CM_ SG_ 1566 P00_HMI_D_V2LTimeSetpoint "Vehicle to Load (V2L) time set point";
+CM_ SG_ 1566 P00_HMI_D_ChargeLimitSetpoint "Charge limit set point";
+CM_ SG_ 1566 P00_HMI_S_ChargeStopCommand "Charge stop command";
+CM_ SG_ 1566 P00_HMI_D_RegenLevelSetpoint "Regenerative brake level set point";
+CM_ SG_ 1566 P00_HMI_S_LimpHomeCommand "Limp home command";
+CM_ SG_ 1566 P00_HMI_S_V2LEnableCommand "Vehicle to Load (V2L) enable command";
+CM_ SG_ 954 P01_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 954 P01_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 954 P01_PCU_D_BatteryPackVoltage "Battery pack voltage";
+CM_ SG_ 954 P01_PCU_D_LVBatteryVoltage "Low voltage (LV) battery voltage";
+CM_ SG_ 954 P01_PCU_D_BatteryPackCurrent "Battery pack current";
+CM_ SG_ 938 P00_PCU_S_SportModeState "Sport mode state";
+CM_ SG_ 938 P00_PCU_S_DriveReadyState "Drive ready state";
+CM_ SG_ 938 P00_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 938 P00_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 938 P00_PCU_D_MotorTemperature "Motor temperature";
+CM_ SG_ 938 P00_PCU_S_VehicleModeState "Vehicle mode state";
+CM_ SG_ 938 P00_PCU_D_BatteryPackTemperature "Battery pack temperature";
+CM_ SG_ 938 P00_PCU_D_MCUTemperature "Motor Control Unit (MCU) temperature";
+CM_ SG_ 938 P00_PCU_D_DCDCTemperature "DCDC temperature";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SPN" INT 0 0;
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "GenSigStartValue" FLOAT 0 100000000000;
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed";
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 100000;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "Cyclic","NotUsed","NotUsed","NotUsed","NotUsed","Cyclic","NotUsed","IfActive","NoMsgSendType","NotUsed","vector_leerstring";
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 999999;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 50000;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 50000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "no","Yes";
+BA_DEF_ BO_  "NmMessage" ENUM  "no","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 65535;
+BA_DEF_ BU_  "NmStationAddress" INT 0 63;
+BA_DEF_ BU_  "NmNode" ENUM  "no","Yes";
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "CANoeJitterMax" INT 0 0;
+BA_DEF_ BU_  "CANoeJitterMin" INT 0 0;
+BA_DEF_ BU_  "CANoeDrift" INT 0 0;
+BA_DEF_ BU_  "CANoeStartDelay" INT 0 0;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenSigSendType" "Cyclic";
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgSendType" "Cyclic";
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "NmMessage" "";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NmStationAddress" 0;
+BA_DEF_DEF_  "NmNode" "";
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "BusType" "";
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "CANoeJitterMax" 0;
+BA_DEF_DEF_  "CANoeJitterMin" 0;
+BA_DEF_DEF_  "CANoeDrift" 0;
+BA_DEF_DEF_  "CANoeStartDelay" 0;
+BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
+BA_ "BusType" "CAN";
+BA_ "DBName" "HMI";
+BA_ "VFrameFormat" BO_ 1597 0;
+BA_ "GenMsgCycleTime" BO_ 1597 100;
+BA_ "TXRX" BO_ 1597 0;
+BA_ "VFrameFormat" BO_ 1581 0;
+BA_ "GenMsgCycleTime" BO_ 1581 100;
+BA_ "TXRX" BO_ 1581 0;
+BA_ "TXRX" BO_ 970 1;
+BA_ "GenMsgCycleTime" BO_ 970 100;
+BA_ "VFrameFormat" BO_ 970 0;
+BA_ "VFrameFormat" BO_ 1566 0;
+BA_ "GenMsgCycleTime" BO_ 1566 100;
+BA_ "TXRX" BO_ 1566 0;
+BA_ "VFrameFormat" BO_ 954 0;
+BA_ "GenMsgCycleTime" BO_ 954 10;
+BA_ "TXRX" BO_ 954 1;
+BA_ "VFrameFormat" BO_ 938 0;
+BA_ "GenMsgCycleTime" BO_ 938 10;
+BA_ "TXRX" BO_ 938 1;
+BA_ "SPN" SG_ 1597 P02_HMI_D_COG 491;
+BA_ "SPN" SG_ 1581 P01_HMI_D_Longtitude 490;
+BA_ "SPN" SG_ 1581 P01_HMI_D_Latitude 489;
+BA_ "SPN" SG_ 970 P02_PCU_D_V2LTimeFeedback 2617;
+BA_ "GenSigStartValue" SG_ 970 P02_PCU_D_ChargeLimitFeedback 20;
+BA_ "SPN" SG_ 970 P02_PCU_D_ChargeLimitFeedback 2613;
+BA_ "SPN" SG_ 970 P02_PCU_D_V2LSOCFeedback 2614;
+BA_ "GenSigStartValue" SG_ 970 P02_PCU_D_V2LSOCFeedback 50;
+BA_ "GenSigStartValue" SG_ 970 P02_PCU_D_CRC 0;
+BA_ "GenSigStartValue" SG_ 970 P02_PCU_D_Counter 0;
+BA_ "SPN" SG_ 970 P02_PCU_D_RegenLevelFeedback 2611;
+BA_ "SPN" SG_ 970 P02_PCU_S_ChargeStopStatus 2608;
+BA_ "GenSigStartValue" SG_ 970 P02_PCU_S_ChargeStopStatus 0;
+BA_ "SPN" SG_ 970 P02_PCU_S_V2LEnableStatus 2609;
+BA_ "GenSigStartValue" SG_ 970 P02_PCU_S_V2LEnableStatus 0;
+BA_ "SPN" SG_ 1566 P00_HMI_S_AVASSilentCommand 487;
+BA_ "GenSigStartValue" SG_ 1566 P00_HMI_S_AVASSilentCommand 0;
+BA_ "SPN" SG_ 1566 P00_HMI_D_V2LSOCSetpoint 485;
+BA_ "GenSigStartValue" SG_ 1566 P00_HMI_D_V2LSOCSetpoint 20;
+BA_ "SPN" SG_ 1566 P00_HMI_D_V2LTimeSetpoint 486;
+BA_ "GenSigStartValue" SG_ 1566 P00_HMI_D_V2LTimeSetpoint 0;
+BA_ "SPN" SG_ 1566 P00_HMI_D_ChargeLimitSetpoint 484;
+BA_ "GenSigStartValue" SG_ 1566 P00_HMI_D_ChargeLimitSetpoint 50;
+BA_ "GenSigStartValue" SG_ 1566 P00_HMI_S_ChargeStopCommand 0;
+BA_ "SPN" SG_ 1566 P00_HMI_S_ChargeStopCommand 480;
+BA_ "GenSigStartValue" SG_ 1566 P00_HMI_D_RegenLevelSetpoint 0;
+BA_ "SPN" SG_ 1566 P00_HMI_D_RegenLevelSetpoint 483;
+BA_ "SPN" SG_ 1566 P00_HMI_S_LimpHomeCommand 482;
+BA_ "GenSigStartValue" SG_ 1566 P00_HMI_S_LimpHomeCommand 0;
+BA_ "SPN" SG_ 1566 P00_HMI_S_V2LEnableCommand 481;
+BA_ "GenSigStartValue" SG_ 1566 P00_HMI_S_V2LEnableCommand 0;
+BA_ "GenSigStartValue" SG_ 954 P01_PCU_D_CRC 0;
+BA_ "GenSigStartValue" SG_ 954 P01_PCU_D_Counter 0;
+BA_ "SPN" SG_ 954 P01_PCU_D_BatteryPackVoltage 2605;
+BA_ "GenSigStartValue" SG_ 954 P01_PCU_D_LVBatteryVoltage 0;
+BA_ "SPN" SG_ 954 P01_PCU_D_LVBatteryVoltage 2606;
+BA_ "SPN" SG_ 954 P01_PCU_D_BatteryPackCurrent 2607;
+BA_ "GenSigStartValue" SG_ 954 P01_PCU_D_BatteryPackCurrent 10000;
+BA_ "GenSigStartValue" SG_ 938 P00_PCU_S_SportModeState 0;
+BA_ "SPN" SG_ 938 P00_PCU_S_SportModeState 2616;
+BA_ "GenSigStartValue" SG_ 938 P00_PCU_S_DriveReadyState 0;
+BA_ "SPN" SG_ 938 P00_PCU_S_DriveReadyState 2615;
+BA_ "GenSigStartValue" SG_ 938 P00_PCU_D_CRC 0;
+BA_ "GenSigStartValue" SG_ 938 P00_PCU_D_Counter 0;
+BA_ "GenSigStartValue" SG_ 938 P00_PCU_D_MotorTemperature 40;
+BA_ "SPN" SG_ 938 P00_PCU_D_MotorTemperature 2602;
+BA_ "SPN" SG_ 938 P00_PCU_S_VehicleModeState 2604;
+BA_ "GenSigStartValue" SG_ 938 P00_PCU_S_VehicleModeState 0;
+BA_ "SPN" SG_ 938 P00_PCU_D_BatteryPackTemperature 2603;
+BA_ "GenSigStartValue" SG_ 938 P00_PCU_D_BatteryPackTemperature 40;
+BA_ "SPN" SG_ 938 P00_PCU_D_MCUTemperature 2601;
+BA_ "GenSigStartValue" SG_ 938 P00_PCU_D_MCUTemperature 40;
+BA_ "SPN" SG_ 938 P00_PCU_D_DCDCTemperature 2600;
+BA_ "GenSigStartValue" SG_ 938 P00_PCU_D_DCDCTemperature 40;
+VAL_ 970 P02_PCU_S_ChargeStopStatus 3 "SNA" 1 "On" 0 "Off" ;
+VAL_ 970 P02_PCU_S_V2LEnableStatus 3 "SNA" 1 "On" 0 "Off" ;
+VAL_ 1566 P00_HMI_S_AVASSilentCommand 3 "SNA" 1 "On" 0 "Off" ;
+VAL_ 1566 P00_HMI_S_ChargeStopCommand 3 "SNA" 1 "On" 0 "Off" ;
+VAL_ 1566 P00_HMI_S_LimpHomeCommand 3 "SNA" 1 "On" 0 "Off" ;
+VAL_ 1566 P00_HMI_S_V2LEnableCommand 3 "SNA" 1 "On" 0 "Off" ;
+VAL_ 938 P00_PCU_S_SportModeState 1 "On" 0 "Off" ;
+VAL_ 938 P00_PCU_S_DriveReadyState 1 "Ready" 0 "Not ready" ;
+VAL_ 938 P00_PCU_S_VehicleModeState 5 "Slow charge" 4 "Fast charge" 3 "Ready" 2 "Change over" 1 "Pre charge" 0 "Off" ;
+

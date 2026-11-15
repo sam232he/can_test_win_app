@@ -1,0 +1,515 @@
+VERSION "2.0"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: ESC PCU
+
+
+BO_ 1199 ESC_P06_HSCFr: 8 ESC
+ SG_ P06_ESC_D_SASCommandCodeWord : 3|4@0+ (1,0) [0|15] ""  PCU
+
+BO_ 543 ESC_P05_HSCFr: 8 ESC
+ SG_ P05_ESC_S_LongAccelerationOffset : 60|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P05_ESC_S_YawRateOffsetValidStat : 59|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P05_ESC_S_YawRateValidState : 58|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P05_ESC_S_AxCalibrationState : 56|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P05_ESC_D_LongAccelerationOffset : 55|10@0- (0.01,-1.27) [-1.27|1.27] "g"  PCU
+ SG_ P05_ESC_D_YawRateOffset : 39|16@0- (0.01,0) [0|100] "deg/sec"  PCU
+ SG_ P05_ESC_D_LongAcceleration : 17|10@0- (0.01,-1.27) [-1.27|1.27] "g"  PCU
+ SG_ P05_ESC_S_LongAccelerationStatus : 18|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P05_ESC_S_FrontLeftWheelSpeedSta : 19|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P05_ESC_S_FrontRightWheelSpeedSt : 20|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P05_ESC_S_ReartLeftWheelSpeedSta : 21|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P05_ESC_S_RearRightWheelSpeedSta : 22|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P05_ESC_F_HHCFault : 23|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P05_ESC_D_YawRate : 7|16@0- (0.01,0) [0|100] "deg/sec"  PCU
+
+BO_ 523 ESC_P04_HSCFr: 8 ESC
+ SG_ P04_ESC_D_MotorTorqueDecreaseReq : 51|12@0- (0.5,-500) [-500|1547] "Nm"  PCU
+ SG_ P04_ESC_S_MotorTorqueDecreaseReq : 52|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P04_ESC_D_MotorTorqueIncreaseReq : 35|12@0- (0.5,-500) [-500|1547] "Nm"  PCU
+ SG_ P04_ESC_S_MotorTorqueIncreaseReq : 36|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P04_ESC_D_MotorTorqueDecrea_0000 : 19|12@0- (0.5,-500) [-500|1547] "Nm"  PCU
+ SG_ P04_ESC_D_Counter : 23|4@0+ (1,0) [0|15] ""  PCU
+ SG_ P04_ESC_S_BrakeLightControlHSC : 9|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P04_ESC_D_CRC : 7|8@0+ (1,0) [0|255] ""  PCU
+
+BO_ 810 ESC_P03_HSCFr: 8 ESC
+ SG_ P03_ESC_D_FrontRightWheelPulseCo : 45|11@0+ (1,0) [0|2046] ""  PCU
+ SG_ P03_ESC_D_FrontLeftWheelPulseCou : 50|11@0+ (1,0) [0|2046] ""  PCU
+ SG_ P03_ESC_D_RearLeftWheelPulseCoun : 24|11@0+ (1,0) [0|2046] ""  PCU
+ SG_ P03_ESC_D_RearRightWheelPulseCou : 19|11@0+ (1,0) [0|2046] ""  PCU
+ SG_ P03_ESC_D_Counter : 23|4@0+ (1,0) [0|15] ""  PCU
+ SG_ P03_ESC_S_RearRightWheelDirectio : 15|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P03_ESC_S_RearLeftWheelDirection : 13|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P03_ESC_S_FrontRightWheelDirecti : 11|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P03_ESC_S_FrontLeftWheelDirectio : 9|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P03_ESC_D_CRC : 7|8@0+ (1,0) [0|255] ""  PCU
+
+BO_ 517 ESC_P02_HSCFr: 8 ESC
+ SG_ P02_ESC_D_BrakePressure : 50|11@0+ (0.1,0) [0|190] "bar"  PCU
+ SG_ P02_ESC_D_Counter : 55|4@0+ (1,0) [0|15] ""  PCU
+ SG_ P02_ESC_S_BrakePressureValidStat : 51|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_ESC_D_CRC : 47|8@0+ (1,0) [0|255] ""  PCU
+ SG_ P02_ESC_S_ParkingRequestState : 39|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P02_ESC_S_AVHstandbyStateHSC : 37|2@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_ESC_F_TCSFault : 35|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_ESC_F_ABSFault : 34|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_ESC_F_EBDFault : 33|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_ESC_F_AYCFault : 32|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_ESC_S_CDPEnableState : 23|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_ESC_S_CDPActiveState : 22|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_ESC_S_ABSActiveState : 21|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_ESC_S_ESCSwitchState : 20|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P02_ESC_S_AVHAvailableState : 19|1@0+ (1,0) [0|1] ""  PCU
+
+BO_ 430 ESC_P01_HSCFr: 8 ESC
+ SG_ P01_ESC_S_AVHactive : 11|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_ESC_F_EBDWarningLamp : 61|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_ESC_F_ESCWarningLamp : 60|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_ESC_S_GearShiftForbiddenStat : 59|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_ESC_F_ABSWarningLamp : 58|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_ESC_D_VehicleSpeedHSC : 23|15@0+ (0.05625,0) [0|253] "km/h"  PCU
+ SG_ P01_ESC_S_VehicleSpeedValidState : 24|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_ESC_D_Counter : 15|4@0+ (1,0) [0|15] ""  PCU
+ SG_ P01_ESC_S_TCSInterventionInProgr : 10|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_ESC_S_AYCInterventionInProgr : 9|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_ESC_S_ABSInterventionInProgr : 8|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_ESC_D_CRC : 7|8@0+ (1,0) [0|255] ""  PCU
+
+BO_ 570 ESC_P00_HSCFr: 8 ESC
+ SG_ P00_ESC_D_FrontLeftWheelSpeedHSC : 33|13@0+ (0.05625,0) [0|253] "km/h"  PCU
+ SG_ P00_ESC_D_FrontRightWheelSpeedHS : 52|13@0+ (0.05625,0) [0|253] "km/h"  PCU
+ SG_ P00_ESC_D_RearLeftWheelSpeedHSC : 30|13@0+ (0.05625,0) [0|253] "km/h"  PCU
+ SG_ P00_ESC_D_RearRightWheelSpeedHSC : 11|13@0+ (0.05625,0) [0|253] "km/h"  PCU
+ SG_ P00_ESC_D_CRC : 7|8@0+ (1,0) [0|255] ""  PCU
+ SG_ P00_ESC_D_Counter : 15|4@0+ (1,0) [0|15] ""  PCU
+
+BO_ 280 PCU_P00_SpeedTorque: 8 PCU
+ SG_ P00_PCU_S_NetOutputTorqueStatus : 47|2@0+ (1,0) [0|3] ""  ESC
+ SG_ P00_PCU_S_AcceleratorPedalPositi : 43|2@0+ (1,0) [0|3] ""  ESC
+ SG_ P00_PCU_S_Counter : 55|8@0+ (1,0) [0|255] ""  ESC
+ SG_ P00_PCU_S_CRC : 63|8@0+ (1,0) [0|255] ""  ESC
+ SG_ P00_PCU_S_ParkBrakeSwitchState : 41|2@0+ (1,0) [0|2] ""  ESC
+ SG_ P00_PCU_S_EngineSpeedValidState : 8|1@0+ (1,0) [0|1] ""  ESC
+ SG_ P00_PCU_D_MotorEngineSpeed : 23|16@0+ (0.5,0) [0|32767.5] "rpm"  ESC
+ SG_ P00_PCU_D_AcceleratorPedalPositi : 39|8@0+ (0.4,0) [0|102] "%"  ESC
+ SG_ P00_PCU_S_ParkRequestState : 45|2@0+ (1,0) [0|3] ""  ESC
+ SG_ P00_PCU_S_ACCStatus : 11|2@0+ (1,0) [0|3] ""  ESC
+ SG_ P00_PCU_D_NetOutputTorque : 7|12@0+ (0.5,-1000) [-1000|1047.5] "Nm"  ESC
+
+BO_ 653 PCU_P01_Gear: 8 PCU
+ SG_ P01_PCU_S_ActualGearValidState : 7|2@0+ (1,0) [0|3] ""  ESC
+ SG_ P01_PCU_S_ActualGearState : 11|4@0+ (1,0) [0|15] ""  ESC
+ SG_ P01_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  ESC
+ SG_ P01_PCU_D_Counter : 55|8@0+ (1,0) [0|255] ""  ESC
+ SG_ P01_PCU_S_ShiftGearValidState : 5|2@0+ (1,0) [0|3] ""  ESC
+ SG_ P01_PCU_S_ShiftGearState : 3|4@0+ (1,0) [0|15] ""  ESC
+ SG_ P01_PCU_S_ReverseSwitchState : 13|2@0+ (1,0) [0|2] ""  ESC
+ SG_ P01_PCU_S_DriverDoorState : 15|2@0+ (1,0) [0|2] ""  ESC
+ SG_ P01_PCU_S_BrakeFluidSwitchState : 17|2@0+ (1,0) [0|2] ""  ESC
+
+
+
+CM_ SG_ 1199 P06_ESC_D_SASCommandCodeWord "Steering Angle Sensor (SAS) command code word";
+CM_ SG_ 543 P05_ESC_S_LongAccelerationOffset "Longitudinal acceleration offset quality validation status";
+CM_ SG_ 543 P05_ESC_S_YawRateOffsetValidStat "Yaw rate offset quality validation state";
+CM_ SG_ 543 P05_ESC_S_YawRateValidState "Yaw rate quality validation state";
+CM_ SG_ 543 P05_ESC_S_AxCalibrationState "Ax calibration state";
+CM_ SG_ 543 P05_ESC_D_LongAccelerationOffset "Vehicle longitudinal acceleration offset (-1.27g~1.27g)";
+CM_ SG_ 543 P05_ESC_D_YawRateOffset "Yaw rate offset (0~100 degree/second)";
+CM_ SG_ 543 P05_ESC_D_LongAcceleration "Long acceleration (-1.27g~1.27g)";
+CM_ SG_ 543 P05_ESC_S_LongAccelerationStatus "Long acceleration validation status";
+CM_ SG_ 543 P05_ESC_S_FrontLeftWheelSpeedSta "Front left wheel speed validation status";
+CM_ SG_ 543 P05_ESC_S_FrontRightWheelSpeedSt "Front right wheel speed validation status";
+CM_ SG_ 543 P05_ESC_S_ReartLeftWheelSpeedSta "Rear left wheel speed validation status";
+CM_ SG_ 543 P05_ESC_S_RearRightWheelSpeedSta "Rear right wheel speed validation status";
+CM_ SG_ 543 P05_ESC_F_HHCFault "Hill Hold Control (HHC) fault";
+CM_ SG_ 543 P05_ESC_D_YawRate "Yaw rate (0~100 deg/sec)";
+CM_ SG_ 523 P04_ESC_D_MotorTorqueDecreaseReq "Decreased torque setpoint (slow)";
+CM_ SG_ 523 P04_ESC_S_MotorTorqueDecreaseReq "Electronic Stability Control (ESC) torque reduction request state";
+CM_ SG_ 523 P04_ESC_D_MotorTorqueIncreaseReq "Increased torque setpoint";
+CM_ SG_ 523 P04_ESC_S_MotorTorqueIncreaseReq "Electronic Stability Control (ESC) torque increase request state";
+CM_ SG_ 523 P04_ESC_D_MotorTorqueDecrea_0000 "Decreased torque setpoint (fast)";
+CM_ SG_ 523 P04_ESC_D_Counter "Up counter (0-15)";
+CM_ SG_ 523 P04_ESC_S_BrakeLightControlHSC "Brake light control";
+CM_ SG_ 523 P04_ESC_D_CRC "8 bit CRC";
+CM_ SG_ 810 P03_ESC_D_FrontRightWheelPulseCo "Front right wheel pulse counter";
+CM_ SG_ 810 P03_ESC_D_FrontLeftWheelPulseCou "Front left wheel pulse counter";
+CM_ SG_ 810 P03_ESC_D_RearLeftWheelPulseCoun "Rear left wheel pulse counter";
+CM_ SG_ 810 P03_ESC_D_RearRightWheelPulseCou "Rear right wheel pulse counter";
+CM_ SG_ 810 P03_ESC_D_Counter "Up counter (0-15)";
+CM_ SG_ 810 P03_ESC_S_RearRightWheelDirectio "Rear right wheel rotation direction";
+CM_ SG_ 810 P03_ESC_S_RearLeftWheelDirection "Rear left wheel rotation direction";
+CM_ SG_ 810 P03_ESC_S_FrontRightWheelDirecti "Front right wheel rotation direction";
+CM_ SG_ 810 P03_ESC_S_FrontLeftWheelDirectio "Front left wheel rotation direction";
+CM_ SG_ 810 P03_ESC_D_CRC "8 bit CRC";
+CM_ SG_ 517 P02_ESC_D_BrakePressure "Brake fluid pressure";
+CM_ SG_ 517 P02_ESC_D_Counter "Up counter (0-15)";
+CM_ SG_ 517 P02_ESC_S_BrakePressureValidStat "Brake pressure validation state";
+CM_ SG_ 517 P02_ESC_D_CRC "8 bit CRC";
+CM_ SG_ 517 P02_ESC_S_ParkingRequestState "Parking request state";
+CM_ SG_ 517 P02_ESC_S_AVHstandbyStateHSC "Auto Vehicle Hold (AVH) standby state";
+CM_ SG_ 517 P02_ESC_F_TCSFault "Traction Control System (TCS) fault";
+CM_ SG_ 517 P02_ESC_F_ABSFault "Anti lock Braking System (ABS) Fault";
+CM_ SG_ 517 P02_ESC_F_EBDFault "Electronic Brakeforce Distribution (EBD) fault";
+CM_ SG_ 517 P02_ESC_F_AYCFault "Active Yaw Control (AYC) fault";
+CM_ SG_ 517 P02_ESC_S_CDPEnableState "Collision Detection / Prevention (CDP) enable state";
+CM_ SG_ 517 P02_ESC_S_CDPActiveState "Collision Detection / Prevention (CDP) active state";
+CM_ SG_ 517 P02_ESC_S_ABSActiveState "Anti lock Braking System (ABS) active state";
+CM_ SG_ 517 P02_ESC_S_ESCSwitchState "Electronic Stability Control (ESC) switch state (Switch off means ESC is disabled)";
+CM_ SG_ 517 P02_ESC_S_AVHAvailableState "Auto Vehicle Hold (AVH) available state";
+CM_ SG_ 430 P01_ESC_S_AVHactive "Auto Vehicle Hold (AVH) active";
+CM_ SG_ 430 P01_ESC_F_EBDWarningLamp "Electronic Brakeforce Distribution (EBD) warning lamp control";
+CM_ SG_ 430 P01_ESC_F_ESCWarningLamp "Electronic Stability Control (ESC) warning lamp control";
+CM_ SG_ 430 P01_ESC_S_GearShiftForbiddenStat "Gear shift forbidden request from Electronic Stability Control (ESC) to Traction Control System (TCS) state";
+CM_ SG_ 430 P01_ESC_F_ABSWarningLamp "Anti lock Braking System (ABS) warning lamp control";
+CM_ SG_ 430 P01_ESC_D_VehicleSpeedHSC "Vehicle speed";
+CM_ SG_ 430 P01_ESC_S_VehicleSpeedValidState "Vehicle speed validation state";
+CM_ SG_ 430 P01_ESC_D_Counter "Up counter (0-15)";
+CM_ SG_ 430 P01_ESC_S_TCSInterventionInProgr "Traction Control System (TCS) Intervention in progress state";
+CM_ SG_ 430 P01_ESC_S_AYCInterventionInProgr "Active Yaw Control (AYC) Intervention in progress state";
+CM_ SG_ 430 P01_ESC_S_ABSInterventionInProgr "Anti lock Braking System (ABS) intervention in progress";
+CM_ SG_ 430 P01_ESC_D_CRC "8 bit CRC";
+CM_ SG_ 570 P00_ESC_D_FrontLeftWheelSpeedHSC "Front left wheel speed";
+CM_ SG_ 570 P00_ESC_D_FrontRightWheelSpeedHS "Front right wheel speed";
+CM_ SG_ 570 P00_ESC_D_RearLeftWheelSpeedHSC "Rear left wheel speed";
+CM_ SG_ 570 P00_ESC_D_RearRightWheelSpeedHSC "Rear right wheel speed";
+CM_ SG_ 570 P00_ESC_D_CRC "8 bit CRC";
+CM_ SG_ 570 P00_ESC_D_Counter "Up counter (0-15)";
+CM_ SG_ 280 P00_PCU_S_NetOutputTorqueStatus "Net output torque validation status";
+CM_ SG_ 280 P00_PCU_S_AcceleratorPedalPositi "Accelerator pedal position validation state";
+CM_ SG_ 280 P00_PCU_S_Counter "Up counter (0-3)";
+CM_ SG_ 280 P00_PCU_S_CRC "8 bit CRC";
+CM_ SG_ 280 P00_PCU_S_ParkBrakeSwitchState "Park brake switch state";
+CM_ SG_ 280 P00_PCU_S_EngineSpeedValidState "Engine speed validation state";
+CM_ SG_ 280 P00_PCU_D_MotorEngineSpeed "Motor/engine speed";
+CM_ SG_ 280 P00_PCU_D_AcceleratorPedalPositi "Accelerator pedal position percent";
+CM_ SG_ 280 P00_PCU_S_ParkRequestState "Park request state";
+CM_ SG_ 280 P00_PCU_S_ACCStatus "ACC status";
+CM_ SG_ 280 P00_PCU_D_NetOutputTorque "Net output torque";
+CM_ SG_ 653 P01_PCU_S_ActualGearValidState "Actual gear validation state";
+CM_ SG_ 653 P01_PCU_S_ActualGearState "Actual gear state";
+CM_ SG_ 653 P01_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 653 P01_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 653 P01_PCU_S_ShiftGearValidState "Vehicle NDR validation state";
+CM_ SG_ 653 P01_PCU_S_ShiftGearState "Vehicle NDR state";
+CM_ SG_ 653 P01_PCU_S_ReverseSwitchState "Reverse switch state";
+CM_ SG_ 653 P01_PCU_S_DriverDoorState "Driver door state";
+CM_ SG_ 653 P01_PCU_S_BrakeFluidSwitchState "Brake fluid switch state";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SubSPN" HEX 0 0;
+BA_DEF_ SG_  "FaultZon" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ BO_  "GenMsgFastOnStart" INT 0 100000;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 3600000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 1000000;
+BA_DEF_ SG_  "GenSigStartValue" INT 0 2147483647;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 100000;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "NmStationAddress" INT 0 255;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclic","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","IfActive","noMsgSendType";
+BA_DEF_ BO_  "GenMsgRequestable" INT 0 1;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+BA_DEF_ SG_  "SPN" INT 0 524287;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "ProtocolType" STRING ;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZon" "NA";
+BA_DEF_DEF_  "FaultAction" "NA";
+BA_DEF_DEF_  "FaultTrigger" "NA";
+BA_DEF_DEF_  "GenMsgFastOnStart" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "NmStationAddress" 254;
+BA_DEF_DEF_  "GenMsgSendType" "noMsgSendType";
+BA_DEF_DEF_  "GenMsgRequestable" 1;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "ProtocolType" "CAN";
+BA_DEF_DEF_  "VFrameFormat" "StandardCAN";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN";
+BA_ "DBName" "ESC";
+BA_ "NmStationAddress" BU_ ESC 26;
+BA_ "NmStationAddress" BU_ PCU 1;
+BA_ "GenMsgDelayTime" BO_ 1199 0;
+BA_ "GenMsgCycleTime" BO_ 1199 10;
+BA_ "VFrameFormat" BO_ 1199 0;
+BA_ "GenMsgSendType" BO_ 1199 0;
+BA_ "TXRX" BO_ 1199 0;
+BA_ "GenMsgDelayTime" BO_ 543 0;
+BA_ "GenMsgCycleTime" BO_ 543 10;
+BA_ "VFrameFormat" BO_ 543 0;
+BA_ "GenMsgSendType" BO_ 543 0;
+BA_ "TXRX" BO_ 543 0;
+BA_ "GenMsgDelayTime" BO_ 523 0;
+BA_ "GenMsgCycleTime" BO_ 523 10;
+BA_ "VFrameFormat" BO_ 523 0;
+BA_ "GenMsgSendType" BO_ 523 0;
+BA_ "TXRX" BO_ 523 0;
+BA_ "GenMsgDelayTime" BO_ 810 0;
+BA_ "GenMsgCycleTime" BO_ 810 20;
+BA_ "VFrameFormat" BO_ 810 0;
+BA_ "GenMsgSendType" BO_ 810 0;
+BA_ "TXRX" BO_ 810 0;
+BA_ "GenMsgDelayTime" BO_ 517 0;
+BA_ "GenMsgCycleTime" BO_ 517 10;
+BA_ "VFrameFormat" BO_ 517 0;
+BA_ "GenMsgSendType" BO_ 517 0;
+BA_ "TXRX" BO_ 517 0;
+BA_ "GenMsgDelayTime" BO_ 430 0;
+BA_ "GenMsgCycleTime" BO_ 430 10;
+BA_ "VFrameFormat" BO_ 430 0;
+BA_ "GenMsgSendType" BO_ 430 0;
+BA_ "TXRX" BO_ 430 0;
+BA_ "GenMsgDelayTime" BO_ 570 0;
+BA_ "GenMsgCycleTime" BO_ 570 10;
+BA_ "VFrameFormat" BO_ 570 0;
+BA_ "GenMsgSendType" BO_ 570 0;
+BA_ "TXRX" BO_ 570 0;
+BA_ "GenMsgDelayTime" BO_ 280 0;
+BA_ "GenMsgCycleTime" BO_ 280 10;
+BA_ "VFrameFormat" BO_ 280 0;
+BA_ "GenMsgSendType" BO_ 280 0;
+BA_ "TXRX" BO_ 280 1;
+BA_ "GenMsgDelayTime" BO_ 653 0;
+BA_ "GenMsgCycleTime" BO_ 653 10;
+BA_ "VFrameFormat" BO_ 653 0;
+BA_ "GenMsgSendType" BO_ 653 0;
+BA_ "TXRX" BO_ 653 1;
+BA_ "SPN" SG_ 1199 P06_ESC_D_SASCommandCodeWord 765;
+BA_ "SPN" SG_ 543 P05_ESC_S_LongAccelerationOffset 763;
+BA_ "SystemSignalLongSymbol" SG_ 543 P05_ESC_S_LongAccelerationOffset "P05_ESC_S_LongAccelerationOffsetStatus";
+BA_ "SPN" SG_ 543 P05_ESC_S_YawRateOffsetValidStat 762;
+BA_ "SystemSignalLongSymbol" SG_ 543 P05_ESC_S_YawRateOffsetValidStat "P05_ESC_S_YawRateOffsetValidState";
+BA_ "SPN" SG_ 543 P05_ESC_S_YawRateValidState 761;
+BA_ "SPN" SG_ 543 P05_ESC_S_AxCalibrationState 760;
+BA_ "SPN" SG_ 543 P05_ESC_D_LongAccelerationOffset 764;
+BA_ "GenSigStartValue" SG_ 543 P05_ESC_D_LongAccelerationOffset 127;
+BA_ "SPN" SG_ 543 P05_ESC_D_YawRateOffset 759;
+BA_ "SPN" SG_ 543 P05_ESC_D_LongAcceleration 758;
+BA_ "GenSigStartValue" SG_ 543 P05_ESC_D_LongAcceleration 127;
+BA_ "SPN" SG_ 543 P05_ESC_S_LongAccelerationStatus 752;
+BA_ "SPN" SG_ 543 P05_ESC_S_FrontLeftWheelSpeedSta 753;
+BA_ "SystemSignalLongSymbol" SG_ 543 P05_ESC_S_FrontLeftWheelSpeedSta "P05_ESC_S_FrontLeftWheelSpeedStatusHSC";
+BA_ "SPN" SG_ 543 P05_ESC_S_FrontRightWheelSpeedSt 754;
+BA_ "SystemSignalLongSymbol" SG_ 543 P05_ESC_S_FrontRightWheelSpeedSt "P05_ESC_S_FrontRightWheelSpeedStatusHSC";
+BA_ "SPN" SG_ 543 P05_ESC_S_ReartLeftWheelSpeedSta 755;
+BA_ "SystemSignalLongSymbol" SG_ 543 P05_ESC_S_ReartLeftWheelSpeedSta "P05_ESC_S_ReartLeftWheelSpeedStatusHSC";
+BA_ "SPN" SG_ 543 P05_ESC_S_RearRightWheelSpeedSta 756;
+BA_ "SystemSignalLongSymbol" SG_ 543 P05_ESC_S_RearRightWheelSpeedSta "P05_ESC_S_RearRightWheelSpeedStatusHSC";
+BA_ "SPN" SG_ 543 P05_ESC_F_HHCFault 757;
+BA_ "SPN" SG_ 543 P05_ESC_D_YawRate 751;
+BA_ "GenSigStartValue" SG_ 523 P04_ESC_D_MotorTorqueDecreaseReq 0;
+BA_ "SPN" SG_ 523 P04_ESC_D_MotorTorqueDecreaseReq 750;
+BA_ "SystemSignalLongSymbol" SG_ 523 P04_ESC_D_MotorTorqueDecreaseReq "P04_ESC_D_MotorTorqueDecreaseRequestSlow";
+BA_ "GenSigStartValue" SG_ 523 P04_ESC_S_MotorTorqueDecreaseReq 0;
+BA_ "SPN" SG_ 523 P04_ESC_S_MotorTorqueDecreaseReq 749;
+BA_ "SystemSignalLongSymbol" SG_ 523 P04_ESC_S_MotorTorqueDecreaseReq "P04_ESC_S_MotorTorqueDecreaseRequestActState";
+BA_ "SPN" SG_ 523 P04_ESC_D_MotorTorqueIncreaseReq 748;
+BA_ "GenSigStartValue" SG_ 523 P04_ESC_D_MotorTorqueIncreaseReq 1000;
+BA_ "SystemSignalLongSymbol" SG_ 523 P04_ESC_D_MotorTorqueIncreaseReq "P04_ESC_D_MotorTorqueIncreaseRequest";
+BA_ "GenSigStartValue" SG_ 523 P04_ESC_S_MotorTorqueIncreaseReq 0;
+BA_ "SPN" SG_ 523 P04_ESC_S_MotorTorqueIncreaseReq 747;
+BA_ "SystemSignalLongSymbol" SG_ 523 P04_ESC_S_MotorTorqueIncreaseReq "P04_ESC_S_MotorTorqueIncreaseRequestActState";
+BA_ "SPN" SG_ 523 P04_ESC_D_MotorTorqueDecrea_0000 746;
+BA_ "GenSigStartValue" SG_ 523 P04_ESC_D_MotorTorqueDecrea_0000 1000;
+BA_ "SystemSignalLongSymbol" SG_ 523 P04_ESC_D_MotorTorqueDecrea_0000 "P04_ESC_D_MotorTorqueDecreaseRequestFast";
+BA_ "SPN" SG_ 523 P04_ESC_D_Counter 745;
+BA_ "SPN" SG_ 523 P04_ESC_S_BrakeLightControlHSC 744;
+BA_ "SPN" SG_ 523 P04_ESC_D_CRC 743;
+BA_ "SPN" SG_ 810 P03_ESC_D_FrontRightWheelPulseCo 741;
+BA_ "SystemSignalLongSymbol" SG_ 810 P03_ESC_D_FrontRightWheelPulseCo "P03_ESC_D_FrontRightWheelPulseCounter";
+BA_ "SPN" SG_ 810 P03_ESC_D_FrontLeftWheelPulseCou 742;
+BA_ "SystemSignalLongSymbol" SG_ 810 P03_ESC_D_FrontLeftWheelPulseCou "P03_ESC_D_FrontLeftWheelPulseCounter";
+BA_ "SPN" SG_ 810 P03_ESC_D_RearLeftWheelPulseCoun 740;
+BA_ "SystemSignalLongSymbol" SG_ 810 P03_ESC_D_RearLeftWheelPulseCoun "P03_ESC_D_RearLeftWheelPulseCounter";
+BA_ "SPN" SG_ 810 P03_ESC_D_RearRightWheelPulseCou 739;
+BA_ "SystemSignalLongSymbol" SG_ 810 P03_ESC_D_RearRightWheelPulseCou "P03_ESC_D_RearRightWheelPulseCounter";
+BA_ "SPN" SG_ 810 P03_ESC_D_Counter 738;
+BA_ "SPN" SG_ 810 P03_ESC_S_RearRightWheelDirectio 737;
+BA_ "SystemSignalLongSymbol" SG_ 810 P03_ESC_S_RearRightWheelDirectio "P03_ESC_S_RearRightWheelDirectionState";
+BA_ "SPN" SG_ 810 P03_ESC_S_RearLeftWheelDirection 736;
+BA_ "SystemSignalLongSymbol" SG_ 810 P03_ESC_S_RearLeftWheelDirection "P03_ESC_S_RearLeftWheelDirectionState";
+BA_ "SPN" SG_ 810 P03_ESC_S_FrontRightWheelDirecti 735;
+BA_ "SystemSignalLongSymbol" SG_ 810 P03_ESC_S_FrontRightWheelDirecti "P03_ESC_S_FrontRightWheelDirectionState";
+BA_ "SPN" SG_ 810 P03_ESC_S_FrontLeftWheelDirectio 734;
+BA_ "SystemSignalLongSymbol" SG_ 810 P03_ESC_S_FrontLeftWheelDirectio "P03_ESC_S_FrontLeftWheelDirectionState";
+BA_ "SPN" SG_ 810 P03_ESC_D_CRC 733;
+BA_ "SPN" SG_ 517 P02_ESC_D_BrakePressure 732;
+BA_ "SPN" SG_ 517 P02_ESC_D_Counter 731;
+BA_ "SPN" SG_ 517 P02_ESC_S_BrakePressureValidStat 730;
+BA_ "SystemSignalLongSymbol" SG_ 517 P02_ESC_S_BrakePressureValidStat "P02_ESC_S_BrakePressureValidState";
+BA_ "SPN" SG_ 517 P02_ESC_D_CRC 729;
+BA_ "SPN" SG_ 517 P02_ESC_S_ParkingRequestState 728;
+BA_ "SPN" SG_ 517 P02_ESC_S_AVHstandbyStateHSC 727;
+BA_ "SPN" SG_ 517 P02_ESC_F_TCSFault 726;
+BA_ "SPN" SG_ 517 P02_ESC_F_ABSFault 725;
+BA_ "SPN" SG_ 517 P02_ESC_F_EBDFault 724;
+BA_ "SPN" SG_ 517 P02_ESC_F_AYCFault 723;
+BA_ "SPN" SG_ 517 P02_ESC_S_CDPEnableState 722;
+BA_ "SPN" SG_ 517 P02_ESC_S_CDPActiveState 721;
+BA_ "SPN" SG_ 517 P02_ESC_S_ABSActiveState 720;
+BA_ "SPN" SG_ 517 P02_ESC_S_ESCSwitchState 719;
+BA_ "SPN" SG_ 517 P02_ESC_S_AVHAvailableState 718;
+BA_ "SPN" SG_ 430 P01_ESC_S_AVHactive 710;
+BA_ "GenSigStartValue" SG_ 430 P01_ESC_F_EBDWarningLamp 1;
+BA_ "SPN" SG_ 430 P01_ESC_F_EBDWarningLamp 717;
+BA_ "GenSigStartValue" SG_ 430 P01_ESC_F_ESCWarningLamp 1;
+BA_ "SPN" SG_ 430 P01_ESC_F_ESCWarningLamp 716;
+BA_ "SPN" SG_ 430 P01_ESC_S_GearShiftForbiddenStat 715;
+BA_ "SystemSignalLongSymbol" SG_ 430 P01_ESC_S_GearShiftForbiddenStat "P01_ESC_S_GearShiftForbiddenState";
+BA_ "GenSigStartValue" SG_ 430 P01_ESC_F_ABSWarningLamp 1;
+BA_ "SPN" SG_ 430 P01_ESC_F_ABSWarningLamp 714;
+BA_ "SPN" SG_ 430 P01_ESC_D_VehicleSpeedHSC 713;
+BA_ "SPN" SG_ 430 P01_ESC_S_VehicleSpeedValidState 712;
+BA_ "SystemSignalLongSymbol" SG_ 430 P01_ESC_S_VehicleSpeedValidState "P01_ESC_S_VehicleSpeedValidStateHSC";
+BA_ "SPN" SG_ 430 P01_ESC_D_Counter 711;
+BA_ "SPN" SG_ 430 P01_ESC_S_TCSInterventionInProgr 709;
+BA_ "SystemSignalLongSymbol" SG_ 430 P01_ESC_S_TCSInterventionInProgr "P01_ESC_S_TCSInterventionInProgressState";
+BA_ "SPN" SG_ 430 P01_ESC_S_AYCInterventionInProgr 708;
+BA_ "SystemSignalLongSymbol" SG_ 430 P01_ESC_S_AYCInterventionInProgr "P01_ESC_S_AYCInterventionInProgressState";
+BA_ "SPN" SG_ 430 P01_ESC_S_ABSInterventionInProgr 707;
+BA_ "SystemSignalLongSymbol" SG_ 430 P01_ESC_S_ABSInterventionInProgr "P01_ESC_S_ABSInterventionInProgress";
+BA_ "SPN" SG_ 430 P01_ESC_D_CRC 706;
+BA_ "SPN" SG_ 570 P00_ESC_D_FrontLeftWheelSpeedHSC 704;
+BA_ "SPN" SG_ 570 P00_ESC_D_FrontRightWheelSpeedHS 705;
+BA_ "SystemSignalLongSymbol" SG_ 570 P00_ESC_D_FrontRightWheelSpeedHS "P00_ESC_D_FrontRightWheelSpeedHSC";
+BA_ "SPN" SG_ 570 P00_ESC_D_RearLeftWheelSpeedHSC 703;
+BA_ "SPN" SG_ 570 P00_ESC_D_RearRightWheelSpeedHSC 702;
+BA_ "SPN" SG_ 570 P00_ESC_D_CRC 700;
+BA_ "SPN" SG_ 570 P00_ESC_D_Counter 701;
+BA_ "SPN" SG_ 280 P00_PCU_S_NetOutputTorqueStatus 2860;
+BA_ "SPN" SG_ 280 P00_PCU_S_AcceleratorPedalPositi 2019;
+BA_ "SystemSignalLongSymbol" SG_ 280 P00_PCU_S_AcceleratorPedalPositi "P00_PCU_S_AcceleratorPedalPositionValidState";
+BA_ "SPN" SG_ 280 P00_PCU_S_Counter 2022;
+BA_ "SPN" SG_ 280 P00_PCU_S_CRC 2861;
+BA_ "SPN" SG_ 280 P00_PCU_S_ParkBrakeSwitchState 2021;
+BA_ "SPN" SG_ 280 P00_PCU_S_EngineSpeedValidState 2016;
+BA_ "SPN" SG_ 280 P00_PCU_D_MotorEngineSpeed 2017;
+BA_ "SPN" SG_ 280 P00_PCU_D_AcceleratorPedalPositi 2018;
+BA_ "SystemSignalLongSymbol" SG_ 280 P00_PCU_D_AcceleratorPedalPositi "P00_PCU_D_AcceleratorPedalPositionPercent";
+BA_ "SPN" SG_ 280 P00_PCU_S_ParkRequestState 2020;
+BA_ "SPN" SG_ 280 P00_PCU_S_ACCStatus 2015;
+BA_ "SPN" SG_ 280 P00_PCU_D_NetOutputTorque 2014;
+BA_ "GenSigStartValue" SG_ 280 P00_PCU_D_NetOutputTorque 2000;
+BA_ "SPN" SG_ 653 P01_PCU_S_ActualGearValidState 2025;
+BA_ "GenSigStartValue" SG_ 653 P01_PCU_S_ActualGearValidState 0;
+BA_ "SPN" SG_ 653 P01_PCU_S_ActualGearState 2026;
+BA_ "GenSigStartValue" SG_ 653 P01_PCU_S_ActualGearState 0;
+BA_ "SPN" SG_ 653 P01_PCU_D_CRC 0;
+BA_ "GenSigStartValue" SG_ 653 P01_PCU_D_CRC 0;
+BA_ "SPN" SG_ 653 P01_PCU_D_Counter 0;
+BA_ "GenSigStartValue" SG_ 653 P01_PCU_D_Counter 0;
+BA_ "SPN" SG_ 653 P01_PCU_S_ShiftGearValidState 2024;
+BA_ "GenSigStartValue" SG_ 653 P01_PCU_S_ShiftGearValidState 0;
+BA_ "SPN" SG_ 653 P01_PCU_S_ShiftGearState 2023;
+BA_ "GenSigStartValue" SG_ 653 P01_PCU_S_ShiftGearState 0;
+BA_ "SPN" SG_ 653 P01_PCU_S_ReverseSwitchState 2027;
+BA_ "GenSigStartValue" SG_ 653 P01_PCU_S_ReverseSwitchState 0;
+BA_ "SPN" SG_ 653 P01_PCU_S_DriverDoorState 2028;
+BA_ "GenSigStartValue" SG_ 653 P01_PCU_S_DriverDoorState 0;
+BA_ "SPN" SG_ 653 P01_PCU_S_BrakeFluidSwitchState 2029;
+BA_ "GenSigStartValue" SG_ 653 P01_PCU_S_BrakeFluidSwitchState 0;
+VAL_ 543 P05_ESC_S_LongAccelerationOffset 1 "Valid" 0 "Invalid" ;
+VAL_ 543 P05_ESC_S_YawRateOffsetValidStat 1 "Valid" 0 "Invalid" ;
+VAL_ 543 P05_ESC_S_YawRateValidState 1 "Valid" 0 "Invalid" ;
+VAL_ 543 P05_ESC_S_AxCalibrationState 1 "Calibrated" 0 "Not calibrated" ;
+VAL_ 543 P05_ESC_S_LongAccelerationStatus 1 "Valid" 0 "Invalid" ;
+VAL_ 543 P05_ESC_S_FrontLeftWheelSpeedSta 1 "Valid" 0 "Invalid" ;
+VAL_ 543 P05_ESC_S_FrontRightWheelSpeedSt 1 "Valid" 0 "Invalid" ;
+VAL_ 543 P05_ESC_S_ReartLeftWheelSpeedSta 1 "Valid" 0 "Invalid" ;
+VAL_ 543 P05_ESC_S_RearRightWheelSpeedSta 1 "Valid" 0 "Invalid" ;
+VAL_ 543 P05_ESC_F_HHCFault 1 "Fault" 0 "No fault" ;
+VAL_ 523 P04_ESC_S_MotorTorqueDecreaseReq 1 "Active" 0 "Inactive" ;
+VAL_ 523 P04_ESC_S_MotorTorqueIncreaseReq 1 "Active" 0 "Inactive" ;
+VAL_ 523 P04_ESC_S_BrakeLightControlHSC 1 "On" 0 "Off" ;
+VAL_ 810 P03_ESC_S_RearRightWheelDirectio 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+VAL_ 810 P03_ESC_S_RearLeftWheelDirection 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+VAL_ 810 P03_ESC_S_FrontRightWheelDirecti 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+VAL_ 810 P03_ESC_S_FrontLeftWheelDirectio 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+VAL_ 517 P02_ESC_S_BrakePressureValidStat 1 "Valid" 0 "Invalid" ;
+VAL_ 517 P02_ESC_S_ParkingRequestState 3 "Reserved" 2 "Lock brake request" 1 "Release brake request " 0 "No request" ;
+VAL_ 517 P02_ESC_S_AVHstandbyStateHSC 1 "Active" 0 "Inactive" ;
+VAL_ 517 P02_ESC_F_TCSFault 1 "Fault" 0 "No fault" ;
+VAL_ 517 P02_ESC_F_ABSFault 1 "Fault" 0 "No fault" ;
+VAL_ 517 P02_ESC_F_EBDFault 1 "Fault" 0 "No fault" ;
+VAL_ 517 P02_ESC_F_AYCFault 1 "Fault" 0 "No fault" ;
+VAL_ 517 P02_ESC_S_CDPEnableState 1 "Disable" 0 "Enable" ;
+VAL_ 517 P02_ESC_S_CDPActiveState 1 "Inactive" 0 "Active" ;
+VAL_ 517 P02_ESC_S_ABSActiveState 1 "Inactive" 0 "Active" ;
+VAL_ 517 P02_ESC_S_ESCSwitchState 1 "Off" 0 "On" ;
+VAL_ 517 P02_ESC_S_AVHAvailableState 1 "Available  " 0 "Not available" ;
+VAL_ 430 P01_ESC_S_AVHactive 1 "Active" 0 "Inactive" ;
+VAL_ 430 P01_ESC_F_EBDWarningLamp 1 "Warning" 0 "Normal" ;
+VAL_ 430 P01_ESC_F_ESCWarningLamp 1 "Warning" 0 "Normal" ;
+VAL_ 430 P01_ESC_S_GearShiftForbiddenStat 1 "Active" 0 "Inactive" ;
+VAL_ 430 P01_ESC_F_ABSWarningLamp 1 "Warning" 0 "Normal" ;
+VAL_ 430 P01_ESC_S_VehicleSpeedValidState 1 "Valid" 0 "Invalid" ;
+VAL_ 430 P01_ESC_S_TCSInterventionInProgr 1 "Intervention" 0 "No intervention" ;
+VAL_ 430 P01_ESC_S_AYCInterventionInProgr 1 "Intervention" 0 "No intervention" ;
+VAL_ 430 P01_ESC_S_ABSInterventionInProgr 1 "Intervention" 0 "No intervention" ;
+VAL_ 280 P00_PCU_S_NetOutputTorqueStatus 2 "Not in range" 3 "SNA" 1 "Valid" 0 "Invalid" ;
+VAL_ 280 P00_PCU_S_AcceleratorPedalPositi 2 "Not in range" 3 "SNA" 1 "Valid" 0 "Invalid" ;
+VAL_ 280 P00_PCU_S_ParkBrakeSwitchState 2 "SNA" 1 "Brake" 0 "Normal" ;
+VAL_ 280 P00_PCU_S_EngineSpeedValidState 2 "Not in range" 3 "SNA" 1 "Valid" 0 "Invalid" ;
+VAL_ 280 P00_PCU_S_ParkRequestState 5 "SNA" 4 "Fault" 3 "On request" 2 "Inactive" 1 "Off request" 0 "Active" ;
+VAL_ 280 P00_PCU_S_ACCStatus 3 "SNA" 2 "Fault" 1 "On" 0 "Off" ;
+VAL_ 653 P01_PCU_S_ActualGearValidState 2 "Not in range" 3 "SNA" 1 "Valid" 0 "Invalid" ;
+VAL_ 653 P01_PCU_S_ActualGearState 14 "Fault" 15 "SNA" 4 "S" 3 "R" 2 "D" 1 "N" 0 "P" ;
+VAL_ 653 P01_PCU_S_ShiftGearValidState 2 "Not in range" 3 "SNA" 1 "Valid" 0 "Invalid" ;
+VAL_ 653 P01_PCU_S_ShiftGearState 14 "Fault" 15 "SNA" 4 "S" 3 "R" 2 "D" 1 "N" 0 "P" ;
+VAL_ 653 P01_PCU_S_ReverseSwitchState 2 "SNA" 1 "On" 0 "Off" ;
+VAL_ 653 P01_PCU_S_DriverDoorState 2 "SNA" 1 "Open" 0 "Close" ;
+VAL_ 653 P01_PCU_S_BrakeFluidSwitchState 2 "SNA" 1 "On" 0 "Off" ;
+

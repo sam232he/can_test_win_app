@@ -1,0 +1,652 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: Cluster PCU HMI
+
+
+BO_ 1738 PCU_P08_Messages: 8 PCU
+ SG_ P08_PCU_S_fault : 39|16@0+ (1,0) [0|65535] ""  Cluster
+ SG_ P00_PCU_D_Counter : 55|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ P00_PCU_D_CRC : 63|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ P00_PCU_S_RegenAlarmCommand : 12|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_PCU_S_NotReadyAlarmCommand : 7|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_PCU_S_DrivingRangeAlarmComma : 13|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_PCU_S_PlugAlarmCommand : 2|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_PCU_S_PepsAlarmCommand : 15|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_PCU_S_LimpAlarmCommand : 3|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_PCU_S_EcoAlarmCommand : 4|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_PCU_S_DeratedAlarmCommand : 11|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_PCU_S_ChargeStopAlarmCommand : 5|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_PCU_S_BrakePedalAlarmCommand : 6|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_PCU_S_AuxAlarmCommand : 14|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P08_PCU_S_WakeUpCommand : 1|2@0+ (1,0) [0|3] ""  Cluster
+
+BO_ 1565 CLUSTER_P00_OdoTrip: 8 Cluster
+ SG_ P00_CLUSTER_S_DriverSeatBeltUnfa : 41|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_CLUSTER_D_Counter : 55|8@0+ (1,0) [0|255] "" Vector__XXX
+ SG_ P00_CLUSTER_S_AirbagMalfunctionI : 40|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P00_CLUSTER_D_TripMeter : 31|16@0+ (0.1,0) [0|6553.5] "km"  Cluster,PCU
+ SG_ P00_CLUSTER_D_Odometer : 7|24@0+ (1,0) [0|999999] "km"  Cluster,PCU
+
+BO_ 1690 PCU_P05_Charge: 8 PCU
+ SG_ P05_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P05_PCU_D_Counter : 55|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P05_PCU_D_ChargeCurrent : 39|16@0+ (1,-1000) [-1000|1000] "A"  Cluster
+ SG_ P05_PCU_D_ChargeVoltage : 23|16@0+ (1,0) [0|1000] "V"  Cluster
+ SG_ P05_PCU_D_RemainingChargeTimeMin : 15|8@0+ (1,0) [0|59] "min"  Cluster
+ SG_ P05_PCU_D_RemainingChargeTimeHou : 7|8@0+ (1,0) [0|253] "h"  Cluster
+
+BO_ 1674 PCU_P04_Power: 8 PCU
+ SG_ P04_PCU_D_SpeedLimit : 47|8@0+ (1,0) [0|245] "km/h" Vector__XXX
+ SG_ P04_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P04_PCU_D_Counter : 55|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P04_PCU_D_IgnitionTripMinutes : 39|8@0+ (1,0) [0|59] "min"  Cluster
+ SG_ P04_PCU_D_IgnitionTripHours : 31|8@0+ (1,0) [0|253] "h"  Cluster
+ SG_ P04_PCU_D_PowerConsumptionMeter : 23|8@0+ (1,-100) [-100|153] "kW"  Cluster
+ SG_ P04_PCU_D_AveragePowerConsumptio : 7|16@0+ (0.1,0) [0|6553.5] "kWh"  Cluster
+
+BO_ 1658 PCU_P03_Mileage: 8 PCU
+ SG_ P03_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P03_PCU_D_Counter : 55|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P03_PCU_D_CruiseSpeed : 47|8@0+ (1,0) [0|253] "km/h"  Cluster
+ SG_ P03_PCU_D_VehicleSpeed : 39|8@0+ (1,0) [0|253] "km/h"  Cluster
+ SG_ P03_PCU_D_IgnitionTripMileage : 23|16@0+ (1,0) [0|1000] "km"  Cluster
+ SG_ P03_PCU_D_Range : 7|16@0+ (1,0) [0|1000] "km"  Cluster
+
+BO_ 1642 PCU_P02_OdoTrip: 8 PCU
+ SG_ P02_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P02_PCU_D_Counter : 55|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P02_PCU_D_SOC : 47|8@0+ (1,0) [0|100] "%"  Cluster
+ SG_ P02_PCU_D_TripMeter : 31|16@0+ (0.1,0) [0|6553.5] "km"  Cluster
+ SG_ P02_PCU_D_Odometer : 7|24@0+ (1,0) [0|999999] "km"  Cluster
+
+BO_ 1626 PCU_P01_ErrorsWarnings: 8 PCU
+ SG_ P01_PCU_S_ChargingIndicatorComma : 41|2@0+ (1,0) [0|3] ""  Cluster
+ SG_ P01_PCU_S_RearRightPassengerSeat : 17|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_RearLeftPassengerSeatB : 19|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_RearCenterPassengerSea : 18|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_CoDriverSeatBeltUnfast : 16|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_BatteryTemperatureIndi : 47|3@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_MotorTemperatureIndica : 44|3@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_ServiceResetCommand : 21|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_D_MotorTemperature : 39|8@0+ (1,-40) [-40|210] "°C"  Cluster
+ SG_ P01_PCU_D_BatteryTemperature : 31|8@0+ (1,-40) [-40|125] "°C"  Cluster
+ SG_ P01_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P01_PCU_D_Counter : 55|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P01_PCU_S_KeyFobBatteryLowIndica : 8|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_KeyNotInVehicleIndicat : 9|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_IgnitionSwitchWarningI : 10|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_InsulationMalfunctionI : 11|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_MotorMalfunctionIndica : 12|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_HVBatteryHighTemperatu : 13|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_HVBatteryMalfunctionIn : 14|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_HVBatteryCutoffIndicat : 15|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_EPSFailureIndicatorCom : 0|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_BrakingMalfunctionIndi : 1|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_ABSMalfunctionIndicato : 2|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_TPMSWarningIndicatorCo : 3|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_12VBatteryMalfunctionI : 4|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_VehicleSystemFailureIn : 6|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P01_PCU_S_EPBFailureIndicatorCom : 7|1@0+ (1,0) [0|1] ""  Cluster
+
+BO_ 1610 PCU_P00_Indicator: 8 PCU
+ SG_ P00_PCU_S_V2LIndicatorCommand : 8|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_ReadyIndicatorColorCom : 32|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_AutoHoldIndicatorColor : 35|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_SOCIndicatorColorComma : 47|2@0+ (1,0) [0|3] ""  Cluster
+ SG_ P00_PCU_S_LowSOCIndicatorCommand : 45|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_DriveModePageColorComm : 44|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_BuzzerEnableCommand : 24|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_WakeUpSignalCommand : 41|2@0+ (1,0) [0|3] ""  Cluster
+ SG_ P00_PCU_S_DoorLockIndicatorComma : 43|2@0+ (1,0) [0|3] ""  Cluster
+ SG_ P00_PCU_S_AutoLightIndicatorComm : 34|2@0+ (1,0) [0|2] ""  Cluster
+ SG_ P00_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P00_PCU_D_Counter : 55|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P00_PCU_S_LeftTurnIndicatorComma : 20|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_CruiseControlIndicator : 37|2@0+ (1,0) [0|3] ""  Cluster
+ SG_ P00_PCU_S_FrontFogLightIndicator : 4|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_PageSelectorCommand : 39|2@0+ (1,0) [0|3] ""  Cluster
+ SG_ P00_PCU_S_ChargerTypeIndicatorCo : 26|2@0+ (1,0) [0|3] ""  Cluster
+ SG_ P00_PCU_S_HoodIndicatorCommand : 27|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_RearTrunkIndicatorComm : 28|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_RearRightDoorIndicator : 29|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_RearLeftDoorIndicatorC : 30|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_FrontRightDoorIndicato : 31|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_FrontLeftDoorIndicator : 16|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_ActualGearStateIndicat : 19|3@0+ (1,0) [0|5] ""  Cluster
+ SG_ P00_PCU_S_RightTurnIndicatorComm : 21|1@0+ (1,0) [0|3] ""  Cluster
+ SG_ P00_PCU_S_ESCIndicatorCommand : 23|2@0+ (1,0) [0|3] ""  Cluster
+ SG_ P00_PCU_S_LowWiperWaterLevelIndi : 9|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_BrakeLightIndicatorCom : 10|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_AutoWindshieldWipingIn : 11|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_WindshieldDefrostIndic : 12|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_RearWindowDefrostIndic : 13|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_DerateIndicatorCommand : 14|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_ReadyIndicatorCommand : 15|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_ChargerConnectionIndic : 0|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_AutoHoldIndicatorComma : 1|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_EPBIndicatorCommand : 2|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_RearFogLightIndicatorC : 3|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_PositionLightIndicator : 5|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_HighBeamIndicatorComma : 6|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P00_PCU_S_LowBeamIndicatorComman : 7|1@0+ (1,0) [0|1] ""  Cluster
+
+BO_ 1722 PCU_P07_TirePressure: 8 PCU
+ SG_ P07_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P07_PCU_S_TPMSStudyModeIndicator : 50|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P07_PCU_S_TPMSStudyFailureWarnin : 52|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P07_PCU_S_RearLeftTireTemperatur : 48|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P07_PCU_S_FrontLeftTirePressureW : 34|3@0+ (1,0) [0|7] ""  Cluster
+ SG_ P07_PCU_S_TPMSSystemWarningIndic : 51|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P07_PCU_D_RearRightTirePressure : 31|8@0+ (2.75,0) [0|448.25] "kpa"  Cluster
+ SG_ P07_PCU_S_RearRightTireTemperatu : 49|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P07_PCU_S_RearRightTirePressureW : 45|3@0+ (1,0) [0|7] ""  Cluster
+ SG_ P07_PCU_D_RearLeftTirePressure : 23|8@0+ (2.75,0) [0|448.25] "kpa"  Cluster
+ SG_ P07_PCU_S_RearLeftTirePressureWa : 42|3@0+ (1,0) [0|7] ""  Cluster
+ SG_ P07_PCU_D_FrontRightTirePressure : 15|8@0+ (2.75,0) [0|448.25] "kpa"  Cluster
+ SG_ P07_PCU_S_FrontRightTireTemperat : 47|1@0+ (1,0) [0|1] ""  Cluster
+ SG_ P07_PCU_S_FrontRightTirePressure : 37|3@0+ (1,0) [0|7] ""  Cluster
+ SG_ P07_PCU_D_FrontLeftTirePressure : 7|8@0+ (2.75,0) [0|448.25] "kpa"  Cluster
+ SG_ P07_PCU_S_FrontLeftTireTemperatu : 46|1@0+ (1,0) [0|1] ""  Cluster
+
+BO_ 1706 PCU_P06_TireTemperature: 8 PCU
+ SG_ P06_PCU_D_CRC : 47|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P06_PCU_D_Counter : 39|8@0+ (1,0) [0|255] ""  Cluster
+ SG_ P06_PCU_D_RearRightTireTemperatu : 31|8@0+ (1,-40) [-40|125] "°C"  Cluster
+ SG_ P06_PCU_D_RearLeftTireTemperatur : 23|8@0+ (1,-40) [-40|125] "°C"  Cluster
+ SG_ P06_PCU_D_FrontRightTireTemperat : 15|8@0+ (1,-40) [-40|125] "°C"  Cluster
+ SG_ P06_PCU_D_FrontLeftTireTemperatu : 7|8@0+ (1,-40) [-40|125] "°C"  Cluster
+
+
+
+CM_ SG_ 1738 P08_PCU_S_fault "Pop-up message command";
+CM_ SG_ 1738 P00_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 1738 P00_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 1738 P00_PCU_S_RegenAlarmCommand "Regenerative brake alarm command (regen is limited)";
+CM_ SG_ 1738 P00_PCU_S_NotReadyAlarmCommand "Vehicle not ready alarm command (vehicle is not ready to drive)";
+CM_ SG_ 1738 P00_PCU_S_DrivingRangeAlarmComma "Driving range alarm command(range is too low)";
+CM_ SG_ 1738 P00_PCU_S_PlugAlarmCommand "Charger plug connected alarm command";
+CM_ SG_ 1738 P00_PCU_S_PepsAlarmCommand "Peps alarm command (press start button)";
+CM_ SG_ 1738 P00_PCU_S_LimpAlarmCommand "Limp home alarm command (move the vehicle to a safe place)";
+CM_ SG_ 1738 P00_PCU_S_EcoAlarmCommand "Eco driving mode command";
+CM_ SG_ 1738 P00_PCU_S_DeratedAlarmCommand "Vehicle derated alarm command (performance is limited)";
+CM_ SG_ 1738 P00_PCU_S_ChargeStopAlarmCommand "Maximum charging State of Charge (SOC) limit alarm command";
+CM_ SG_ 1738 P00_PCU_S_BrakePedalAlarmCommand "Press brake pedal alarm command";
+CM_ SG_ 1738 P00_PCU_S_AuxAlarmCommand "Turn off auxiliary devices to save power command";
+CM_ SG_ 1738 P08_PCU_S_WakeUpCommand "Wake up command";
+CM_ SG_ 1565 P00_CLUSTER_S_DriverSeatBeltUnfa "Driver seat belt unfastened light indicator state";
+CM_ SG_ 1565 P00_CLUSTER_D_Counter "8 bit up counter";
+CM_ SG_ 1565 P00_CLUSTER_S_AirbagMalfunctionI "Airbag malfunction light indicator state";
+CM_ SG_ 1565 P00_CLUSTER_D_TripMeter "Trip meter";
+CM_ SG_ 1565 P00_CLUSTER_D_Odometer "Vehicle odometer";
+CM_ SG_ 1690 P05_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 1690 P05_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 1690 P05_PCU_D_ChargeCurrent "Battery pack charge current";
+CM_ SG_ 1690 P05_PCU_D_ChargeVoltage "Battery pack charge voltage";
+CM_ SG_ 1690 P05_PCU_D_RemainingChargeTimeMin "Remaining charge time minute";
+CM_ SG_ 1690 P05_PCU_D_RemainingChargeTimeHou "Remaining charge time hour";
+CM_ SG_ 1674 P04_PCU_D_SpeedLimit "Ignition trip hours (vehicle on)";
+CM_ SG_ 1674 P04_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 1674 P04_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 1674 P04_PCU_D_IgnitionTripMinutes "Ignition trip minutes (vehicle on)";
+CM_ SG_ 1674 P04_PCU_D_IgnitionTripHours "Ignition trip hours (vehicle on)";
+CM_ SG_ 1674 P04_PCU_D_PowerConsumptionMeter "Power consumption meter";
+CM_ SG_ 1674 P04_PCU_D_AveragePowerConsumptio "Average power consumption";
+CM_ SG_ 1658 P03_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 1658 P03_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 1658 P03_PCU_D_CruiseSpeed "Cruise speed";
+CM_ SG_ 1658 P03_PCU_D_VehicleSpeed "Vehicle speed";
+CM_ SG_ 1658 P03_PCU_D_IgnitionTripMileage "Total distance between turning on and turning off the car";
+CM_ SG_ 1658 P03_PCU_D_Range "Remaining range";
+CM_ SG_ 1642 P02_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 1642 P02_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 1642 P02_PCU_D_SOC "State of Charge (SOC)";
+CM_ SG_ 1642 P02_PCU_D_TripMeter "Trip meter";
+CM_ SG_ 1642 P02_PCU_D_Odometer "Vehicle odometer";
+CM_ SG_ 1626 P01_PCU_S_ChargingIndicatorComma "Charging light indicator command (Charging color (yellow) and fault color (red))";
+CM_ SG_ 1626 P01_PCU_S_RearRightPassengerSeat "Rear right passenger seat belt unfastened light indicator command";
+CM_ SG_ 1626 P01_PCU_S_RearLeftPassengerSeatB "Rear left passenger seat belt unfastened light indicator command";
+CM_ SG_ 1626 P01_PCU_S_RearCenterPassengerSea "Rear center passenger seat belt unfastened light indicator command";
+CM_ SG_ 1626 P01_PCU_S_CoDriverSeatBeltUnfast "Co-driver seat belt unfastened light indicator command";
+CM_ SG_ 1626 P01_PCU_S_BatteryTemperatureIndi "Battery temperature indicator color command";
+CM_ SG_ 1626 P01_PCU_S_MotorTemperatureIndica "Motor temperature indicator color command";
+CM_ SG_ 1626 P01_PCU_S_ServiceResetCommand "Service reset command";
+CM_ SG_ 1626 P01_PCU_D_MotorTemperature "Motor temperature";
+CM_ SG_ 1626 P01_PCU_D_BatteryTemperature "Battery temperature";
+CM_ SG_ 1626 P01_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 1626 P01_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 1626 P01_PCU_S_KeyFobBatteryLowIndica "Key fob battery low light indicator command";
+CM_ SG_ 1626 P01_PCU_S_KeyNotInVehicleIndicat "Key not in vehicle light indicator command";
+CM_ SG_ 1626 P01_PCU_S_IgnitionSwitchWarningI "Ignition switch warning light indicator command";
+CM_ SG_ 1626 P01_PCU_S_InsulationMalfunctionI "Insulation malfunction light indicator command";
+CM_ SG_ 1626 P01_PCU_S_MotorMalfunctionIndica "Motor malfunction light indicator command";
+CM_ SG_ 1626 P01_PCU_S_HVBatteryHighTemperatu "High voltage battery high temperature light indicator command";
+CM_ SG_ 1626 P01_PCU_S_HVBatteryMalfunctionIn "High voltage battery malfunction light indicator command";
+CM_ SG_ 1626 P01_PCU_S_HVBatteryCutoffIndicat "High voltage battery cutoff light indicator command";
+CM_ SG_ 1626 P01_PCU_S_EPSFailureIndicatorCom "Electronic Power Steering (EPS) failure light indicator command";
+CM_ SG_ 1626 P01_PCU_S_BrakingMalfunctionIndi "Braking system malfunction light indicator command";
+CM_ SG_ 1626 P01_PCU_S_ABSMalfunctionIndicato "Anti Lock Brake system (ABS) malfunction light indicator command";
+CM_ SG_ 1626 P01_PCU_S_TPMSWarningIndicatorCo "Tire Pressure Monitoring System (TPMS) warning light indicator command";
+CM_ SG_ 1626 P01_PCU_S_12VBatteryMalfunctionI "12V battery charging malfunction light indicator command";
+CM_ SG_ 1626 P01_PCU_S_VehicleSystemFailureIn "Vehicle system failure light indicator command";
+CM_ SG_ 1626 P01_PCU_S_EPBFailureIndicatorCom "Electronic Park Brake (EPB) failure light indicator command";
+CM_ SG_ 1610 P00_PCU_S_V2LIndicatorCommand "Vehicle to Load (V2L) light indicator command";
+CM_ SG_ 1610 P00_PCU_S_ReadyIndicatorColorCom "Vehicle ready indicator color command";
+CM_ SG_ 1610 P00_PCU_S_AutoHoldIndicatorColor "Auto hold Indicator color command";
+CM_ SG_ 1610 P00_PCU_S_SOCIndicatorColorComma "Low State of Charge (SOC) color indicator command";
+CM_ SG_ 1610 P00_PCU_S_LowSOCIndicatorCommand "Low State of Charge (SOC) light indicator command";
+CM_ SG_ 1610 P00_PCU_S_DriveModePageColorComm "Drive mode page color command";
+CM_ SG_ 1610 P00_PCU_S_BuzzerEnableCommand "Buzzer enable command";
+CM_ SG_ 1610 P00_PCU_S_WakeUpSignalCommand "Wake up signal command";
+CM_ SG_ 1610 P00_PCU_S_DoorLockIndicatorComma "Door lock indicator command";
+CM_ SG_ 1610 P00_PCU_S_AutoLightIndicatorComm "Auto light indicator command";
+CM_ SG_ 1610 P00_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 1610 P00_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 1610 P00_PCU_S_LeftTurnIndicatorComma "Left turn light indicator command";
+CM_ SG_ 1610 P00_PCU_S_CruiseControlIndicator "Cruise control light indicator command";
+CM_ SG_ 1610 P00_PCU_S_FrontFogLightIndicator "Front fog light Indicator command";
+CM_ SG_ 1610 P00_PCU_S_PageSelectorCommand "Page selector command";
+CM_ SG_ 1610 P00_PCU_S_ChargerTypeIndicatorCo "Charger type indicator command";
+CM_ SG_ 1610 P00_PCU_S_HoodIndicatorCommand "Hood light indicator command";
+CM_ SG_ 1610 P00_PCU_S_RearTrunkIndicatorComm "Rear trunk light indicator command";
+CM_ SG_ 1610 P00_PCU_S_RearRightDoorIndicator "Rear right door light indicator command";
+CM_ SG_ 1610 P00_PCU_S_RearLeftDoorIndicatorC "Rear left door light indicator command";
+CM_ SG_ 1610 P00_PCU_S_FrontRightDoorIndicato "Front right door light indicator command";
+CM_ SG_ 1610 P00_PCU_S_FrontLeftDoorIndicator "Front left door light indicator command";
+CM_ SG_ 1610 P00_PCU_S_ActualGearStateIndicat "Vehicle NDR state light indicator command";
+CM_ SG_ 1610 P00_PCU_S_RightTurnIndicatorComm "Right turn light indicator command";
+CM_ SG_ 1610 P00_PCU_S_ESCIndicatorCommand "Electronic Stability Control (ESC) light indicator command";
+CM_ SG_ 1610 P00_PCU_S_LowWiperWaterLevelIndi "Low wiper water level light indicator command";
+CM_ SG_ 1610 P00_PCU_S_BrakeLightIndicatorCom "Brake Light Indicator command";
+CM_ SG_ 1610 P00_PCU_S_AutoWindshieldWipingIn "Auto windshield wiping Light Indicator command";
+CM_ SG_ 1610 P00_PCU_S_WindshieldDefrostIndic "Windshield defrost light indicator command";
+CM_ SG_ 1610 P00_PCU_S_RearWindowDefrostIndic "Rear window defrost light indicator command";
+CM_ SG_ 1610 P00_PCU_S_DerateIndicatorCommand "Vehicle derated light indicator command (performance is limited)";
+CM_ SG_ 1610 P00_PCU_S_ReadyIndicatorCommand "Ready light indicator command";
+CM_ SG_ 1610 P00_PCU_S_ChargerConnectionIndic "Charger connection light indicator command";
+CM_ SG_ 1610 P00_PCU_S_AutoHoldIndicatorComma "Auto hold Light Indicator command";
+CM_ SG_ 1610 P00_PCU_S_EPBIndicatorCommand "Electronic Parking Brake (EPB) light indicator command";
+CM_ SG_ 1610 P00_PCU_S_RearFogLightIndicatorC "Rear fog light Indicator command";
+CM_ SG_ 1610 P00_PCU_S_PositionLightIndicator "Position light indicator command";
+CM_ SG_ 1610 P00_PCU_S_HighBeamIndicatorComma "High beam light indicator command";
+CM_ SG_ 1610 P00_PCU_S_LowBeamIndicatorComman "Low beam light indicator command";
+CM_ SG_ 1722 P07_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 1722 P07_PCU_S_TPMSStudyModeIndicator "Tire Pressure Monitoring System (TPMS) study mode light indicator command";
+CM_ SG_ 1722 P07_PCU_S_TPMSStudyFailureWarnin "Tire Pressure Monitoring System (TPMS) study failure warning light indicator command";
+CM_ SG_ 1722 P07_PCU_S_RearLeftTireTemperatur "Rear left tire high temperature warning light indicator command";
+CM_ SG_ 1722 P07_PCU_S_FrontLeftTirePressureW "Front left tire pressure warning light indicator command";
+CM_ SG_ 1722 P07_PCU_S_TPMSSystemWarningIndic "Tire Pressure Monitoring System (TPMS) system warning light indicator command";
+CM_ SG_ 1722 P07_PCU_D_RearRightTirePressure "Rear right tire pressure";
+CM_ SG_ 1722 P07_PCU_S_RearRightTireTemperatu "Rear right tire high temperature warning light indicator command";
+CM_ SG_ 1722 P07_PCU_S_RearRightTirePressureW "Rear right tire pressure warning light indicator command";
+CM_ SG_ 1722 P07_PCU_D_RearLeftTirePressure "Rear left tire pressure";
+CM_ SG_ 1722 P07_PCU_S_RearLeftTirePressureWa "Rear left tire pressure warning light indicator command";
+CM_ SG_ 1722 P07_PCU_D_FrontRightTirePressure "Front right tire pressure";
+CM_ SG_ 1722 P07_PCU_S_FrontRightTireTemperat "Front right tire high temperature warning light  indicator command";
+CM_ SG_ 1722 P07_PCU_S_FrontRightTirePressure "Front right tire pressure warning light indicator command";
+CM_ SG_ 1722 P07_PCU_D_FrontLeftTirePressure "Front left tire pressure";
+CM_ SG_ 1722 P07_PCU_S_FrontLeftTireTemperatu "Front left tire high temperature warning light indicator command";
+CM_ SG_ 1706 P06_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 1706 P06_PCU_D_Counter "8 bit up counter";
+CM_ SG_ 1706 P06_PCU_D_RearRightTireTemperatu "Rear right tire temperature";
+CM_ SG_ 1706 P06_PCU_D_RearLeftTireTemperatur "Rear left tire temperature";
+CM_ SG_ 1706 P06_PCU_D_FrontRightTireTemperat "Front right tire temperature";
+CM_ SG_ 1706 P06_PCU_D_FrontLeftTireTemperatu "Front left tire temperature";
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ SG_  "FaultEffect" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SPN" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_  "MultiplexExtEnabled" ENUM  "No","Yes";
+BA_DEF_  "BusType" STRING ;
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "FaultZone" "";
+BA_DEF_DEF_  "FaultTrigger" "";
+BA_DEF_DEF_  "FaultEffect" "";
+BA_DEF_DEF_  "FaultAction" "";
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "VFrameFormat" "J1939PG";
+BA_DEF_DEF_  "MultiplexExtEnabled" "No";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "VFrameFormat" BO_ 1738 0;
+BA_ "GenMsgCycleTime" BO_ 1738 500;
+BA_ "TXRX" BO_ 1738 0;
+BA_ "VFrameFormat" BO_ 1565 0;
+BA_ "TXRX" BO_ 1565 0;
+BA_ "GenMsgCycleTime" BO_ 1565 100;
+BA_ "VFrameFormat" BO_ 1690 0;
+BA_ "TXRX" BO_ 1690 1;
+BA_ "GenMsgCycleTime" BO_ 1690 100;
+BA_ "VFrameFormat" BO_ 1674 0;
+BA_ "TXRX" BO_ 1674 1;
+BA_ "GenMsgCycleTime" BO_ 1674 100;
+BA_ "VFrameFormat" BO_ 1658 0;
+BA_ "TXRX" BO_ 1658 1;
+BA_ "GenMsgCycleTime" BO_ 1658 100;
+BA_ "VFrameFormat" BO_ 1642 0;
+BA_ "TXRX" BO_ 1642 1;
+BA_ "GenMsgCycleTime" BO_ 1642 100;
+BA_ "VFrameFormat" BO_ 1626 0;
+BA_ "TXRX" BO_ 1626 1;
+BA_ "GenMsgCycleTime" BO_ 1626 100;
+BA_ "VFrameFormat" BO_ 1610 0;
+BA_ "TXRX" BO_ 1610 1;
+BA_ "GenMsgCycleTime" BO_ 1610 100;
+BA_ "VFrameFormat" BO_ 1722 0;
+BA_ "GenMsgCycleTime" BO_ 1722 500;
+BA_ "TXRX" BO_ 1722 0;
+BA_ "VFrameFormat" BO_ 1706 0;
+BA_ "GenMsgCycleTime" BO_ 1706 500;
+BA_ "TXRX" BO_ 1706 0;
+BA_ "SPN" SG_ 1738 P08_PCU_S_fault 3223;
+BA_ "SPN" SG_ 1738 P00_PCU_S_RegenAlarmCommand 3235;
+BA_ "SPN" SG_ 1738 P00_PCU_S_NotReadyAlarmCommand 3233;
+BA_ "SPN" SG_ 1738 P00_PCU_S_DrivingRangeAlarmComma 3236;
+BA_ "SystemSignalLongSymbol" SG_ 1738 P00_PCU_S_DrivingRangeAlarmComma "P00_PCU_S_DrivingRangeAlarmCommand";
+BA_ "SPN" SG_ 1738 P00_PCU_S_PlugAlarmCommand 3228;
+BA_ "SPN" SG_ 1738 P00_PCU_S_PepsAlarmCommand 3238;
+BA_ "SPN" SG_ 1738 P00_PCU_S_LimpAlarmCommand 3229;
+BA_ "SPN" SG_ 1738 P00_PCU_S_EcoAlarmCommand 3230;
+BA_ "SPN" SG_ 1738 P00_PCU_S_DeratedAlarmCommand 3234;
+BA_ "SPN" SG_ 1738 P00_PCU_S_ChargeStopAlarmCommand 3231;
+BA_ "SPN" SG_ 1738 P00_PCU_S_BrakePedalAlarmCommand 3232;
+BA_ "SPN" SG_ 1738 P00_PCU_S_AuxAlarmCommand 3237;
+BA_ "SPN" SG_ 1738 P08_PCU_S_WakeUpCommand 3227;
+BA_ "SPN" SG_ 1565 P00_CLUSTER_S_DriverSeatBeltUnfa 653;
+BA_ "SystemSignalLongSymbol" SG_ 1565 P00_CLUSTER_S_DriverSeatBeltUnfa "P00_CLUSTER_S_DriverSeatBeltUnfastenedIndicatorState";
+BA_ "SPN" SG_ 1565 P00_CLUSTER_S_AirbagMalfunctionI 652;
+BA_ "SystemSignalLongSymbol" SG_ 1565 P00_CLUSTER_S_AirbagMalfunctionI "P00_CLUSTER_S_AirbagMalfunctionIndicatorState";
+BA_ "SPN" SG_ 1565 P00_CLUSTER_D_TripMeter 651;
+BA_ "SPN" SG_ 1565 P00_CLUSTER_D_Odometer 650;
+BA_ "SPN" SG_ 1690 P05_PCU_D_ChargeCurrent 2142;
+BA_ "SPN" SG_ 1690 P05_PCU_D_ChargeVoltage 2141;
+BA_ "SPN" SG_ 1690 P05_PCU_D_RemainingChargeTimeMin 2140;
+BA_ "SystemSignalLongSymbol" SG_ 1690 P05_PCU_D_RemainingChargeTimeMin "P05_PCU_D_RemainingChargeTimeMinute";
+BA_ "SPN" SG_ 1690 P05_PCU_D_RemainingChargeTimeHou 2139;
+BA_ "SystemSignalLongSymbol" SG_ 1690 P05_PCU_D_RemainingChargeTimeHou "P05_PCU_D_RemainingChargeTimeHour";
+BA_ "SPN" SG_ 1674 P04_PCU_D_SpeedLimit 2137;
+BA_ "SPN" SG_ 1674 P04_PCU_D_IgnitionTripMinutes 2138;
+BA_ "SPN" SG_ 1674 P04_PCU_D_IgnitionTripHours 2137;
+BA_ "SPN" SG_ 1674 P04_PCU_D_PowerConsumptionMeter 2136;
+BA_ "SPN" SG_ 1674 P04_PCU_D_AveragePowerConsumptio 2135;
+BA_ "SystemSignalLongSymbol" SG_ 1674 P04_PCU_D_AveragePowerConsumptio "P04_PCU_D_AveragePowerConsumption";
+BA_ "SPN" SG_ 1658 P03_PCU_D_CruiseSpeed 2134;
+BA_ "SPN" SG_ 1658 P03_PCU_D_VehicleSpeed 2133;
+BA_ "SPN" SG_ 1658 P03_PCU_D_IgnitionTripMileage 2132;
+BA_ "SPN" SG_ 1658 P03_PCU_D_Range 2131;
+BA_ "SPN" SG_ 1642 P02_PCU_D_SOC 2130;
+BA_ "SPN" SG_ 1642 P02_PCU_D_TripMeter 2129;
+BA_ "SPN" SG_ 1642 P02_PCU_D_Odometer 2128;
+BA_ "SPN" SG_ 1626 P01_PCU_S_ChargingIndicatorComma 2095;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_ChargingIndicatorComma "P01_PCU_S_ChargingIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_RearRightPassengerSeat 3216;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_RearRightPassengerSeat "P01_PCU_S_RearRightPassengerSeatBeltUnfastenedIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_RearLeftPassengerSeatB 3218;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_RearLeftPassengerSeatB "P01_PCU_S_RearLeftPassengerSeatBeltUnfastenedIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_RearCenterPassengerSea 3217;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_RearCenterPassengerSea "P01_PCU_S_RearCenterPassengerSeatBeltUnfastenedIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_CoDriverSeatBeltUnfast 3215;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_CoDriverSeatBeltUnfast "P01_PCU_S_CoDriverSeatBeltUnfastenedIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_BatteryTemperatureIndi 2146;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_BatteryTemperatureIndi "P01_PCU_S_BatteryTemperatureIndicatorColorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_MotorTemperatureIndica 2145;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_MotorTemperatureIndica "P01_PCU_S_MotorTemperatureIndicatorColorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_ServiceResetCommand 2147;
+BA_ "SPN" SG_ 1626 P01_PCU_D_MotorTemperature 2127;
+BA_ "SPN" SG_ 1626 P01_PCU_D_BatteryTemperature 2126;
+BA_ "SPN" SG_ 1626 P01_PCU_S_KeyFobBatteryLowIndica 2124;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_KeyFobBatteryLowIndica "P01_PCU_S_KeyFobBatteryLowIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_KeyNotInVehicleIndicat 2123;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_KeyNotInVehicleIndicat "P01_PCU_S_KeyNotInVehicleIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_IgnitionSwitchWarningI 2122;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_IgnitionSwitchWarningI "P01_PCU_S_IgnitionSwitchWarningIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_InsulationMalfunctionI 2121;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_InsulationMalfunctionI "P01_PCU_S_InsulationMalfunctionIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_MotorMalfunctionIndica 2120;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_MotorMalfunctionIndica "P01_PCU_S_MotorMalfunctionIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_HVBatteryHighTemperatu 2119;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_HVBatteryHighTemperatu "P01_PCU_S_HVBatteryHighTemperatureIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_HVBatteryMalfunctionIn 2118;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_HVBatteryMalfunctionIn "P01_PCU_S_HVBatteryMalfunctionIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_HVBatteryCutoffIndicat 2117;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_HVBatteryCutoffIndicat "P01_PCU_S_HVBatteryCutoffIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_EPSFailureIndicatorCom 2116;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_EPSFailureIndicatorCom "P01_PCU_S_EPSFailureIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_BrakingMalfunctionIndi 2115;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_BrakingMalfunctionIndi "P01_PCU_S_BrakingMalfunctionIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_ABSMalfunctionIndicato 2114;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_ABSMalfunctionIndicato "P01_PCU_S_ABSMalfunctionIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_TPMSWarningIndicatorCo 2113;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_TPMSWarningIndicatorCo "P01_PCU_S_TPMSWarningIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_12VBatteryMalfunctionI 2112;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_12VBatteryMalfunctionI "P01_PCU_S_12VBatteryMalfunctionIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_VehicleSystemFailureIn 2110;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_VehicleSystemFailureIn "P01_PCU_S_VehicleSystemFailureIndicatorCommand";
+BA_ "SPN" SG_ 1626 P01_PCU_S_EPBFailureIndicatorCom 2109;
+BA_ "SystemSignalLongSymbol" SG_ 1626 P01_PCU_S_EPBFailureIndicatorCom "P01_PCU_S_EPBFailureIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_V2LIndicatorCommand 3226;
+BA_ "SPN" SG_ 1610 P00_PCU_S_ReadyIndicatorColorCom 3225;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_ReadyIndicatorColorCom "P00_PCU_S_ReadyIndicatorColorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_AutoHoldIndicatorColor 3224;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_AutoHoldIndicatorColor "P00_PCU_S_AutoHoldIndicatorColorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_SOCIndicatorColorComma 3222;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_SOCIndicatorColorComma "P00_PCU_S_SOCIndicatorColorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_LowSOCIndicatorCommand 3221;
+BA_ "SPN" SG_ 1610 P00_PCU_S_DriveModePageColorComm 3220;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_DriveModePageColorComm "P00_PCU_S_DriveModePageColorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_BuzzerEnableCommand 3219;
+BA_ "SPN" SG_ 1610 P00_PCU_S_WakeUpSignalCommand 3213;
+BA_ "SPN" SG_ 1610 P00_PCU_S_DoorLockIndicatorComma 3214;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_DoorLockIndicatorComma "P00_PCU_S_DoorLockIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_AutoLightIndicatorComm 2143;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_AutoLightIndicatorComm "P00_PCU_S_AutoLightIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_LeftTurnIndicatorComma 2098;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_LeftTurnIndicatorComma "P00_PCU_S_LeftTurnIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_CruiseControlIndicator 2108;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_CruiseControlIndicator "P00_PCU_S_CruiseControlIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_FrontFogLightIndicator 2083;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_FrontFogLightIndicator "P00_PCU_S_FrontFogLightIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_PageSelectorCommand 2107;
+BA_ "SPN" SG_ 1610 P00_PCU_S_ChargerTypeIndicatorCo 2106;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_ChargerTypeIndicatorCo "P00_PCU_S_ChargerTypeIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_HoodIndicatorCommand 2105;
+BA_ "SPN" SG_ 1610 P00_PCU_S_RearTrunkIndicatorComm 2104;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_RearTrunkIndicatorComm "P00_PCU_S_RearTrunkIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_RearRightDoorIndicator 2103;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_RearRightDoorIndicator "P00_PCU_S_RearRightDoorIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_RearLeftDoorIndicatorC 2102;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_RearLeftDoorIndicatorC "P00_PCU_S_RearLeftDoorIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_FrontRightDoorIndicato 2101;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_FrontRightDoorIndicato "P00_PCU_S_FrontRightDoorIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_FrontLeftDoorIndicator 2100;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_FrontLeftDoorIndicator "P00_PCU_S_FrontLeftDoorIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_ActualGearStateIndicat 2099;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_ActualGearStateIndicat "P00_PCU_S_ActualGearStateIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_RightTurnIndicatorComm 2097;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_RightTurnIndicatorComm "P00_PCU_S_RightTurnIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_ESCIndicatorCommand 2096;
+BA_ "SPN" SG_ 1610 P00_PCU_S_LowWiperWaterLevelIndi 2094;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_LowWiperWaterLevelIndi "P00_PCU_S_LowWiperWaterLevelIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_BrakeLightIndicatorCom 2093;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_BrakeLightIndicatorCom "P00_PCU_S_BrakeLightIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_AutoWindshieldWipingIn 2092;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_AutoWindshieldWipingIn "P00_PCU_S_AutoWindshieldWipingIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_WindshieldDefrostIndic 2091;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_WindshieldDefrostIndic "P00_PCU_S_WindshieldDefrostIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_RearWindowDefrostIndic 2090;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_RearWindowDefrostIndic "P00_PCU_S_RearWindowDefrostIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_DerateIndicatorCommand 2089;
+BA_ "SPN" SG_ 1610 P00_PCU_S_ReadyIndicatorCommand 2088;
+BA_ "SPN" SG_ 1610 P00_PCU_S_ChargerConnectionIndic 2087;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_ChargerConnectionIndic "P00_PCU_S_ChargerConnectionIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_AutoHoldIndicatorComma 2086;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_AutoHoldIndicatorComma "P00_PCU_S_AutoHoldIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_EPBIndicatorCommand 2085;
+BA_ "SPN" SG_ 1610 P00_PCU_S_RearFogLightIndicatorC 2084;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_RearFogLightIndicatorC "P00_PCU_S_RearFogLightIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_PositionLightIndicator 2082;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_PositionLightIndicator "P00_PCU_S_PositionLightIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_HighBeamIndicatorComma 2081;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_HighBeamIndicatorComma "P00_PCU_S_HighBeamIndicatorCommand";
+BA_ "SPN" SG_ 1610 P00_PCU_S_LowBeamIndicatorComman 2080;
+BA_ "SystemSignalLongSymbol" SG_ 1610 P00_PCU_S_LowBeamIndicatorComman "P00_PCU_S_LowBeamIndicatorCommand";
+BA_ "SPN" SG_ 1722 P07_PCU_S_TPMSStudyModeIndicator 3210;
+BA_ "SystemSignalLongSymbol" SG_ 1722 P07_PCU_S_TPMSStudyModeIndicator "P07_PCU_S_TPMSStudyModeIndicatorCommand";
+BA_ "SPN" SG_ 1722 P07_PCU_S_TPMSStudyFailureWarnin 3212;
+BA_ "SystemSignalLongSymbol" SG_ 1722 P07_PCU_S_TPMSStudyFailureWarnin "P07_PCU_S_TPMSStudyFailureWarningIndicatorCommand";
+BA_ "SPN" SG_ 1722 P07_PCU_S_RearLeftTireTemperatur 3208;
+BA_ "SystemSignalLongSymbol" SG_ 1722 P07_PCU_S_RearLeftTireTemperatur "P07_PCU_S_RearLeftTireTemperatureHighIndicatorCommand";
+BA_ "SPN" SG_ 1722 P07_PCU_S_FrontLeftTirePressureW 3202;
+BA_ "SystemSignalLongSymbol" SG_ 1722 P07_PCU_S_FrontLeftTirePressureW "P07_PCU_S_FrontLeftTirePressureWarningIndicatorCommand";
+BA_ "SPN" SG_ 1722 P07_PCU_S_TPMSSystemWarningIndic 3211;
+BA_ "SystemSignalLongSymbol" SG_ 1722 P07_PCU_S_TPMSSystemWarningIndic "P07_PCU_S_TPMSSystemWarningIndicatorCommand";
+BA_ "SPN" SG_ 1722 P07_PCU_D_RearRightTirePressure 3201;
+BA_ "SPN" SG_ 1722 P07_PCU_S_RearRightTireTemperatu 3209;
+BA_ "SystemSignalLongSymbol" SG_ 1722 P07_PCU_S_RearRightTireTemperatu "P07_PCU_S_RearRightTireTemperatureHighIndicatorCommand";
+BA_ "SPN" SG_ 1722 P07_PCU_S_RearRightTirePressureW 3205;
+BA_ "SystemSignalLongSymbol" SG_ 1722 P07_PCU_S_RearRightTirePressureW "P07_PCU_S_RearRightTirePressureWarningIndicatorCommand";
+BA_ "SPN" SG_ 1722 P07_PCU_D_RearLeftTirePressure 3200;
+BA_ "SPN" SG_ 1722 P07_PCU_S_RearLeftTirePressureWa 3204;
+BA_ "SystemSignalLongSymbol" SG_ 1722 P07_PCU_S_RearLeftTirePressureWa "P07_PCU_S_RearLeftTirePressureWarningIndicatorCommand";
+BA_ "SPN" SG_ 1722 P07_PCU_D_FrontRightTirePressure 2159;
+BA_ "SPN" SG_ 1722 P07_PCU_S_FrontRightTireTemperat 3207;
+BA_ "SystemSignalLongSymbol" SG_ 1722 P07_PCU_S_FrontRightTireTemperat "P07_PCU_S_FrontRightTireTemperatureHighIndicatorCommand";
+BA_ "SPN" SG_ 1722 P07_PCU_S_FrontRightTirePressure 3203;
+BA_ "SystemSignalLongSymbol" SG_ 1722 P07_PCU_S_FrontRightTirePressure "P07_PCU_S_FrontRightTirePressureWarningIndicatorCommand";
+BA_ "SPN" SG_ 1722 P07_PCU_D_FrontLeftTirePressure 2158;
+BA_ "SPN" SG_ 1722 P07_PCU_S_FrontLeftTireTemperatu 3206;
+BA_ "SystemSignalLongSymbol" SG_ 1722 P07_PCU_S_FrontLeftTireTemperatu "P07_PCU_S_FrontLeftTireTemperatureHighIndicatorCommand";
+BA_ "SPN" SG_ 1706 P06_PCU_D_RearRightTireTemperatu 2157;
+BA_ "SystemSignalLongSymbol" SG_ 1706 P06_PCU_D_RearRightTireTemperatu "P06_PCU_D_RearRightTireTemperature";
+BA_ "SPN" SG_ 1706 P06_PCU_D_RearLeftTireTemperatur 2156;
+BA_ "SystemSignalLongSymbol" SG_ 1706 P06_PCU_D_RearLeftTireTemperatur "P06_PCU_D_RearLeftTireTemperature";
+BA_ "SPN" SG_ 1706 P06_PCU_D_FrontRightTireTemperat 2155;
+BA_ "SystemSignalLongSymbol" SG_ 1706 P06_PCU_D_FrontRightTireTemperat "P06_PCU_D_FrontRightTireTemperature";
+BA_ "SPN" SG_ 1706 P06_PCU_D_FrontLeftTireTemperatu 2154;
+BA_ "SystemSignalLongSymbol" SG_ 1706 P06_PCU_D_FrontLeftTireTemperatu "P06_PCU_D_FrontLeftTireTemperature";
+VAL_ 1738 P08_PCU_S_fault 32768 "Emergency System Fault" 16384 "HV System Fault" 8192 "Accelerator Pedal Fault" 4096 "NDR Fault: Speed Lim 80 km/h" 2048 "Brake Fault: Speed Lim 40 km/h" 1024 "Critical System Fault" 512 "PCU Fault: Speed Lim 80 km/h" 256 "PCU Fault: Speed Lim 120 km/h" 128 "Battery Pack Pump Fault" 64 "EDU Pump Fault" 32 "Battery Pack Cooling Fault" 16 "Battery Pack Heating Fault" 8 "Cabin/Battery Cooling Fault" 4 "Motor Control Unit Fault" 2 "DCDC Fault: Speed Lim 80 km/h" 1 "Battery Pack System Fault" 0 "No Fault" ;
+VAL_ 1738 P00_PCU_S_RegenAlarmCommand 1 "On" 0 "Off" ;
+VAL_ 1738 P00_PCU_S_NotReadyAlarmCommand 1 "On" 0 "Off" ;
+VAL_ 1738 P00_PCU_S_DrivingRangeAlarmComma 1 "On" 0 "Off" ;
+VAL_ 1738 P00_PCU_S_PlugAlarmCommand 1 "On" 0 "Off" ;
+VAL_ 1738 P00_PCU_S_PepsAlarmCommand 1 "On" 0 "Off" ;
+VAL_ 1738 P00_PCU_S_LimpAlarmCommand 1 "On" 0 "Off" ;
+VAL_ 1738 P00_PCU_S_EcoAlarmCommand 1 "On" 0 "Off" ;
+VAL_ 1738 P00_PCU_S_DeratedAlarmCommand 1 "On" 0 "Off" ;
+VAL_ 1738 P00_PCU_S_ChargeStopAlarmCommand 1 "On" 0 "Off" ;
+VAL_ 1738 P00_PCU_S_BrakePedalAlarmCommand 1 "On" 0 "Off" ;
+VAL_ 1738 P00_PCU_S_AuxAlarmCommand 1 "On" 0 "Off" ;
+VAL_ 1738 P08_PCU_S_WakeUpCommand 2 "Sleep" 1 "Wake up" 0 "No action" ;
+VAL_ 1565 P00_CLUSTER_S_DriverSeatBeltUnfa 1 "On" 0 "Off" ;
+VAL_ 1565 P00_CLUSTER_S_AirbagMalfunctionI 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_ChargingIndicatorComma 2 "Fault-red" 1 "Charging-yellow" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_RearRightPassengerSeat 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_RearLeftPassengerSeatB 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_RearCenterPassengerSea 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_CoDriverSeatBeltUnfast 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_BatteryTemperatureIndi 4 "Red" 3 "Orange" 2 "Yellow" 1 "Blue" 0 "Green" ;
+VAL_ 1626 P01_PCU_S_MotorTemperatureIndica 4 "Red" 3 "Orange" 2 "Yellow" 1 "Blue" 0 "Green" ;
+VAL_ 1626 P01_PCU_S_ServiceResetCommand 1 "Active" 0 "Inactive" ;
+VAL_ 1626 P01_PCU_S_KeyFobBatteryLowIndica 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_KeyNotInVehicleIndicat 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_IgnitionSwitchWarningI 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_InsulationMalfunctionI 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_MotorMalfunctionIndica 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_HVBatteryHighTemperatu 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_HVBatteryMalfunctionIn 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_HVBatteryCutoffIndicat 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_EPSFailureIndicatorCom 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_BrakingMalfunctionIndi 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_ABSMalfunctionIndicato 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_TPMSWarningIndicatorCo 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_12VBatteryMalfunctionI 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_VehicleSystemFailureIn 1 "On" 0 "Off" ;
+VAL_ 1626 P01_PCU_S_EPBFailureIndicatorCom 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_V2LIndicatorCommand 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_ReadyIndicatorColorCom 1 "Green" 0 "Red" ;
+VAL_ 1610 P00_PCU_S_AutoHoldIndicatorColor 1 "Green" 0 "White" ;
+VAL_ 1610 P00_PCU_S_SOCIndicatorColorComma 3 "Red" 2 "Orange" 1 "Blue" 0 "Green" ;
+VAL_ 1610 P00_PCU_S_LowSOCIndicatorCommand 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_DriveModePageColorComm 1 "Sport-white" 0 "Eco-green" ;
+VAL_ 1610 P00_PCU_S_BuzzerEnableCommand 1 "Active" 0 "Inactive" ;
+VAL_ 1610 P00_PCU_S_WakeUpSignalCommand 3 "Reserved" 2 "SNA" 1 "Active" 0 "Inactive" ;
+VAL_ 1610 P00_PCU_S_DoorLockIndicatorComma 3 "Reserved" 2 "SNA" 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_AutoLightIndicatorComm 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_LeftTurnIndicatorComma 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_CruiseControlIndicator 3 "Set" 2 "Unset" 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_FrontFogLightIndicator 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_PageSelectorCommand 3 "Trip page" 2 "Off page" 1 "Charge page" 0 "Main page" ;
+VAL_ 1610 P00_PCU_S_ChargerTypeIndicatorCo 2 "AC" 1 "DC" 0 "Not connected" ;
+VAL_ 1610 P00_PCU_S_HoodIndicatorCommand 1 "Off" 0 "On" ;
+VAL_ 1610 P00_PCU_S_RearTrunkIndicatorComm 1 "Off" 0 "On" ;
+VAL_ 1610 P00_PCU_S_RearRightDoorIndicator 1 "Off" 0 "On" ;
+VAL_ 1610 P00_PCU_S_RearLeftDoorIndicatorC 1 "Off" 0 "On" ;
+VAL_ 1610 P00_PCU_S_FrontRightDoorIndicato 1 "Off" 0 "On" ;
+VAL_ 1610 P00_PCU_S_FrontLeftDoorIndicator 1 "Off" 0 "On" ;
+VAL_ 1610 P00_PCU_S_ActualGearStateIndicat 5 "P" 4 "N" 3 "R" 2 "DS" 1 "DE" 0 "D" ;
+VAL_ 1610 P00_PCU_S_RightTurnIndicatorComm 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_ESCIndicatorCommand 3 "ESC fault" 2 "ESC off" 1 "ESC intervention" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_LowWiperWaterLevelIndi 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_BrakeLightIndicatorCom 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_AutoWindshieldWipingIn 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_WindshieldDefrostIndic 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_RearWindowDefrostIndic 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_DerateIndicatorCommand 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_ReadyIndicatorCommand 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_ChargerConnectionIndic 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_AutoHoldIndicatorComma 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_EPBIndicatorCommand 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_RearFogLightIndicatorC 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_PositionLightIndicator 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_HighBeamIndicatorComma 1 "On" 0 "Off" ;
+VAL_ 1610 P00_PCU_S_LowBeamIndicatorComman 1 "On" 0 "Off" ;
+VAL_ 1722 P07_PCU_S_TPMSStudyModeIndicator 1 "On" 0 "Off" ;
+VAL_ 1722 P07_PCU_S_TPMSStudyFailureWarnin 1 "On" 0 "Off" ;
+VAL_ 1722 P07_PCU_S_RearLeftTireTemperatur 1 "On" 0 "Off" ;
+VAL_ 1722 P07_PCU_S_FrontLeftTirePressureW 7 "High/Low pressure micro warning" 6 "Sensor failure" 5 "Sensor battery low" 4 "Low pressure warning" 3 "High pressure warning" 2 "Quik leakage" 1 "No sensor" 0 "Normal" ;
+VAL_ 1722 P07_PCU_S_TPMSSystemWarningIndic 1 "On" 0 "Off" ;
+VAL_ 1722 P07_PCU_S_RearRightTireTemperatu 1 "On" 0 "Off" ;
+VAL_ 1722 P07_PCU_S_RearRightTirePressureW 7 "High/Low pressure micro warning" 6 "Sensor failure" 5 "Sensor battery low" 4 "Low pressure warning" 3 "High pressure warning" 2 "Quik leakage" 1 "No sensor" 0 "Normal" ;
+VAL_ 1722 P07_PCU_S_RearLeftTirePressureWa 7 "High/Low pressure micro warning" 6 "Sensor failure" 5 "Sensor battery low" 4 "Low pressure warning" 3 "High pressure warning" 2 "Quik leakage" 1 "No sensor" 0 "Normal" ;
+VAL_ 1722 P07_PCU_S_FrontRightTireTemperat 1 "On" 0 "Off" ;
+VAL_ 1722 P07_PCU_S_FrontRightTirePressure 7 "High/Low pressure micro warning" 6 "Sensor failure" 5 "Sensor battery low" 4 "Low pressure warning" 3 "High pressure warning" 2 "Quik leakage" 1 "No sensor" 0 "Normal" ;
+VAL_ 1722 P07_PCU_S_FrontLeftTireTemperatu 1 "On" 0 "Off" ;
+

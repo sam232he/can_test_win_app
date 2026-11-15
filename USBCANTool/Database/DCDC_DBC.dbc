@@ -1,0 +1,457 @@
+VERSION ""
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU DCDC
+VAL_TABLE_ P00_BCM_S_BCM_KeySts 3 "START" 2 "ON" 1 "Reserved" 0 "OFF" ;
+VAL_TABLE_ P04_PCU_S_VehSpdVD 1 "Invalid" 0 "Valid" ;
+VAL_TABLE_ P04_BMS_S_SlowChargeAchieve 1 "OK" 0 "Not OK" ;
+VAL_TABLE_ P04_BMS_S_ThermalRunawayFault 3 "Reserved" 2 "Reserved" 1 "Fault" 0 "No fault" ;
+VAL_TABLE_ P01_PCU_S_ChgPauseReq 3 "Reserved" 2 "Reserved" 1 "Stop charge request" 0 "No request" ;
+VAL_TABLE_ P01_PCU_S_EnableReq 1 "Enable" 0 "Disable" ;
+
+
+BO_ 290 PCU_P00_Command: 8 PCU
+ SG_ P00_PCU_D_CRC : 63|8@0+ (1,0) [0|255] ""  DCDC
+ SG_ P00_PCU_D_Counter : 51|4@0+ (1,0) [0|15] ""  DCDC
+ SG_ P00_PCU_D_LVOutputVoltageSetpoin : 15|8@0+ (0.1,0) [0|14] "V"  DCDC
+ SG_ P00_PCU_S_OBCChargePauseCommand : 5|2@0+ (1,0) [0|3] ""  DCDC
+ SG_ P00_PCU_S_EnableCommand : 2|1@0+ (1,0) [0|1] ""  DCDC
+
+BO_ 1106 DCDC_P01_Fault: 5 DCDC
+ SG_ P01_DCDC_F_SystemFault : 5|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P01_DCDC_S_WorkingModeStateTBOX : 4|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P01_DCDC_S_CoolingRequestState : 0|1@0+ (1,0) [0|1] "" Vector__XXX
+ SG_ P01_DCDC_F_HardwareFault : 35|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_InternalCommunication : 34|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_InternalElectronicFau : 33|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_SelfcheckFault : 32|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_TemperatureSensorFaul : 31|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_OverTemperatureFault : 30|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_LVCurrentSensorFault : 29|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_LVOutputShortToGround : 28|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_LVOutputOverCurrentFa : 27|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_LVOutputUnderVoltageF : 26|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_LVOutputOverVoltageFa : 25|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_HVCurrentSensorFault : 24|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_HVInputOverCurrentFau : 23|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_HVInputUnderVoltageFa : 22|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_HVInputOverVoltageFau : 21|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_HVILFaultCMDC : 20|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_PCUAbnormalParameterF : 18|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_F_PCUAbnormalUpdateRate : 16|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P01_DCDC_D_InternalTemperature : 15|8@0+ (1,-40) [-40|210] "°C"  PCU
+
+BO_ 458 DCDC_P00_VoltageCurrent: 8 DCDC
+ SG_ P00_DCDC_D_CRC : 63|8@0+ (1,0) [0|255] ""  PCU
+ SG_ P00_DCDC_D_Counter : 51|4@0+ (1,0) [0|15] ""  PCU
+ SG_ P00_DCDC_S_ConversionModeState : 44|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P00_DCDC_F_SystemFault : 42|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_DCDC_S_WorkingModeState : 40|1@0+ (1,0) [0|1] ""  PCU
+ SG_ P00_DCDC_D_LVOutputCurrent : 39|8@0+ (1,0) [0|250] "A"  PCU
+ SG_ P00_DCDC_D_LVOutputVoltageFeedba : 31|8@0+ (0.1,0) [0|25] "V"  PCU
+ SG_ P00_DCDC_D_HVInputCurrent : 23|8@0+ (0.1,0) [0|25] "A"  PCU
+ SG_ P00_DCDC_D_HVInputVoltage : 7|10@0+ (1,0) [0|1000] "V"  PCU
+
+
+
+CM_ SG_ 290 P00_PCU_D_CRC "8 bit CRC";
+CM_ SG_ 290 P00_PCU_D_Counter "Up counter (0-15)";
+CM_ SG_ 290 P00_PCU_D_LVOutputVoltageSetpoin "Low voltage output set point";
+CM_ SG_ 290 P00_PCU_S_OBCChargePauseCommand "On Board Charger (OBC) charge pause command";
+CM_ SG_ 290 P00_PCU_S_EnableCommand "Enable command";
+CM_ SG_ 1106 P01_DCDC_F_SystemFault "Global fault";
+CM_ SG_ 1106 P01_DCDC_S_WorkingModeStateTBOX "Working mode state (TBOX receiver)";
+CM_ SG_ 1106 P01_DCDC_S_CoolingRequestState "Cooling request state";
+CM_ SG_ 1106 P01_DCDC_F_HardwareFault "Hardware fault";
+CM_ SG_ 1106 P01_DCDC_F_InternalCommunication "Internal communication fault";
+CM_ SG_ 1106 P01_DCDC_F_InternalElectronicFau "Internal electronic fault";
+CM_ SG_ 1106 P01_DCDC_F_SelfcheckFault "Self check fault";
+CM_ SG_ 1106 P01_DCDC_F_TemperatureSensorFaul "Temperature sensor fault";
+CM_ SG_ 1106 P01_DCDC_F_OverTemperatureFault "Over temperature fault";
+CM_ SG_ 1106 P01_DCDC_F_LVCurrentSensorFault "Low voltage current sensor fault";
+CM_ SG_ 1106 P01_DCDC_F_LVOutputShortToGround "Low voltage output short circuit fault";
+CM_ SG_ 1106 P01_DCDC_F_LVOutputOverCurrentFa "Low voltage output over current fault";
+CM_ SG_ 1106 P01_DCDC_F_LVOutputUnderVoltageF "Low voltage output under voltage fault";
+CM_ SG_ 1106 P01_DCDC_F_LVOutputOverVoltageFa "Low voltage output over voltage fault";
+CM_ SG_ 1106 P01_DCDC_F_HVCurrentSensorFault "High voltage current sensor fault";
+CM_ SG_ 1106 P01_DCDC_F_HVInputOverCurrentFau "High voltage input over current fault";
+CM_ SG_ 1106 P01_DCDC_F_HVInputUnderVoltageFa "High voltage input under voltage fault";
+CM_ SG_ 1106 P01_DCDC_F_HVInputOverVoltageFau "High voltage input over voltage fault";
+CM_ SG_ 1106 P01_DCDC_F_HVILFaultCMDC "HV Interlock (HVIL) fault";
+CM_ SG_ 1106 P01_DCDC_F_PCUAbnormalParameterF "Invalid parameter fault";
+CM_ SG_ 1106 P01_DCDC_F_PCUAbnormalUpdateRate "Abnormal update rate fault";
+CM_ SG_ 1106 P01_DCDC_D_InternalTemperature "Internal temperature";
+CM_ SG_ 458 P00_DCDC_D_CRC "8 bit CRC";
+CM_ SG_ 458 P00_DCDC_D_Counter "Up counter (0-15)";
+CM_ SG_ 458 P00_DCDC_S_ConversionModeState "Conversion mode state";
+CM_ SG_ 458 P00_DCDC_F_SystemFault "System fault";
+CM_ SG_ 458 P00_DCDC_S_WorkingModeState "Working mode state";
+CM_ SG_ 458 P00_DCDC_D_LVOutputCurrent "Low voltage output current";
+CM_ SG_ 458 P00_DCDC_D_LVOutputVoltageFeedba "Low voltage output feedback";
+CM_ SG_ 458 P00_DCDC_D_HVInputCurrent "High voltage input current";
+CM_ SG_ 458 P00_DCDC_D_HVInputVoltage "High voltage input voltage";
+BA_DEF_ SG_  "FaultEffect" STRING ;
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ BO_  "J1939FdTpADS" INT 0 52;
+BA_DEF_ BO_  "J1939FdTpADT" INT 0 255;
+BA_DEF_ BO_  "J1939PgAppearanceOnBus" ENUM  "Default","CAN_Extended","CANFD_Extended";
+BA_DEF_ BO_  "J1939CPgSendTimeout" INT -1 3600000;
+BA_DEF_ BO_  "J1939CPgTOS" INT 0 7;
+BA_DEF_ BO_  "J1939CPgTF" INT 0 7;
+BA_DEF_ BU_  "J1939MultiPgSendTimeout" INT 0 3600000;
+BA_DEF_ BU_  "J1939MultiPgSizeThreshold" INT 0 64;
+BA_DEF_ BU_  "J1939MultiPgBroadcastType" ENUM  "FBFF","FEFF";
+BA_DEF_  "DatabaseVersion" STRING ;
+BA_DEF_ BO_  "FsJ1939UseCrcAndCounter" STRING ;
+BA_DEF_ BO_  "FsJ1939NeedsSHM" ENUM  "No","Yes";
+BA_DEF_ BO_  "FsJ1939Delay" INT 0 1000;
+BA_DEF_ BO_  "TpJ1939VarDlc" ENUM  "No","Yes";
+BA_DEF_ SG_  "SigType" ENUM  "Default","Range","RangeSigned","ASCII","Discrete","Control","ReferencePGN","DTC","StringDelimiter","StringLength","StringLengthControl","MessageCounter","MessageChecksum";
+BA_DEF_ SG_  "GenSigILSupport" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ BO_  "GenMsgFastOnStart" INT 0 100000;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 3600000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 1000000;
+BA_DEF_ SG_  "GenSigStartValue" INT 0 2147483647;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 100000;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "NmJ1939SystemInstance" INT 0 15;
+BA_DEF_ BU_  "NmJ1939System" INT 0 127;
+BA_DEF_ BU_  "NmJ1939ManufacturerCode" INT 0 2047;
+BA_DEF_ BU_  "NmJ1939IndustryGroup" INT 0 7;
+BA_DEF_ BU_  "NmJ1939IdentityNumber" INT 0 2097151;
+BA_DEF_ BU_  "NmJ1939FunctionInstance" INT 0 7;
+BA_DEF_ BU_  "NmJ1939Function" INT 0 255;
+BA_DEF_ BU_  "NmJ1939ECUInstance" INT 0 7;
+BA_DEF_ BU_  "NmJ1939AAC" INT 0 1;
+BA_DEF_ BU_  "NmStationAddress" INT 0 255;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclic","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","IfActive","noMsgSendType";
+BA_DEF_ BO_  "GenMsgRequestable" INT 0 1;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+BA_DEF_ SG_  "SPN" INT 0 524287;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "ProtocolType" STRING ;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "FaultEffect" "";
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZone" "";
+BA_DEF_DEF_  "FaultAction" "";
+BA_DEF_DEF_  "FaultTrigger" "";
+BA_DEF_DEF_  "J1939FdTpADS" 0;
+BA_DEF_DEF_  "J1939FdTpADT" 0;
+BA_DEF_DEF_  "J1939PgAppearanceOnBus" "Default";
+BA_DEF_DEF_  "J1939CPgSendTimeout" -1;
+BA_DEF_DEF_  "J1939CPgTOS" 2;
+BA_DEF_DEF_  "J1939CPgTF" 0;
+BA_DEF_DEF_  "J1939MultiPgSendTimeout" 2;
+BA_DEF_DEF_  "J1939MultiPgSizeThreshold" 56;
+BA_DEF_DEF_  "J1939MultiPgBroadcastType" "FBFF";
+BA_DEF_DEF_  "DatabaseVersion" "";
+BA_DEF_DEF_  "FsJ1939UseCrcAndCounter" "";
+BA_DEF_DEF_  "FsJ1939NeedsSHM" "No";
+BA_DEF_DEF_  "FsJ1939Delay" 0;
+BA_DEF_DEF_  "TpJ1939VarDlc" "No";
+BA_DEF_DEF_  "SigType" "Default";
+BA_DEF_DEF_  "GenSigILSupport" "Yes";
+BA_DEF_DEF_  "GenSigSendType" "NoSigSendType";
+BA_DEF_DEF_  "GenMsgFastOnStart" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "NmJ1939SystemInstance" 0;
+BA_DEF_DEF_  "NmJ1939System" 0;
+BA_DEF_DEF_  "NmJ1939ManufacturerCode" 0;
+BA_DEF_DEF_  "NmJ1939IndustryGroup" 0;
+BA_DEF_DEF_  "NmJ1939IdentityNumber" 0;
+BA_DEF_DEF_  "NmJ1939FunctionInstance" 0;
+BA_DEF_DEF_  "NmJ1939Function" 0;
+BA_DEF_DEF_  "NmJ1939ECUInstance" 0;
+BA_DEF_DEF_  "NmJ1939AAC" 0;
+BA_DEF_DEF_  "NmStationAddress" 254;
+BA_DEF_DEF_  "GenMsgSendType" "noMsgSendType";
+BA_DEF_DEF_  "GenMsgRequestable" 1;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "ProtocolType" "J1939";
+BA_DEF_DEF_  "VFrameFormat" "J1939PG";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN FD";
+BA_ "DBName" "DCDC";
+BA_ "NmStationAddress" BU_ PCU 1;
+BA_ "NmStationAddress" BU_ DCDC 2;
+BA_ "TXRX" BO_ 290 1;
+BA_ "GenMsgSendType" BO_ 290 0;
+BA_ "VFrameFormat" BO_ 290 0;
+BA_ "GenMsgCycleTime" BO_ 290 10;
+BA_ "VFrameFormat" BO_ 1106 0;
+BA_ "TXRX" BO_ 1106 0;
+BA_ "GenMsgSendType" BO_ 1106 0;
+BA_ "GenMsgCycleTime" BO_ 1106 200;
+BA_ "VFrameFormat" BO_ 458 0;
+BA_ "TXRX" BO_ 458 0;
+BA_ "GenMsgSendType" BO_ 458 0;
+BA_ "GenMsgCycleTime" BO_ 458 10;
+BA_ "GenSigSendType" SG_ 290 P00_PCU_D_CRC 0;
+BA_ "GenSigSendType" SG_ 290 P00_PCU_D_Counter 0;
+BA_ "SPN" SG_ 290 P00_PCU_D_LVOutputVoltageSetpoin 2034;
+BA_ "GenSigSendType" SG_ 290 P00_PCU_D_LVOutputVoltageSetpoin 0;
+BA_ "SystemSignalLongSymbol" SG_ 290 P00_PCU_D_LVOutputVoltageSetpoin "P00_PCU_D_LVOutputVoltageSetpoint";
+BA_ "SPN" SG_ 290 P00_PCU_S_OBCChargePauseCommand 2033;
+BA_ "GenSigSendType" SG_ 290 P00_PCU_S_OBCChargePauseCommand 0;
+BA_ "SPN" SG_ 290 P00_PCU_S_EnableCommand 2032;
+BA_ "GenSigSendType" SG_ 290 P00_PCU_S_EnableCommand 0;
+BA_ "SPN" SG_ 1106 P01_DCDC_F_SystemFault 34;
+BA_ "SPN" SG_ 1106 P01_DCDC_S_WorkingModeStateTBOX 33;
+BA_ "SPN" SG_ 1106 P01_DCDC_S_CoolingRequestState 32;
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_HardwareFault "Internal Hardware Fault";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_HardwareFault "Internal Failure";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_HardwareFault "DCDC";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_HardwareFault 31;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_HardwareFault 0;
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_InternalCommunication "Internal Communication Fault";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_InternalCommunication "Internal Failure";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_InternalCommunication "DCDC";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_InternalCommunication 30;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_InternalCommunication 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_InternalCommunication "P01_DCDC_F_InternalCommunicationFault";
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_InternalElectronicFau "Internal Electronic Fault";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_InternalElectronicFau "Internal Failure";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_InternalElectronicFau "DCDC";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_InternalElectronicFau 29;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_InternalElectronicFau 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_InternalElectronicFau "P01_DCDC_F_InternalElectronicFault";
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_SelfcheckFault "Self Check Failed";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_SelfcheckFault "Internal Failure";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_SelfcheckFault "DCDC";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_SelfcheckFault 28;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_SelfcheckFault 0;
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_TemperatureSensorFaul "Invalid Data from Temperature Sensor";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_TemperatureSensorFaul "Internal Failure";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_TemperatureSensorFaul "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_TemperatureSensorFaul "DCDC";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_TemperatureSensorFaul 27;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_TemperatureSensorFaul 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_TemperatureSensorFaul "P01_DCDC_F_TemperatureSensorFault";
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_OverTemperatureFault "Temperature > 85 C";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_OverTemperatureFault "1) Check Cooling System Temperature
+2) Check the Output Impdeance of the DCDC for Possible Short Circuit
+3) Internal Failure";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_OverTemperatureFault "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_OverTemperatureFault "1) DCDC
+2) Cooling System";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_OverTemperatureFault 26;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_OverTemperatureFault 0;
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_LVCurrentSensorFault "Invalid Data from LV Current Sensor";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_LVCurrentSensorFault "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_LVCurrentSensorFault "DCDC";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_LVCurrentSensorFault "Internal Failure";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_LVCurrentSensorFault 25;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_LVCurrentSensorFault 0;
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_LVOutputShortToGround "Short Circuit at the DC-DC Output";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_LVOutputShortToGround "1) Check the LV Wiring
+2) Check the LV Battery
+3) Internal Failure";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_LVOutputShortToGround "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_LVOutputShortToGround "1) DCDC
+2) LV Battery
+3) Wiring";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_LVOutputShortToGround 24;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_LVOutputShortToGround 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_LVOutputShortToGround "P01_DCDC_F_LVOutputShortToGroundFault";
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_LVOutputOverCurrentFa "Output Current > 144 A";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_LVOutputOverCurrentFa "1) Disconnect the LV Battery and Check the Output Impdeance of DCDC for Possible Short Circuit
+2) Check the LV Battery
+3) Internal Failure";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_LVOutputOverCurrentFa "1) Derate
+2) Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_LVOutputOverCurrentFa "1) DCDC
+2) LV Battery
+3) Wiring";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_LVOutputOverCurrentFa 23;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_LVOutputOverCurrentFa 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_LVOutputOverCurrentFa "P01_DCDC_F_LVOutputOverCurrentFault";
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_LVOutputUnderVoltageF "Output Voltage > 8.8 V";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_LVOutputUnderVoltageF "1) Check the LV Battery Voltage
+2) Check the Wiring Connections
+3) Internal Failure";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_LVOutputUnderVoltageF "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_LVOutputUnderVoltageF "1) DCDC
+2) LV Battery";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_LVOutputUnderVoltageF 22;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_LVOutputUnderVoltageF 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_LVOutputUnderVoltageF "P01_DCDC_F_LVOutputUnderVoltageFault";
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_LVOutputOverVoltageFa "Output Voltage > 16 V";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_LVOutputOverVoltageFa "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_LVOutputOverVoltageFa "1) DCDC
+2) LV Battery";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_LVOutputOverVoltageFa "1) Check the LV Battery Voltage
+2) Internal Failure";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_LVOutputOverVoltageFa 21;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_LVOutputOverVoltageFa 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_LVOutputOverVoltageFa "P01_DCDC_F_LVOutputOverVoltageFault";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_HVCurrentSensorFault "Internal Failure";
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_HVCurrentSensorFault "Invalid Data from HV Current Sensor";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_HVCurrentSensorFault "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_HVCurrentSensorFault "DCDC";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_HVCurrentSensorFault 20;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_HVCurrentSensorFault 0;
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_HVInputOverCurrentFau "Input Current > 9 A";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_HVInputOverCurrentFau "1) Disconnect the LV Battery and Check the Output Impdeance of DCDC for Possible Short Circuit
+2) Check the Impedance of the DC Bus Connector While HV Battery Plug is Disconnected
+3) Internal Failure";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_HVInputOverCurrentFau "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_HVInputOverCurrentFau "DCDC";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_HVInputOverCurrentFau 19;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_HVInputOverCurrentFau 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_HVInputOverCurrentFau "P01_DCDC_F_HVInputOverCurrentFault";
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_HVInputUnderVoltageFa "Input Voltage < 230 V";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_HVInputUnderVoltageFa "1) Internal Failure
+2) Check HV Battery Volatge
+3) Check HV Connector";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_HVInputUnderVoltageFa "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_HVInputUnderVoltageFa "1) DCDC
+2) Battery Pack";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_HVInputUnderVoltageFa 18;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_HVInputUnderVoltageFa 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_HVInputUnderVoltageFa "P01_DCDC_F_HVInputUnderVoltageFault";
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_HVInputOverVoltageFau "Input Voltage > 450 V";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_HVInputOverVoltageFau "1) Internal Failure
+2) Check HV Battery Volatge";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_HVInputOverVoltageFau "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_HVInputOverVoltageFau "1) DCDC
+2) Battery Pack";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_HVInputOverVoltageFau 17;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_HVInputOverVoltageFau 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_HVInputOverVoltageFau "P01_DCDC_F_HVInputOverVoltageFault";
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_HVILFaultCMDC "Interlock Fault, One of the Connectors is not Connected Properly";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_HVILFaultCMDC "1) Check the 6in1 Connectors
+2) Internal Failure";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_HVILFaultCMDC "";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_HVILFaultCMDC "DCDC";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_HVILFaultCMDC 16;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_HVILFaultCMDC 0;
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_PCUAbnormalParameterF "Received Invalid Data from the VCU";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_PCUAbnormalParameterF "1) Internal Failure
+2) Check CAN Wiring
+3) Check Termination Resistance
+4) Check VCU CAN Status";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_PCUAbnormalParameterF "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_PCUAbnormalParameterF "1) DCDC
+2) VCU";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_PCUAbnormalParameterF 14;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_PCUAbnormalParameterF 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_PCUAbnormalParameterF "P01_DCDC_F_PCUAbnormalParameterFault";
+BA_ "FaultTrigger" SG_ 1106 P01_DCDC_F_PCUAbnormalUpdateRate "Abnormal VCU CAN Message Cycle Time";
+BA_ "FaultAction" SG_ 1106 P01_DCDC_F_PCUAbnormalUpdateRate "1) Internal Failure
+2) Check CAN Wiring
+3) Check Termination Resistance
+4) Check VCU CAN Status";
+BA_ "FaultEffect" SG_ 1106 P01_DCDC_F_PCUAbnormalUpdateRate "DCDC Shutdown";
+BA_ "FaultZone" SG_ 1106 P01_DCDC_F_PCUAbnormalUpdateRate "1) DCDC
+2) VCU
+3) Wiring";
+BA_ "SPN" SG_ 1106 P01_DCDC_F_PCUAbnormalUpdateRate 12;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_F_PCUAbnormalUpdateRate 0;
+BA_ "SystemSignalLongSymbol" SG_ 1106 P01_DCDC_F_PCUAbnormalUpdateRate "P01_DCDC_F_PCUAbnormalUpdateRateFault";
+BA_ "SPN" SG_ 1106 P01_DCDC_D_InternalTemperature 11;
+BA_ "GenSigStartValue" SG_ 1106 P01_DCDC_D_InternalTemperature 40;
+BA_ "GenSigSendType" SG_ 1106 P01_DCDC_D_InternalTemperature 0;
+BA_ "GenSigSendType" SG_ 458 P00_DCDC_D_CRC 0;
+BA_ "GenSigSendType" SG_ 458 P00_DCDC_D_Counter 0;
+BA_ "SPN" SG_ 458 P00_DCDC_S_ConversionModeState 7;
+BA_ "GenSigSendType" SG_ 458 P00_DCDC_S_ConversionModeState 0;
+BA_ "FaultTrigger" SG_ 458 P00_DCDC_F_SystemFault "A fault code has been triggered in the system";
+BA_ "FaultAction" SG_ 458 P00_DCDC_F_SystemFault "Check Other Fault Codes";
+BA_ "FaultEffect" SG_ 458 P00_DCDC_F_SystemFault "No Action / DCDC Shutdown";
+BA_ "FaultZone" SG_ 458 P00_DCDC_F_SystemFault "DCDC";
+BA_ "SPN" SG_ 458 P00_DCDC_F_SystemFault 6;
+BA_ "GenSigSendType" SG_ 458 P00_DCDC_F_SystemFault 0;
+BA_ "SPN" SG_ 458 P00_DCDC_S_WorkingModeState 5;
+BA_ "GenSigSendType" SG_ 458 P00_DCDC_S_WorkingModeState 0;
+BA_ "SPN" SG_ 458 P00_DCDC_D_LVOutputCurrent 4;
+BA_ "GenSigSendType" SG_ 458 P00_DCDC_D_LVOutputCurrent 0;
+BA_ "SPN" SG_ 458 P00_DCDC_D_LVOutputVoltageFeedba 3;
+BA_ "GenSigSendType" SG_ 458 P00_DCDC_D_LVOutputVoltageFeedba 0;
+BA_ "SystemSignalLongSymbol" SG_ 458 P00_DCDC_D_LVOutputVoltageFeedba "P00_DCDC_D_LVOutputVoltageFeedback";
+BA_ "SPN" SG_ 458 P00_DCDC_D_HVInputCurrent 2;
+BA_ "GenSigSendType" SG_ 458 P00_DCDC_D_HVInputCurrent 0;
+BA_ "SPN" SG_ 458 P00_DCDC_D_HVInputVoltage 1;
+BA_ "GenSigSendType" SG_ 458 P00_DCDC_D_HVInputVoltage 0;
+VAL_ 290 P00_PCU_S_OBCChargePauseCommand 3 "Reserved" 2 "Reserved" 1 "Stop charge request" 0 "No request" ;
+VAL_ 290 P00_PCU_S_EnableCommand 1 "Enable" 0 "Disable" ;
+VAL_ 1106 P01_DCDC_F_SystemFault 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_S_WorkingModeStateTBOX 1 "On" 0 "Off" ;
+VAL_ 1106 P01_DCDC_S_CoolingRequestState 1 "Yes" 0 "No" ;
+VAL_ 1106 P01_DCDC_F_HardwareFault 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_InternalCommunication 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_InternalElectronicFau 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_SelfcheckFault 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_TemperatureSensorFaul 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_OverTemperatureFault 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_LVCurrentSensorFault 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_LVOutputShortToGround 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_LVOutputOverCurrentFa 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_LVOutputUnderVoltageF 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_LVOutputOverVoltageFa 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_HVCurrentSensorFault 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_HVInputOverCurrentFau 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_HVInputUnderVoltageFa 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_HVInputOverVoltageFau 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_HVILFaultCMDC 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_PCUAbnormalParameterF 1 "Fault" 0 "No fault" ;
+VAL_ 1106 P01_DCDC_F_PCUAbnormalUpdateRate 1 "Fault" 0 "No fault" ;
+VAL_ 458 P00_DCDC_S_ConversionModeState 3 "Reserved" 2 "AC-LV" 1 "HV-LV" 0 "Inactive" ;
+VAL_ 458 P00_DCDC_F_SystemFault 1 "Fault" 0 "No fault" ;
+VAL_ 458 P00_DCDC_S_WorkingModeState 1 "On" 0 "Off" ;
+

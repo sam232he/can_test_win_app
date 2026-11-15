@@ -1,0 +1,206 @@
+VERSION "1.0"
+
+
+NS_ : 
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BA_DEF_REL_
+	BA_REL_
+	BA_DEF_DEF_REL_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: PCU ABS
+VAL_TABLE_ Vt_Sig_RRWheelDir 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+VAL_TABLE_ Vt_Sig_RLWheelDir 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+VAL_TABLE_ Vt_Sig_FRWheelDir 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+VAL_TABLE_ Vt_Sig_FLWheelDir 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+
+
+BO_ 810 ABS_P01_Direction: 8 ABS
+ SG_ P01_ABS_D_FrontLeftWheelPulseCou : 50|11@0+ (1,0) [0|2046] ""  PCU
+ SG_ P01_ABS_D_FrontRightWheelPulseCo : 45|11@0+ (1,0) [0|2046] ""  PCU
+ SG_ P01_ABS_D_RearLeftWheelPulseCoun : 24|11@0+ (1,0) [0|2046] ""  PCU
+ SG_ P01_ABS_D_RearRightWheelPulseCou : 19|11@0+ (1,0) [0|2046] ""  PCU
+ SG_ P01_ABS_D_Counter : 23|4@0+ (1,0) [0|15] ""  PCU
+ SG_ P01_ABS_S_RearRightWheelDirectio : 15|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P01_ABS_S_RearLeftWheelDirection : 13|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P01_ABS_S_FrontRightWheelDirecti : 11|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P01_ABS_S_FrontLeftWheelDirectio : 9|2@0+ (1,0) [0|3] ""  PCU
+ SG_ P01_ABS_D_CRC : 7|8@0+ (1,0) [0|255] ""  PCU
+
+BO_ 570 ABS_P00_Speed: 8 ABS
+ SG_ P00_ABS_D_FrontLeftWheelSpeed : 52|13@0+ (0.05625,0) [0|253] "km/h"  PCU
+ SG_ P00_ABS_D_RearLeftWheelSpeed : 30|13@0+ (0.05625,0) [0|253] "km/h"  PCU
+ SG_ P00_ABS_D_FrontRightWheelSpeed : 33|13@0+ (0.05625,0) [0|253] "km/h"  PCU
+ SG_ P00_ABS_D_Counter : 15|4@0+ (1,0) [0|15] ""  PCU
+ SG_ P00_ABS_D_RearRightWheelSpeed : 11|13@0+ (0.05625,0) [0|253] "km/h"  PCU
+ SG_ P00_ABS_D_CRC : 7|8@0+ (1,0) [0|255] ""  PCU
+
+
+
+CM_ SG_ 810 P01_ABS_D_FrontLeftWheelPulseCou "Front left wheel pulse counter";
+CM_ SG_ 810 P01_ABS_D_FrontRightWheelPulseCo "Front right wheel pulse counter";
+CM_ SG_ 810 P01_ABS_D_RearLeftWheelPulseCoun "Rear left wheel pulse counter";
+CM_ SG_ 810 P01_ABS_D_RearRightWheelPulseCou "Rear right wheel pulse counter";
+CM_ SG_ 810 P01_ABS_D_Counter "Up counter (0-15)";
+CM_ SG_ 810 P01_ABS_S_RearRightWheelDirectio "Rear right wheel speed direction";
+CM_ SG_ 810 P01_ABS_S_RearLeftWheelDirection "Rear left wheel speed direction";
+CM_ SG_ 810 P01_ABS_S_FrontRightWheelDirecti "Front right wheel speed direction";
+CM_ SG_ 810 P01_ABS_S_FrontLeftWheelDirectio "Front left wheel speed direction";
+CM_ SG_ 810 P01_ABS_D_CRC "8 bit CRC";
+CM_ SG_ 570 P00_ABS_D_FrontLeftWheelSpeed "Front left wheel speed";
+CM_ SG_ 570 P00_ABS_D_RearLeftWheelSpeed "Rear left wheel speed";
+CM_ SG_ 570 P00_ABS_D_FrontRightWheelSpeed "Front right wheel speed";
+CM_ SG_ 570 P00_ABS_D_Counter "4-bit Live Counter";
+CM_ SG_ 570 P00_ABS_D_RearRightWheelSpeed "Rear right wheel speed";
+CM_ SG_ 570 P00_ABS_D_CRC "8-bit CRC Signal";
+BA_DEF_ BO_  "TXRX" ENUM  "TX","RX";
+BA_DEF_ SG_  "SubSPN" INT 0 0;
+BA_DEF_ SG_  "FaultZone" STRING ;
+BA_DEF_ SG_  "FaultAction" STRING ;
+BA_DEF_ SG_  "FaultTrigger" STRING ;
+BA_DEF_ BO_  "FsJ1939NeedsSHM" ENUM  "No","Yes";
+BA_DEF_ BO_  "FsJ1939Delay" INT 0 1000;
+BA_DEF_ SG_  "SigType" ENUM  "Default","Range","RangeSigned","ASCII","Discrete","Control","ReferencePGN","DTC","StringDelimiter","StringLength","StringLengthControl","MessageCounter","MessageChecksum";
+BA_DEF_ SG_  "GenSigILSupport" ENUM  "No","Yes";
+BA_DEF_ SG_  "GenSigSendType" ENUM  "Cyclic","OnWrite","OnWriteWithRepetition","OnChange","OnChangeWithRepetition","IfActive","IfActiveWithRepetition","NoSigSendType";
+BA_DEF_ BO_  "GenMsgFastOnStart" INT 0 100000;
+BA_DEF_ SG_  "GenSigInactiveValue" INT 0 0;
+BA_DEF_ BO_  "GenMsgCycleTimeFast" INT 0 3600000;
+BA_DEF_ BO_  "GenMsgNrOfRepetition" INT 0 1000000;
+BA_DEF_ SG_  "GenSigStartValue" INT 0 2147483647;
+BA_DEF_ BO_  "GenMsgDelayTime" INT 0 1000;
+BA_DEF_ BO_  "GenMsgILSupport" ENUM  "No","Yes";
+BA_DEF_ BO_  "GenMsgStartDelayTime" INT 0 100000;
+BA_DEF_ BU_  "NodeLayerModules" STRING ;
+BA_DEF_ BU_  "ECU" STRING ;
+BA_DEF_ BU_  "NmStationAddress" INT 0 255;
+BA_DEF_ BO_  "GenMsgSendType" ENUM  "cyclic","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","NotUsed","IfActive","noMsgSendType";
+BA_DEF_ BO_  "GenMsgRequestable" INT 0 1;
+BA_DEF_ BO_  "GenMsgCycleTime" INT 0 3600000;
+BA_DEF_ SG_  "SPN" INT 0 524287;
+BA_DEF_  "DBName" STRING ;
+BA_DEF_  "BusType" STRING ;
+BA_DEF_  "ProtocolType" STRING ;
+BA_DEF_ BO_  "VFrameFormat" ENUM  "StandardCAN","ExtendedCAN","reserved","J1939PG","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","reserved","StandardCAN_FD","ExtendedCAN_FD";
+BA_DEF_ SG_  "SystemSignalLongSymbol" STRING ;
+BA_DEF_DEF_  "TXRX" "TX";
+BA_DEF_DEF_  "SubSPN" 0;
+BA_DEF_DEF_  "FaultZone" "NA";
+BA_DEF_DEF_  "FaultAction" "NA";
+BA_DEF_DEF_  "FaultTrigger" "NA";
+BA_DEF_DEF_  "FsJ1939NeedsSHM" "No";
+BA_DEF_DEF_  "FsJ1939Delay" 0;
+BA_DEF_DEF_  "SigType" "Default";
+BA_DEF_DEF_  "GenSigILSupport" "Yes";
+BA_DEF_DEF_  "GenSigSendType" "NoSigSendType";
+BA_DEF_DEF_  "GenMsgFastOnStart" 0;
+BA_DEF_DEF_  "GenSigInactiveValue" 0;
+BA_DEF_DEF_  "GenMsgCycleTimeFast" 0;
+BA_DEF_DEF_  "GenMsgNrOfRepetition" 0;
+BA_DEF_DEF_  "GenSigStartValue" 0;
+BA_DEF_DEF_  "GenMsgDelayTime" 0;
+BA_DEF_DEF_  "GenMsgILSupport" "Yes";
+BA_DEF_DEF_  "GenMsgStartDelayTime" 0;
+BA_DEF_DEF_  "NodeLayerModules" "";
+BA_DEF_DEF_  "ECU" "";
+BA_DEF_DEF_  "NmStationAddress" 254;
+BA_DEF_DEF_  "GenMsgSendType" "noMsgSendType";
+BA_DEF_DEF_  "GenMsgRequestable" 1;
+BA_DEF_DEF_  "GenMsgCycleTime" 0;
+BA_DEF_DEF_  "SPN" 0;
+BA_DEF_DEF_  "DBName" "";
+BA_DEF_DEF_  "BusType" "CAN";
+BA_DEF_DEF_  "ProtocolType" "CAN";
+BA_DEF_DEF_  "VFrameFormat" "J1939PG";
+BA_DEF_DEF_  "SystemSignalLongSymbol" "";
+BA_ "BusType" "CAN";
+BA_ "DBName" "ABS";
+BA_ "NmStationAddress" BU_ ABS 26;
+BA_ "GenMsgSendType" BO_ 810 0;
+BA_ "GenMsgCycleTime" BO_ 810 20;
+BA_ "TXRX" BO_ 810 0;
+BA_ "VFrameFormat" BO_ 810 0;
+BA_ "GenMsgSendType" BO_ 570 0;
+BA_ "GenMsgCycleTime" BO_ 570 10;
+BA_ "TXRX" BO_ 570 0;
+BA_ "VFrameFormat" BO_ 570 0;
+BA_ "SPN" SG_ 810 P01_ABS_D_FrontLeftWheelPulseCou 261;
+BA_ "GenSigStartValue" SG_ 810 P01_ABS_D_FrontLeftWheelPulseCou 0;
+BA_ "GenSigSendType" SG_ 810 P01_ABS_D_FrontLeftWheelPulseCou 0;
+BA_ "SystemSignalLongSymbol" SG_ 810 P01_ABS_D_FrontLeftWheelPulseCou "P01_ABS_D_FrontLeftWheelPulseCounter";
+BA_ "SPN" SG_ 810 P01_ABS_D_FrontRightWheelPulseCo 260;
+BA_ "GenSigStartValue" SG_ 810 P01_ABS_D_FrontRightWheelPulseCo 0;
+BA_ "GenSigSendType" SG_ 810 P01_ABS_D_FrontRightWheelPulseCo 0;
+BA_ "SystemSignalLongSymbol" SG_ 810 P01_ABS_D_FrontRightWheelPulseCo "P01_ABS_D_FrontRightWheelPulseCounter";
+BA_ "SPN" SG_ 810 P01_ABS_D_RearLeftWheelPulseCoun 259;
+BA_ "GenSigStartValue" SG_ 810 P01_ABS_D_RearLeftWheelPulseCoun 0;
+BA_ "GenSigSendType" SG_ 810 P01_ABS_D_RearLeftWheelPulseCoun 0;
+BA_ "SystemSignalLongSymbol" SG_ 810 P01_ABS_D_RearLeftWheelPulseCoun "P01_ABS_D_RearLeftWheelPulseCounter";
+BA_ "SPN" SG_ 810 P01_ABS_D_RearRightWheelPulseCou 258;
+BA_ "GenSigStartValue" SG_ 810 P01_ABS_D_RearRightWheelPulseCou 0;
+BA_ "GenSigSendType" SG_ 810 P01_ABS_D_RearRightWheelPulseCou 0;
+BA_ "SystemSignalLongSymbol" SG_ 810 P01_ABS_D_RearRightWheelPulseCou "P01_ABS_D_RearRightWheelPulseCounter";
+BA_ "SPN" SG_ 810 P01_ABS_D_Counter 0;
+BA_ "GenSigStartValue" SG_ 810 P01_ABS_D_Counter 0;
+BA_ "GenSigSendType" SG_ 810 P01_ABS_D_Counter 0;
+BA_ "SPN" SG_ 810 P01_ABS_S_RearRightWheelDirectio 257;
+BA_ "GenSigStartValue" SG_ 810 P01_ABS_S_RearRightWheelDirectio 2;
+BA_ "GenSigSendType" SG_ 810 P01_ABS_S_RearRightWheelDirectio 0;
+BA_ "SystemSignalLongSymbol" SG_ 810 P01_ABS_S_RearRightWheelDirectio "P01_ABS_S_RearRightWheelDirectionState";
+BA_ "SPN" SG_ 810 P01_ABS_S_RearLeftWheelDirection 256;
+BA_ "GenSigStartValue" SG_ 810 P01_ABS_S_RearLeftWheelDirection 2;
+BA_ "GenSigSendType" SG_ 810 P01_ABS_S_RearLeftWheelDirection 0;
+BA_ "SystemSignalLongSymbol" SG_ 810 P01_ABS_S_RearLeftWheelDirection "P01_ABS_S_RearLeftWheelDirectionState";
+BA_ "SPN" SG_ 810 P01_ABS_S_FrontRightWheelDirecti 255;
+BA_ "GenSigStartValue" SG_ 810 P01_ABS_S_FrontRightWheelDirecti 2;
+BA_ "GenSigSendType" SG_ 810 P01_ABS_S_FrontRightWheelDirecti 0;
+BA_ "SystemSignalLongSymbol" SG_ 810 P01_ABS_S_FrontRightWheelDirecti "P01_ABS_S_FrontRightWheelDirectionState";
+BA_ "SPN" SG_ 810 P01_ABS_S_FrontLeftWheelDirectio 254;
+BA_ "GenSigStartValue" SG_ 810 P01_ABS_S_FrontLeftWheelDirectio 2;
+BA_ "GenSigSendType" SG_ 810 P01_ABS_S_FrontLeftWheelDirectio 0;
+BA_ "SystemSignalLongSymbol" SG_ 810 P01_ABS_S_FrontLeftWheelDirectio "P01_ABS_S_FrontLeftWheelDirectionState";
+BA_ "SPN" SG_ 810 P01_ABS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 810 P01_ABS_D_CRC 0;
+BA_ "GenSigStartValue" SG_ 810 P01_ABS_D_CRC 0;
+BA_ "SPN" SG_ 570 P00_ABS_D_FrontLeftWheelSpeed 253;
+BA_ "GenSigSendType" SG_ 570 P00_ABS_D_FrontLeftWheelSpeed 0;
+BA_ "SPN" SG_ 570 P00_ABS_D_RearLeftWheelSpeed 251;
+BA_ "GenSigSendType" SG_ 570 P00_ABS_D_RearLeftWheelSpeed 0;
+BA_ "SPN" SG_ 570 P00_ABS_D_FrontRightWheelSpeed 252;
+BA_ "GenSigSendType" SG_ 570 P00_ABS_D_FrontRightWheelSpeed 0;
+BA_ "SPN" SG_ 570 P00_ABS_D_Counter 0;
+BA_ "GenSigSendType" SG_ 570 P00_ABS_D_Counter 0;
+BA_ "SPN" SG_ 570 P00_ABS_D_RearRightWheelSpeed 250;
+BA_ "GenSigSendType" SG_ 570 P00_ABS_D_RearRightWheelSpeed 0;
+BA_ "SPN" SG_ 570 P00_ABS_D_CRC 0;
+BA_ "GenSigSendType" SG_ 570 P00_ABS_D_CRC 0;
+VAL_ 810 P01_ABS_S_RearRightWheelDirectio 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+VAL_ 810 P01_ABS_S_RearLeftWheelDirection 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+VAL_ 810 P01_ABS_S_FrontRightWheelDirecti 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+VAL_ 810 P01_ABS_S_FrontLeftWheelDirectio 3 "Static" 2 "Unknown" 1 "Backward" 0 "Forward" ;
+

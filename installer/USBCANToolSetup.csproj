@@ -131,6 +131,11 @@
     <Copy SourceFiles="$(IntermediateOutputPath)pack_USBCANTool.exe" DestinationFiles="$(_PayloadDir)\USBCANTool.exe" />
     <Copy SourceFiles="$(_AppDir)\USBCANTool.exe.config" DestinationFiles="$(_PayloadDir)\USBCANTool.exe.config" Condition="Exists('$(_AppDir)\USBCANTool.exe.config')" />
     <Copy SourceFiles="$(MSBuildThisFileDirectory)..\USBCANTool\App.config" DestinationFiles="$(_PayloadDir)\USBCANTool.exe.config" Condition="!Exists('$(_PayloadDir)\USBCANTool.exe.config')" />
+    <ItemGroup>
+      <_DbcFiles Include="$(MSBuildThisFileDirectory)..\USBCANTool\Database\**\*.*" />
+    </ItemGroup>
+    <Error Condition="'@(_DbcFiles)' == ''" Text="The USBCANTool\Database folder is missing or empty." />
+    <Copy SourceFiles="@(_DbcFiles)" DestinationFiles="@(_DbcFiles->'$(_PayloadDir)\Database\%(RecursiveDir)%(Filename)%(Extension)')" />
     <Copy SourceFiles="$(ZlgSdk)\zlgcan.dll" DestinationFiles="$(_PayloadDir)\zlgcan.dll" />
     <ItemGroup>
       <_KernelFiles Include="$(ZlgSdk)\kerneldlls\**\*.*" />
