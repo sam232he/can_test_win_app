@@ -132,10 +132,11 @@
     <Copy SourceFiles="$(_AppDir)\USBCANTool.exe.config" DestinationFiles="$(_PayloadDir)\USBCANTool.exe.config" Condition="Exists('$(_AppDir)\USBCANTool.exe.config')" />
     <Copy SourceFiles="$(MSBuildThisFileDirectory)..\USBCANTool\App.config" DestinationFiles="$(_PayloadDir)\USBCANTool.exe.config" Condition="!Exists('$(_PayloadDir)\USBCANTool.exe.config')" />
     <ItemGroup>
-      <_DbcFiles Include="$(MSBuildThisFileDirectory)..\USBCANTool\Database\**\*.*" />
+      <_DatabaseReadme Include="$(MSBuildThisFileDirectory)..\USBCANTool\Database\README.txt" />
     </ItemGroup>
-    <Error Condition="'@(_DbcFiles)' == ''" Text="The USBCANTool\Database folder is missing or empty." />
-    <Copy SourceFiles="@(_DbcFiles)" DestinationFiles="@(_DbcFiles->'$(_PayloadDir)\Database\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Error Condition="'@(_DatabaseReadme)' == ''" Text="The USBCANTool\Database\README.txt file is missing." />
+    <MakeDir Directories="$(_PayloadDir)\Database" />
+    <Copy SourceFiles="@(_DatabaseReadme)" DestinationFiles="@(_DatabaseReadme->'$(_PayloadDir)\Database\%(Filename)%(Extension)')" />
     <Copy SourceFiles="$(ZlgSdk)\zlgcan.dll" DestinationFiles="$(_PayloadDir)\zlgcan.dll" />
     <ItemGroup>
       <_KernelFiles Include="$(ZlgSdk)\kerneldlls\**\*.*" />

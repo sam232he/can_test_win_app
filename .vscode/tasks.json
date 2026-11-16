@@ -1,0 +1,39 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build USBCANTool data copy",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				".\\installer\\USBCANToolSetup.csproj",
+				"--configuration",
+				"Release",
+				"--no-restore",
+				"-p:Platform=x64"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$msCompile"
+			]
+		},
+		{
+			"label": "Build received-data menu",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				".\\installer\\USBCANToolSetup.csproj",
+				"--configuration",
+				"Release",
+				"--no-restore",
+				"-p:Platform=x64"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$msCompile"
+			]
+		}
+	]
+}

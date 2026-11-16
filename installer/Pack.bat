@@ -67,11 +67,12 @@ if exist "%APPDIR%USBCANTool.exe.config" (
 ) else if exist "%ROOT%\USBCANTool\App.config" (
   copy /y "%ROOT%\USBCANTool\App.config" "%PAYLOAD%\USBCANTool.exe.config" >nul
 )
-if not exist "%APPDIR%Database\" (
-  echo ERROR: App Database folder missing: %APPDIR%Database
+if not exist "%ROOT%\USBCANTool\Database\README.txt" (
+  echo ERROR: Database folder README missing: %ROOT%\USBCANTool\Database\README.txt
   exit /b 1
 )
-xcopy /e /i /y "%APPDIR%Database" "%PAYLOAD%\Database" >nul
+mkdir "%PAYLOAD%\Database"
+copy /y "%ROOT%\USBCANTool\Database\README.txt" "%PAYLOAD%\Database\README.txt" >nul
 copy /y "%SDK%\zlgcan.dll" "%PAYLOAD%\zlgcan.dll" >nul
 if not exist "%SDK%\kerneldlls" (
   echo ERROR: kerneldlls folder missing in %SDK%

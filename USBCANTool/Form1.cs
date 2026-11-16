@@ -35,6 +35,7 @@ namespace USBCANTool
         private readonly bool[] _latestSignalDirty = new bool[RewriteSlotCount];
         private readonly byte[] _receivedDataScratch = new byte[64];
         private ListViewItem[] _slotSignalItems;
+        private ListViewItem _latestSignalContextItem;
         private Thread _rxThread;
         private volatile bool _bridgeRunning;
         private volatile bool _bridgeTxFailed;
@@ -178,6 +179,12 @@ namespace USBCANTool
             lvLatestSignal.Columns.Add("To", 75);
             lvLatestSignal.Columns.Add("Forwarded data", 185);
             lvLatestSignal.Columns.Add("Result", 75);
+            var contextMenu = new ContextMenuStrip();
+            AddLatestSignalMenuItem(contextMenu, "Copy received data", LatestSignalMenuAction.CopyReceived);
+            AddLatestSignalMenuItem(contextMenu, "Use received data in Rewrite", LatestSignalMenuAction.UseReceived);
+            contextMenu.Opening += LatestSignalContextMenu_Opening;
+            lvLatestSignal.ContextMenuStrip = contextMenu;
+            lvLatestSignal.MouseDown += LatestSignalView_MouseDown;
             _slotSignalItems = new ListViewItem[RewriteSlotCount];
             for (int i = 0; i < RewriteSlotCount; i++)
             {
@@ -192,6 +199,80 @@ namespace USBCANTool
                     ForwardedBytes = new byte[64]
                 };
             }
+        }
+
+        private void AddLatestSignalMenuItem(ContextMenuStrip menu, string text,
+            LatestSignalMenuAction action)
+        {
+            var item = new ToolStripMenuItem(text) { Tag = action };
+            item.Click += LatestSignalMenuItem_Click;
+            menu.Items.Add(item);
+        }
+
+        private void LatestSignalView_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right)
+                return;
+            ListViewHitTestInfo hit = lvLatestSignal.HitTest(e.Location);
+            _latestSignalContextItem = hit.Item;
+            if (hit.Item != null)
+                hit.Item.Selected = true;
+        }
+
+        private void LatestSignalContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (_latestSignalContextItem == null)
+            {
+                e.Cancel = true;
+                return;
+            }
+            string received = _latestSignalContextItem.SubItems[4].Text;
+            ContextMenuStrip menu = sender as ContextMenuStrip;
+            foreach (ToolStripItem menuItem in menu.Items)
+            {
+                ToolStripMenuItem item = menuItem as ToolStripMenuItem;
+                if (item == null || !(item.Tag is LatestSignalMenuAction))
+                    continue;
+
+                item.Enabled = !string.IsNullOrWhiteSpace(received);
+            }
+        }
+
+        private void LatestSignalMenuItem_Click(object sender, EventArgs e)
+        {
+            var menuItem = sender as ToolStripMenuItem;
+            if (menuItem == null || !(menuItem.Tag is LatestSignalMenuAction) ||
+                _latestSignalContextItem == null)
+                return;
+
+            LatestSignalMenuAction action = (LatestSignalMenuAction)menuItem.Tag;
+            string data = _latestSignalContextItem.SubItems[4].Text;
+            if (string.IsNullOrWhiteSpace(data))
+                return;
+
+            if (action == LatestSignalMenuAction.CopyReceived)
+            {
+                try
+                {
+                    Clipboard.SetText(data);
+                }
+                catch (ExternalException ex)
+                {
+                    MessageBox.Show(this, "Could not copy frame data to the clipboard. " + ex.Message,
+                        "Copy frame data", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                return;
+            }
+
+            int slot;
+            if (!int.TryParse(_latestSignalContextItem.SubItems[0].Text, out slot) ||
+                slot < 1 || slot > _rewriteData.Length)
+                return;
+
+            byte[] bytes = ParseDataBytes(data);
+            _rewriteData[slot - 1].Text = BytesToHex(bytes, Math.Min(8, bytes.Length));
+            _rewriteData[slot - 1].SelectionStart = _rewriteData[slot - 1].Text.Length;
+            _rewriteData[slot - 1].Focus();
         }
 
         private void InitRewriteSlots()
@@ -2110,6 +2191,12 @@ namespace USBCANTool
                 Array.Clear(ReceivedBytes, 0, ReceivedBytes.Length);
                 Array.Clear(ForwardedBytes, 0, ForwardedBytes.Length);
             }
+        }
+
+        private enum LatestSignalMenuAction
+        {
+            CopyReceived,
+            UseReceived
         }
 
         private sealed class BaudOption

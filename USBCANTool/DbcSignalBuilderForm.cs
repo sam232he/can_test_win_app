@@ -476,9 +476,7 @@ namespace USBCANTool
                 for (int bit = 0; bit < signal.BitLength; bit++)
                 {
                     int byteIndex = position / 8;
-                    int bitIndex = signal.IsLittleEndian
-                        ? position % 8
-                        : 7 - (position % 8);
+                    int bitIndex = GetByteBitIndex(position);
                     int sourceBit = signal.IsLittleEndian
                         ? bit
                         : signal.BitLength - bit - 1;
@@ -559,9 +557,7 @@ namespace USBCANTool
                         throw new FormatException("Overlapping signals are not supported in message " + message.Name + ".");
 
                     int byteIndex = bitPosition / 8;
-                    int bitIndex = signal.IsLittleEndian
-                        ? bitPosition % 8
-                        : 7 - (bitPosition % 8);
+                    int bitIndex = GetByteBitIndex(bitPosition);
                     int sourceBit = signal.IsLittleEndian
                         ? bit
                         : signal.BitLength - bit - 1;
@@ -587,6 +583,11 @@ namespace USBCANTool
             for (int bit = 0; bit < exponent; bit++)
                 result *= 2m;
             return result;
+        }
+
+        private static int GetByteBitIndex(int dbcBitPosition)
+        {
+            return dbcBitPosition & 7;
         }
     }
 }
