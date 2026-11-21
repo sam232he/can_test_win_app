@@ -35,6 +35,7 @@ namespace USBCANTool
 
         public const uint TYPE_CAN = 0;
         public const uint TYPE_CANFD = 1;
+        public const uint TYPE_ALL_DATA = 2;
 
         public const uint CAN_EFF_FLAG = 0x80000000;
         public const uint CAN_RTR_FLAG = 0x40000000;
@@ -554,6 +555,6 @@ namespace USBCANTool
         public static unsafe extern uint ZCAN_ReceiveFD(IntPtr channel_handle, ZCAN_ReceiveFD_Data* pReceive, uint len, int wait_time);
 
         [DllImport("zlgcan.dll", CallingConvention = CallingConvention.StdCall)]
-        public static extern uint ZCAN_GetReceiveNum(IntPtr channel_handle, uint type);
+        public static extern uint ZCAN_GetReceiveNum(IntPtr channel_handle, byte type);
     }
 }

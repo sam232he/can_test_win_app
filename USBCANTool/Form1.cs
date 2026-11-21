@@ -30,6 +30,7 @@ namespace USBCANTool
         private readonly object _rewriteLock = new object();
         private static readonly object BmsCounterLock = new object();
         private static byte _bmsCounter;
+        private static byte _dcdcAliveCounter;
         private readonly object _latestSignalLock = new object();
         private readonly LatestSignal[] _latestSignals = new LatestSignal[RewriteSlotCount];
         private readonly bool[] _latestSignalDirty = new bool[RewriteSlotCount];
@@ -555,22 +556,28 @@ namespace USBCANTool
             }
 
             var notices = new List<string>();
-            if (IsBmsCounterCanId(id))
+            if (IsDcdcCounterCanId(id))
+                notices.Add("The low nibble of byte 6 is an auto-generated alive counter and byte 7 is CRC; both are generated on transmit.");
+            else if (IsBmsCounterCanId(id))
                 notices.Add("Counter byte 6 and CRC byte 7 are initialized to zero here; they are generated on transmit.");
+            else if (IsNdrChecksumCanId(id))
+                notices.Add("Checksum byte 7 is initialized to zero here and recalculated from bytes 0-6 on transmit.");
             else if (IsCrcCanId(id))
                 notices.Add("CRC byte 7 is initialized to zero here and recalculated for the payload.");
             if (hiddenManagedSignals > 0)
-                notices.Add(hiddenManagedSignals + " DBC signal(s) overlapping auto-generated counter/CRC bytes are hidden.");
+                notices.Add(hiddenManagedSignals + " DBC signal(s) overlapping auto-generated counter/checksum bytes are hidden.");
             if (errors.Count > 0)
                 notices.Add(errors.Count + " DBC file(s) could not be searched.");
             string scanWarning = string.Join(" ", notices.ToArray());
             byte[] seedData = new byte[8];
             byte[] enteredData = ParseDataBytes(_rewriteData[index].Text);
             Array.Copy(enteredData, seedData, Math.Min(seedData.Length, enteredData.Length));
-            if (IsCrcCanId(id))
+            if (IsCrcCanId(id) || IsNdrChecksumCanId(id))
                 seedData[7] = 0;
             if (IsBmsCounterCanId(id))
                 seedData[6] = 0;
+            else if (IsDcdcCounterCanId(id))
+                seedData[6] &= 0xF0;
 
             using (var builder = new DbcSignalBuilderForm(matches, data =>
             {
@@ -1012,15 +1019,15 @@ namespace USBCANTool
             string n = index.ToString();
             if (fdDevice)
             {
-                ZlgCanApi.ZCAN_SetValue(device, n + "/clock", "60000000");
-                bool ok = ZlgCanApi.ZCAN_SetValue(device, n + "/protocol", protocolFd ? "1" : "0") == ZlgCanApi.STATUS_OK;
+                bool ok = ZlgCanApi.ZCAN_SetValue(device, n + "/clock", "60000000") == ZlgCanApi.STATUS_OK;
+                ok = ZlgCanApi.ZCAN_SetValue(device, n + "/protocol", protocolFd ? "1" : "0") == ZlgCanApi.STATUS_OK && ok;
                 if (protocolFd)
-                    ZlgCanApi.ZCAN_SetValue(device, n + "/canfd_standard", nonIso ? "1" : "0");
+                    ok = ZlgCanApi.ZCAN_SetValue(device, n + "/canfd_standard", nonIso ? "1" : "0") == ZlgCanApi.STATUS_OK && ok;
                 ok = ZlgCanApi.ZCAN_SetValue(device, n + "/canfd_abit_baud_rate", baud) == ZlgCanApi.STATUS_OK && ok;
                 if (protocolFd)
                     ok = ZlgCanApi.ZCAN_SetValue(device, n + "/canfd_dbit_baud_rate", dataBaud) == ZlgCanApi.STATUS_OK && ok;
                 else
-                    ZlgCanApi.ZCAN_SetValue(device, n + "/canfd_dbit_baud_rate", baud);
+                    ok = ZlgCanApi.ZCAN_SetValue(device, n + "/canfd_dbit_baud_rate", baud) == ZlgCanApi.STATUS_OK && ok;
                 return ok;
             }
             return ZlgCanApi.ZCAN_SetValue(device, n + "/baud_rate", baud) == ZlgCanApi.STATUS_OK;
@@ -1034,7 +1041,6 @@ namespace USBCANTool
             try
             {
                 ZlgCanApi.ZCAN_SetValue(device, index + "/filter_clear", "0");
-                ZlgCanApi.ZCAN_SetValue(device, index + "/filter_mode", "2");
                 ZlgCanApi.ZCAN_SetValue(device, index + "/set_device_tx_echo", "0");
             }
             catch
@@ -1301,16 +1307,34 @@ namespace USBCANTool
         private bool PollSide(IntPtr src, IntPtr dest, bool srcProtocolFd, bool destProtocolFd)
         {
             bool any = false;
-            uint count;
+            uint count = 0;
             lock (_canLock)
             {
-                if (src == IntPtr.Zero) return false;
-                count = ZlgCanApi.ZCAN_Receive(src,
-                    (ZlgCanApi.ZCAN_Receive_Data*)_rxCanPin.AddrOfPinnedObject().ToPointer(),
-                    (uint)RxBatch, 0);
+                if (src == IntPtr.Zero)
+                    return false;
+
+                // On an FD channel, query the classic-CAN queue before reading it;
+                // the driver exposes CAN and CAN-FD queues separately. Keep the
+                // classic-only path identical to the known-good CAN path, but
+                // still reject an unsigned native -1/error return.
+                uint request = (uint)RxBatch;
+                if (srcProtocolFd)
+                {
+                    uint pending = ZlgCanApi.ZCAN_GetReceiveNum(src, (byte)ZlgCanApi.TYPE_CAN);
+                    if (pending == 0 || pending == uint.MaxValue)
+                        request = 0;
+                    else if (pending < request)
+                        request = pending;
+                }
+                if (request != 0)
+                {
+                    uint returned = ZlgCanApi.ZCAN_Receive(src,
+                        (ZlgCanApi.ZCAN_Receive_Data*)_rxCanPin.AddrOfPinnedObject().ToPointer(),
+                        request, 0);
+                    if (returned <= request)
+                        count = returned;
+                }
             }
-            if (count > RxBatch)
-                count = RxBatch;
 
             for (uint i = 0; i < count; i++)
             {
@@ -1330,7 +1354,11 @@ namespace USBCANTool
                 int slotIndex = TryRewriteCan(ref f, _receivedDataScratch,
                     out receivedLength, out applyCounter);
                 EnsureMinimumCanLength(ref f);
-                ApplyBmsCrc(ref f, applyCounter);
+                if (applyCounter)
+                {
+                    ApplyBmsCrc(ref f, true);
+                    ApplyNdrChecksum(ref f);
+                }
                 bool sent = ForwardCan(dest, f);
                 NoteTxResult(sent);
                 if (sent)
@@ -1343,16 +1371,23 @@ namespace USBCANTool
             if (!srcProtocolFd)
                 return any;
 
-            uint fdCount;
+            uint fdCount = 0;
             lock (_canLock)
             {
-                if (src == IntPtr.Zero) return any;
-                fdCount = ZlgCanApi.ZCAN_ReceiveFD(src,
-                    (ZlgCanApi.ZCAN_ReceiveFD_Data*)_rxFdPin.AddrOfPinnedObject().ToPointer(),
-                    (uint)RxBatch, 0);
+                if (src == IntPtr.Zero)
+                    return any;
+
+                uint pending = ZlgCanApi.ZCAN_GetReceiveNum(src, (byte)ZlgCanApi.TYPE_CANFD);
+                if (pending != 0 && pending != uint.MaxValue)
+                {
+                    uint request = pending > (uint)RxBatch ? (uint)RxBatch : pending;
+                    uint returned = ZlgCanApi.ZCAN_ReceiveFD(src,
+                        (ZlgCanApi.ZCAN_ReceiveFD_Data*)_rxFdPin.AddrOfPinnedObject().ToPointer(),
+                        request, 0);
+                    if (returned <= request)
+                        fdCount = returned;
+                }
             }
-            if (fdCount > RxBatch)
-                fdCount = RxBatch;
 
             for (uint i = 0; i < fdCount; i++)
             {
@@ -1377,7 +1412,11 @@ namespace USBCANTool
                 if (destProtocolFd)
                 {
                     EnsureMinimumFdLength(ref f);
-                    ApplyBmsCrc(ref f, applyCounter);
+                    if (applyCounter)
+                    {
+                        ApplyBmsCrc(ref f, true);
+                        ApplyNdrChecksum(ref f);
+                    }
                     sent = ForwardFd(dest, f);
                     if (sent)
                         RememberTx(dest, f.can_id, f.data, f.len);
@@ -1388,7 +1427,11 @@ namespace USBCANTool
                 {
                     var classic = FdToClassic(f);
                     EnsureMinimumCanLength(ref classic);
-                    ApplyBmsCrc(ref classic, applyCounter);
+                    if (applyCounter)
+                    {
+                        ApplyBmsCrc(ref classic, true);
+                        ApplyNdrChecksum(ref classic);
+                    }
                     sent = ForwardCan(dest, classic);
                     if (sent)
                         RememberTx(dest, classic.can_id, classic.data, classic.can_dlc);
@@ -1599,7 +1642,6 @@ namespace USBCANTool
                 case 0x271:
                 case 0x145:
                 case 0x146:
-                case 0x317:
                 case 0x318:
                 case 0x355:
                 case 0x3D5:
@@ -1645,6 +1687,16 @@ namespace USBCANTool
             }
         }
 
+        private static byte GetNextDcdcAliveCounter()
+        {
+            lock (BmsCounterLock)
+            {
+                byte counter = _dcdcAliveCounter;
+                _dcdcAliveCounter = (byte)((_dcdcAliveCounter + 1) & 0x0F);
+                return counter;
+            }
+        }
+
         private static byte CalculateBmsCrc(byte* data, int length)
         {
             byte crc = 0x00;
@@ -1674,15 +1726,41 @@ namespace USBCANTool
             return IsBmsCrcCanId(canId) || IsDcdcCrcCanId(canId);
         }
 
+        private static bool IsNdrChecksumCanId(uint canId)
+        {
+            return !ZlgCanApi.IS_EFF(canId) &&
+                   !ZlgCanApi.IS_RTR(canId) &&
+                   !ZlgCanApi.IS_ERR(canId) &&
+                   ZlgCanApi.GET_ID(canId) == 0x22C;
+        }
+
+        private static bool IsDcdcCounterCanId(uint canId)
+        {
+            return !ZlgCanApi.IS_EFF(canId) &&
+                   !ZlgCanApi.IS_RTR(canId) &&
+                   !ZlgCanApi.IS_ERR(canId) &&
+                   (ZlgCanApi.GET_ID(canId) == 0x1CA ||
+                    ZlgCanApi.GET_ID(canId) == 0x145 ||
+                    ZlgCanApi.GET_ID(canId) == 0x146);
+        }
+
         private static bool SignalTouchesManagedByte(uint canId, DbcSignal signal)
         {
             int position = signal.StartBit;
             for (int bit = 0; bit < signal.BitLength; bit++)
             {
                 int byteIndex = position / 8;
-                if ((byteIndex == 7 && IsCrcCanId(canId)) ||
+                if ((byteIndex == 7 && (IsCrcCanId(canId) || IsNdrChecksumCanId(canId))) ||
                     (byteIndex == 6 && IsBmsCounterCanId(canId)))
                     return true;
+
+                if (byteIndex == 6 && IsDcdcCounterCanId(canId))
+                {
+                    int bitInByte = position & 7;
+                    bool lowNibble = signal.IsLittleEndian ? bitInByte < 4 : bitInByte >= 4;
+                    if (lowNibble)
+                        return true;
+                }
 
                 if (signal.IsLittleEndian)
                     position++;
@@ -1699,6 +1777,17 @@ namespace USBCANTool
                 : CalculateBmsCrc(data, length);
         }
 
+        private static byte CalculateNdrChecksum(byte* data)
+        {
+            ushort checksum = 0;
+            for (int i = 0; i < 7; i++)
+                checksum += data[i];
+
+            checksum &= 0xFF;
+            checksum ^= 0xFF;
+            return (byte)checksum;
+        }
+
         private static void ApplyBmsCrc(ref ZlgCanApi.can_frame frame, bool applyCounter)
         {
             if (!IsCrcCanId(frame.can_id) || frame.can_dlc != 8)
@@ -1706,8 +1795,13 @@ namespace USBCANTool
 
             fixed (byte* data = frame.data)
             {
-                if (applyCounter && IsBmsCounterCanId(frame.can_id))
-                    data[6] = GetNextBmsCounter();
+                if (applyCounter)
+                {
+                    if (IsBmsCounterCanId(frame.can_id))
+                        data[6] = GetNextBmsCounter();
+                    else if (IsDcdcCounterCanId(frame.can_id))
+                        data[6] = (byte)((data[6] & 0xF0) | GetNextDcdcAliveCounter());
+                }
                 data[7] = CalculateCrc(frame.can_id, data, frame.can_dlc);
             }
         }
@@ -1719,10 +1813,33 @@ namespace USBCANTool
 
             fixed (byte* data = frame.data)
             {
-                if (applyCounter && IsBmsCounterCanId(frame.can_id))
-                    data[6] = GetNextBmsCounter();
+                if (applyCounter)
+                {
+                    if (IsBmsCounterCanId(frame.can_id))
+                        data[6] = GetNextBmsCounter();
+                    else if (IsDcdcCounterCanId(frame.can_id))
+                        data[6] = (byte)((data[6] & 0xF0) | GetNextDcdcAliveCounter());
+                }
                 data[7] = CalculateCrc(frame.can_id, data, frame.len);
             }
+        }
+
+        private static void ApplyNdrChecksum(ref ZlgCanApi.can_frame frame)
+        {
+            if (!IsNdrChecksumCanId(frame.can_id) || frame.can_dlc != 8)
+                return;
+
+            fixed (byte* data = frame.data)
+                data[7] = CalculateNdrChecksum(data);
+        }
+
+        private static void ApplyNdrChecksum(ref ZlgCanApi.canfd_frame frame)
+        {
+            if (!IsNdrChecksumCanId(frame.can_id) || frame.len != 8)
+                return;
+
+            fixed (byte* data = frame.data)
+                data[7] = CalculateNdrChecksum(data);
         }
 
         private static void EnsureMinimumCanLength(ref ZlgCanApi.can_frame frame)
@@ -2036,12 +2153,14 @@ namespace USBCANTool
             if (hex.Length == 16 && TryGetRewriteCrcId(box, out uint canId))
             {
                 byte[] data = ParseDataBytes(hex.ToString());
-                byte crc;
+                byte checksum;
                 fixed (byte* bytes = data)
-                    crc = CalculateCrc(canId, bytes, data.Length);
-                string crcText = crc.ToString("X2");
-                hex[14] = crcText[0];
-                hex[15] = crcText[1];
+                    checksum = IsNdrChecksumCanId(canId)
+                        ? CalculateNdrChecksum(bytes)
+                        : CalculateCrc(canId, bytes, data.Length);
+                string checksumText = checksum.ToString("X2");
+                hex[14] = checksumText[0];
+                hex[15] = checksumText[1];
             }
 
             var formatted = new StringBuilder();
@@ -2082,11 +2201,12 @@ namespace USBCANTool
             canId = 0;
             int index = Array.IndexOf(_rewriteData, box);
             if (index < 0 || _rewriteId[index] == null || _rewriteFrame[index] == null ||
-                _rewriteFrame[index].SelectedIndex != 0)
+                _rewriteFrame[index].SelectedIndex != 0 || _rewriteMode[index] == null ||
+                _rewriteMode[index].Text != "Set")
                 return false;
 
             return TryParseCanId(_rewriteId[index].Text, ZlgCanApi.CAN_SFF_MASK, out canId) &&
-                IsCrcCanId(canId);
+                (IsCrcCanId(canId) || IsNdrChecksumCanId(canId));
         }
 
         private static bool TryParseCanId(string s, uint maxId, out uint id)
