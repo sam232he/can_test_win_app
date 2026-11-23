@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,9 @@ namespace USBCANTool
         private readonly string _notice;
         private readonly byte[] _initialData;
         private TextBox _activeEditor;
+        private string _statusError;
+        private DbcSignal _statusErrorSignal;
+        private List<DbcSignal> _rangeWarnings = new List<DbcSignal>();
 
         public DbcSignalBuilderForm(IEnumerable<DbcMessage> messages, Action<byte[]> insertData,
             string statusMessage, byte[] initialData)
@@ -33,7 +37,7 @@ namespace USBCANTool
             Text = "DBC Message Signals";
             StartPosition = FormStartPosition.CenterParent;
             MinimumSize = new System.Drawing.Size(560, 400);
-            ClientSize = new System.Drawing.Size(700, 500);
+            ClientSize = new System.Drawing.Size(900, 600);
 
             var header = new TableLayoutPanel
             {
@@ -73,24 +77,29 @@ namespace USBCANTool
                 Dock = DockStyle.Fill,
                 MultiSelect = false,
                 RowHeadersVisible = false,
-                SelectionMode = DataGridViewSelectionMode.CellSelect
+                SelectionMode = DataGridViewSelectionMode.CellSelect,
+                AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells
             };
             _signals.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "Signal",
                 HeaderText = "Signal",
                 ReadOnly = true,
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                MinimumWidth = 180
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                Width = 400,
+                MinimumWidth = 240,
+                DefaultCellStyle = { WrapMode = DataGridViewTriState.True }
             });
             _signals.Columns.Add(new DataGridViewTextBoxColumn
             {
                 Name = "Value",
                 HeaderText = "Value",
-                Width = 180
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                Width = 150
             });
             _signals.CellValueChanged += SignalValueChanged;
             _signals.EditingControlShowing += SignalsEditingControlShowing;
+            _signals.SelectionChanged += SignalsSelectionChanged;
 
             var footer = new TableLayoutPanel
             {
@@ -142,17 +151,17 @@ namespace USBCANTool
             Controls.Add(header);
 
             if (messages != null)
-                SetMessages(messages, statusMessage);
+                SetMessages(messages);
         }
 
-        private void SetMessages(IEnumerable<DbcMessage> messages, string statusMessage)
+        private void SetMessages(IEnumerable<DbcMessage> messages)
         {
             _messages.BeginUpdate();
             _messages.Items.Clear();
             foreach (DbcMessage message in messages)
                 _messages.Items.Add(message);
             _messages.EndUpdate();
-            _status.Text = statusMessage ?? "";
+            RefreshStatus();
             if (_messages.Items.Count > 0)
                 _messages.SelectedIndex = 0;
         }
@@ -163,9 +172,13 @@ namespace USBCANTool
             _signals.Rows.Clear();
             _payload.Clear();
             _copy.Enabled = false;
+            _statusError = null;
+            _statusErrorSignal = null;
+            _rangeWarnings.Clear();
             if (message == null)
             {
                 _messageInfo.Text = "";
+                RefreshStatus();
                 return;
             }
 
@@ -182,11 +195,11 @@ namespace USBCANTool
                 }
                 catch (FormatException ex)
                 {
-                    _status.Text = "Could not decode the existing payload: " + ex.Message;
+                    _statusError = "Could not decode the existing payload: " + ex.Message;
                 }
                 catch (OverflowException)
                 {
-                    _status.Text = "Could not decode the existing payload: value out of range.";
+                    _statusError = "Could not decode the existing payload: value out of range.";
                 }
             }
 
@@ -201,23 +214,59 @@ namespace USBCANTool
                 if (initialValues != null)
                     initialValue = initialValues[i];
 
-                int rowIndex = _signals.Rows.Add(signal.Name, initialValue.ToString(CultureInfo.InvariantCulture));
+                int rowIndex = _signals.Rows.Add(FormatSignalName(signal.DisplayName ?? signal.Name),
+                    initialValue.ToString(CultureInfo.InvariantCulture));
                 _signals.Rows[rowIndex].Tag = signal;
+                _signals.Rows[rowIndex].Cells[0].ToolTipText = signal.DisplayName ?? signal.Name;
             }
+            UpdateRangeStyles();
 
             if (message.Length > 8)
             {
-                _status.Text = "Message exceeds 8 bytes.";
+                _statusError = "Message exceeds 8 bytes.";
+                RefreshStatus();
             }
             else if (message.Signals.Any(signal => !string.IsNullOrEmpty(signal.Multiplexer)))
             {
-                _status.Text = "Multiplexed messages are not supported.";
+                _statusError = "Multiplexed messages are not supported.";
+                RefreshStatus();
             }
             else
             {
-                _status.Text = "";
+                _statusError = null;
                 UpdateGeneratedPayload();
             }
+        }
+
+        private string FormatSignalName(string name)
+        {
+            int maximumWidth = Math.Max(1, _signals.Columns["Signal"].Width - 12);
+            Font font = _signals.Font;
+            var displayName = new StringBuilder(name.Length);
+            int start = 0;
+            while (start < name.Length)
+            {
+                int end = start;
+                while (end < name.Length &&
+                    TextRenderer.MeasureText(name.Substring(start, end - start + 1), font).Width <= maximumWidth)
+                    end++;
+
+                if (end == start)
+                    end++;
+
+                if (end < name.Length)
+                {
+                    int separator = name.LastIndexOf('_', end - 1, end - start);
+                    if (separator > start)
+                        end = separator + 1;
+                }
+
+                displayName.Append(name, start, end - start);
+                start = end;
+                if (start < name.Length)
+                    displayName.AppendLine();
+            }
+            return displayName.ToString();
         }
 
         private void SignalsEditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
@@ -236,6 +285,11 @@ namespace USBCANTool
                 UpdateGeneratedPayload();
         }
 
+        private void SignalsSelectionChanged(object sender, EventArgs e)
+        {
+            RefreshStatus();
+        }
+
         private void EditingValueChanged(object sender, EventArgs e)
         {
             UpdateGeneratedPayload();
@@ -243,33 +297,54 @@ namespace USBCANTool
 
         private void UpdateGeneratedPayload()
         {
+            UpdateRangeStyles();
             DbcMessage message = _messages.SelectedItem as DbcMessage;
             if (message == null || message.Length > 8 ||
                 message.Signals.Any(signal => !string.IsNullOrEmpty(signal.Multiplexer)))
             {
                 _payload.Clear();
                 _copy.Enabled = false;
+                RefreshStatus();
                 return;
             }
 
             try
             {
-                byte[] data = DbcPayloadEncoder.Encode(message, _signals, _initialData);
+                List<DbcSignal> rangeWarnings;
+                byte[] data = DbcPayloadEncoder.Encode(message, _signals, _initialData, out rangeWarnings);
                 _payload.Text = string.Join(" ", data.Select(value => value.ToString("X2", CultureInfo.InvariantCulture)));
                 _copy.Enabled = true;
-                _status.Text = _notice;
+                _statusError = null;
+                _statusErrorSignal = null;
+                SetRangeWarnings(rangeWarnings);
+                RefreshStatus();
+            }
+            catch (DbcSignalValueException ex)
+            {
+                _payload.Clear();
+                _copy.Enabled = false;
+                _statusError = ex.Message;
+                _statusErrorSignal = ex.Signal;
+                _rangeWarnings.Clear();
+                RefreshStatus();
             }
             catch (FormatException ex)
             {
                 _payload.Clear();
                 _copy.Enabled = false;
-                _status.Text = ex.Message;
+                _statusError = ex.Message;
+                _statusErrorSignal = null;
+                _rangeWarnings.Clear();
+                RefreshStatus();
             }
             catch (OverflowException)
             {
                 _payload.Clear();
                 _copy.Enabled = false;
-                _status.Text = "Value out of range.";
+                _statusError = "Value out of range.";
+                _statusErrorSignal = null;
+                _rangeWarnings.Clear();
+                RefreshStatus();
             }
         }
 
@@ -286,17 +361,129 @@ namespace USBCANTool
                 return;
             try
             {
-                _insertData(DbcPayloadEncoder.Encode(message, _signals, _initialData));
-                DialogResult = DialogResult.OK;
-                Close();
+                List<DbcSignal> rangeWarnings;
+                byte[] data = DbcPayloadEncoder.Encode(message, _signals, _initialData, out rangeWarnings);
+                SetRangeWarnings(rangeWarnings);
+                _statusError = null;
+                _statusErrorSignal = null;
+                RefreshStatus();
+                _insertData(data);
+            }
+            catch (DbcSignalValueException ex)
+            {
+                _statusError = ex.Message;
+                _statusErrorSignal = ex.Signal;
+                _rangeWarnings.Clear();
+                RefreshStatus();
             }
             catch (FormatException ex)
             {
-                _status.Text = ex.Message;
+                _statusError = ex.Message;
+                _statusErrorSignal = null;
+                _rangeWarnings.Clear();
+                RefreshStatus();
             }
             catch (OverflowException)
             {
-                _status.Text = "Value out of range.";
+                _statusError = "Value out of range.";
+                _statusErrorSignal = null;
+                _rangeWarnings.Clear();
+                RefreshStatus();
+            }
+        }
+
+        private void SetRangeWarnings(List<DbcSignal> rangeWarnings)
+        {
+            _rangeWarnings = new List<DbcSignal>(rangeWarnings);
+        }
+
+        private void RefreshStatus()
+        {
+            DbcSignal selectedSignal = GetSelectedSignal();
+            string limits = GetSelectedSignalLimits(selectedSignal);
+            if (!string.IsNullOrEmpty(_statusError) &&
+                (_statusErrorSignal == null || _statusErrorSignal == selectedSignal))
+            {
+                _status.Text = _statusError +
+                    (string.IsNullOrEmpty(limits) ? "" : " | " + limits);
+                _status.ForeColor = SystemColors.ControlText;
+                return;
+            }
+
+            string warning = GetSelectedSignalWarning(selectedSignal);
+            string statusText = warning;
+            if (!string.IsNullOrEmpty(limits))
+                statusText += (statusText.Length == 0 ? "" : " | ") + limits;
+            if (!string.IsNullOrEmpty(_notice))
+                statusText += (statusText.Length == 0 ? "" : " | ") + _notice;
+            _status.Text = statusText;
+            _status.ForeColor = string.IsNullOrEmpty(warning)
+                ? SystemColors.ControlText
+                : Color.Firebrick;
+        }
+
+        private DbcSignal GetSelectedSignal()
+        {
+            if (_signals.CurrentCell == null)
+                return null;
+
+            return _signals.CurrentCell.OwningRow.Tag as DbcSignal;
+        }
+
+        private string GetSelectedSignalWarning(DbcSignal signal)
+        {
+            if (signal == null || !_rangeWarnings.Contains(signal))
+                return "";
+
+            string text = _signals.IsCurrentCellInEditMode &&
+                _signals.CurrentCell.OwningRow.Tag == signal &&
+                _signals.EditingControl != null
+                ? _signals.EditingControl.Text
+                : Convert.ToString(_signals.CurrentCell.OwningRow.Cells["Value"].Value,
+                    CultureInfo.CurrentCulture);
+            decimal physicalValue;
+            if (!DbcPayloadEncoder.TryParsePhysicalValue(text, out physicalValue))
+                return "";
+
+            string exceededLimit = signal.Minimum.HasValue && physicalValue < signal.Minimum.Value
+                ? "below minimum"
+                : "above maximum";
+            return (signal.DisplayName ?? signal.Name) + " is " + exceededLimit + ".";
+        }
+
+        private string GetSelectedSignalLimits(DbcSignal signal)
+        {
+            if (signal == null)
+                return "";
+
+            string name = signal.DisplayName ?? signal.Name;
+            string minimum = signal.Minimum.HasValue
+                ? signal.Minimum.Value.ToString(CultureInfo.InvariantCulture)
+                : "not specified";
+            string maximum = signal.Maximum.HasValue
+                ? signal.Maximum.Value.ToString(CultureInfo.InvariantCulture)
+                : "not specified";
+            return name + " | Min: " + minimum + " | Max: " + maximum;
+        }
+
+        private void UpdateRangeStyles()
+        {
+            foreach (DataGridViewRow row in _signals.Rows)
+            {
+                DbcSignal signal = row.Tag as DbcSignal;
+                DataGridViewCell valueCell = row.Cells["Value"];
+                string text = _signals.IsCurrentCellInEditMode &&
+                    _signals.CurrentCell == valueCell && _signals.EditingControl != null
+                    ? _signals.EditingControl.Text
+                    : Convert.ToString(valueCell.Value, CultureInfo.CurrentCulture);
+                decimal physicalValue;
+                bool outOfRange = signal != null &&
+                    DbcPayloadEncoder.TryParsePhysicalValue(text, out physicalValue) &&
+                    DbcPayloadEncoder.IsOutsideDeclaredRange(signal, physicalValue);
+                valueCell.Style.ForeColor = outOfRange ? Color.Firebrick : Color.Empty;
+
+                if (_activeEditor != null && _signals.CurrentCell == valueCell)
+                    _activeEditor.ForeColor = outOfRange ? Color.Firebrick : SystemColors.WindowText;
             }
         }
     }
@@ -321,6 +508,7 @@ namespace USBCANTool
     internal sealed class DbcSignal
     {
         public string Name { get; set; }
+        public string DisplayName { get; set; }
         public string Unit { get; set; }
         public string Multiplexer { get; set; }
         public int StartBit { get; set; }
@@ -331,6 +519,17 @@ namespace USBCANTool
         public decimal Offset { get; set; }
         public decimal? Minimum { get; set; }
         public decimal? Maximum { get; set; }
+    }
+
+    internal sealed class DbcSignalValueException : FormatException
+    {
+        public DbcSignal Signal { get; private set; }
+
+        public DbcSignalValueException(DbcSignal signal, string message)
+            : base(message)
+        {
+            Signal = signal;
+        }
     }
 
     internal static class DbcFileParser
@@ -345,6 +544,10 @@ namespace USBCANTool
             @"\(\s*(?<factor>" + NumberPattern + @")\s*,\s*(?<offset>" + NumberPattern + @")\s*\)\s*" +
             @"\[\s*(?<min>" + NumberPattern + @")\s*\|\s*(?<max>" + NumberPattern + @")\s*\]\s*" +
             @"""(?<unit>[^""]*)""",
+            RegexOptions.Compiled);
+        private static readonly Regex LongSignalNamePattern = new Regex(
+            @"^\s*BA_\s+""SystemSignalLongSymbol""\s+SG_\s+(?<id>\d+)\s+" +
+            @"(?<name>[A-Za-z0-9_]+)\s+""(?<longName>[^""]*)""\s*;",
             RegexOptions.Compiled);
 
         public static List<DbcMessage> Parse(string path)
@@ -437,6 +640,30 @@ namespace USBCANTool
                 currentMessage.Signals.Add(signal);
             }
 
+            foreach (string line in lines)
+            {
+                Match longNameMatch = LongSignalNamePattern.Match(line);
+                if (!longNameMatch.Success)
+                    continue;
+
+                uint dbcId;
+                if (!uint.TryParse(longNameMatch.Groups["id"].Value, NumberStyles.None,
+                        CultureInfo.InvariantCulture, out dbcId))
+                    continue;
+
+                bool extended = (dbcId & 0x80000000U) != 0 || dbcId > 0x7FFU;
+                uint canId = (dbcId & 0x80000000U) != 0 ? dbcId & 0x1FFFFFFFU : dbcId;
+                DbcMessage message = messages.FirstOrDefault(candidate =>
+                    candidate.CanId == canId && candidate.IsExtended == extended);
+                if (message == null)
+                    continue;
+
+                DbcSignal signal = message.Signals.FirstOrDefault(candidate =>
+                    candidate.Name == longNameMatch.Groups["name"].Value);
+                if (signal != null)
+                    signal.DisplayName = longNameMatch.Groups["longName"].Value;
+            }
+
             return messages;
         }
 
@@ -498,13 +725,15 @@ namespace USBCANTool
             return values;
         }
 
-        public static byte[] Encode(DbcMessage message, DataGridView grid, byte[] initialData)
+        public static byte[] Encode(DbcMessage message, DataGridView grid, byte[] initialData,
+            out List<DbcSignal> rangeWarnings)
         {
             if (message.Length > 8)
                 throw new FormatException("The selected message is longer than 8 bytes.");
             if (message.Signals.Any(signal => !string.IsNullOrEmpty(signal.Multiplexer)))
                 throw new FormatException("Multiplexed signals are not supported for this message.");
 
+            rangeWarnings = new List<DbcSignal>();
             var data = new byte[8];
             if (initialData != null)
                 Array.Copy(initialData, data, Math.Min(initialData.Length, data.Length));
@@ -520,17 +749,10 @@ namespace USBCANTool
                     grid.EditingControl != null
                     ? grid.EditingControl.Text
                     : Convert.ToString(row.Cells["Value"].Value, CultureInfo.CurrentCulture);
-                if (!decimal.TryParse(text, NumberStyles.Float, CultureInfo.CurrentCulture, out physicalValue) &&
-                    !decimal.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out physicalValue))
+                if (!TryParsePhysicalValue(text, out physicalValue))
                 {
-                    throw new FormatException("Enter a numeric value for signal " + signal.Name + ".");
-                }
-                if ((signal.Minimum.HasValue && physicalValue < signal.Minimum.Value) ||
-                    (signal.Maximum.HasValue && physicalValue > signal.Maximum.Value))
-                {
-                    throw new FormatException("Value for " + signal.Name + " must be between " +
-                        signal.Minimum.Value.ToString(CultureInfo.InvariantCulture) + " and " +
-                        signal.Maximum.Value.ToString(CultureInfo.InvariantCulture) + ".");
+                    throw new DbcSignalValueException(signal,
+                        "Enter a numeric value for signal " + signal.Name + ".");
                 }
 
                 decimal rawValue = decimal.Round(
@@ -542,9 +764,12 @@ namespace USBCANTool
                 decimal maximumRaw = signal.IsSigned ? (modulus / 2m) - 1m : modulus - 1m;
                 if (rawValue < minimumRaw || rawValue > maximumRaw)
                 {
-                    throw new FormatException("Value for " + signal.Name + " does not fit in " +
-                        signal.BitLength + " bits.");
+                    throw new DbcSignalValueException(signal,
+                        "Value for " + signal.Name + " does not fit in " + signal.BitLength + " bits.");
                 }
+
+                if (IsOutsideDeclaredRange(signal, physicalValue))
+                    rangeWarnings.Add(signal);
 
                 if (rawValue < 0)
                     rawValue += modulus;
@@ -575,6 +800,18 @@ namespace USBCANTool
             }
 
             return data;
+        }
+
+        internal static bool TryParsePhysicalValue(string text, out decimal physicalValue)
+        {
+            return decimal.TryParse(text, NumberStyles.Float, CultureInfo.CurrentCulture, out physicalValue) ||
+                decimal.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out physicalValue);
+        }
+
+        internal static bool IsOutsideDeclaredRange(DbcSignal signal, decimal physicalValue)
+        {
+            return (signal.Minimum.HasValue && physicalValue < signal.Minimum.Value) ||
+                (signal.Maximum.HasValue && physicalValue > signal.Maximum.Value);
         }
 
         private static decimal PowerOfTwo(int exponent)

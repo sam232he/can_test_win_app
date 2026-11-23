@@ -20,3 +20,4 @@ D:\git repositories\can_test_win_app\USBCANTool\bin\x64\Verify\USBCANTool.exe.co
 D:\git repositories\can_test_win_app\USBCANTool\bin\x64\Verify\USBCANTool.exe
 D:\git repositories\can_test_win_app\USBCANTool\bin\x64\Verify\USBCANTool.pdb
 D:\git repositories\can_test_win_app\USBCANTool\bin\x64\Debug\Database\README.txt
+D:\git repositories\can_test_win_app\USBCANTool\bin\x64\Verify\Database\README.txt

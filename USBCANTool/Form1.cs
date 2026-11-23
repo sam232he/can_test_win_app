@@ -496,7 +496,6 @@ namespace USBCANTool
                 AppDomain.CurrentDomain.BaseDirectory, "Database");
             List<DbcMessage> matches = new List<DbcMessage>();
             var errors = new List<string>();
-            int hiddenManagedSignals = 0;
             try
             {
                 Directory.CreateDirectory(databaseDirectory);
@@ -510,8 +509,7 @@ namespace USBCANTool
                             if (message.CanId != id || message.IsExtended != extended)
                                 continue;
                             message.SourceFile = file;
-                            hiddenManagedSignals += message.Signals.RemoveAll(
-                                signal => SignalTouchesManagedByte(id, signal));
+                            message.Signals.RemoveAll(IsManagedDbcSignal);
                             matches.Add(message);
                         }
                     }
@@ -555,20 +553,9 @@ namespace USBCANTool
                 return;
             }
 
-            var notices = new List<string>();
-            if (IsDcdcCounterCanId(id))
-                notices.Add("The low nibble of byte 6 is an auto-generated alive counter and byte 7 is CRC; both are generated on transmit.");
-            else if (IsBmsCounterCanId(id))
-                notices.Add("Counter byte 6 and CRC byte 7 are initialized to zero here; they are generated on transmit.");
-            else if (IsNdrChecksumCanId(id))
-                notices.Add("Checksum byte 7 is initialized to zero here and recalculated from bytes 0-6 on transmit.");
-            else if (IsCrcCanId(id))
-                notices.Add("CRC byte 7 is initialized to zero here and recalculated for the payload.");
-            if (hiddenManagedSignals > 0)
-                notices.Add(hiddenManagedSignals + " DBC signal(s) overlapping auto-generated counter/checksum bytes are hidden.");
-            if (errors.Count > 0)
-                notices.Add(errors.Count + " DBC file(s) could not be searched.");
-            string scanWarning = string.Join(" ", notices.ToArray());
+            string scanWarning = errors.Count > 0
+                ? errors.Count + " DBC file(s) could not be searched."
+                : "";
             byte[] seedData = new byte[8];
             byte[] enteredData = ParseDataBytes(_rewriteData[index].Text);
             Array.Copy(enteredData, seedData, Math.Min(seedData.Length, enteredData.Length));
@@ -940,15 +927,20 @@ namespace USBCANTool
         {
             if (_uiTimer != null)
                 _uiTimer.Stop();
-            if (!StopBridgeThreads())
-            {
-                SetFailed("Bridge worker did not stop; CAN handles remain open for safety.");
-                if (_uiTimer != null && _isOpen)
-                    _uiTimer.Start();
-                return false;
-            }
+
+            // Stop accepting new work first, then close the native channels/device
+            // even if the worker is stuck inside a vendor call.  Leaving the device
+            // open because a faulted bus worker did not join would prevent a clean
+            // reopen and could also block application shutdown.
+            _bridgeRunning = false;
             ClearLatestSignalDisplay();
             CloseNative(true);
+
+            Thread worker = _rxThread;
+            JoinWorker(worker, 500);
+            if (worker == null || !worker.IsAlive)
+                _rxThread = null;
+
             UpdateUiState(false);
             SetIdle("Closed");
             return true;
@@ -956,21 +948,29 @@ namespace USBCANTool
 
         private void CloseNative(bool updateFields)
         {
-            lock (_canLock)
+            // Atomically detach the handles before calling into the vendor DLL.
+            // This prevents the RX loop from starting another operation after
+            // shutdown has begun, while allowing shutdown to proceed even when
+            // the worker is currently holding _canLock in a native call.
+            IntPtr rxChannel = Interlocked.Exchange(ref _rxChannelHandle, IntPtr.Zero);
+            IntPtr txChannel = Interlocked.Exchange(ref _txChannelHandle, IntPtr.Zero);
+            IntPtr txDevice = Interlocked.Exchange(ref _txDeviceHandle, IntPtr.Zero);
+            IntPtr rxDevice = Interlocked.Exchange(ref _rxDeviceHandle, IntPtr.Zero);
+
+            bool sameChannel = txChannel != IntPtr.Zero && txChannel == rxChannel;
+            ResetChannel(ref rxChannel);
+            if (!sameChannel)
+                ResetChannel(ref txChannel);
+
+            if (txDevice != IntPtr.Zero && txDevice != rxDevice)
             {
-                ResetChannel(ref _rxChannelHandle);
-                ResetChannel(ref _txChannelHandle);
-                if (_txDeviceHandle != IntPtr.Zero && _txDeviceHandle != _rxDeviceHandle)
-                {
-                    try { ZlgCanApi.ZCAN_CloseDevice(_txDeviceHandle); } catch { }
-                }
-                _txDeviceHandle = IntPtr.Zero;
-                if (_rxDeviceHandle != IntPtr.Zero)
-                {
-                    try { ZlgCanApi.ZCAN_CloseDevice(_rxDeviceHandle); } catch { }
-                    _rxDeviceHandle = IntPtr.Zero;
-                }
+                try { ZlgCanApi.ZCAN_CloseDevice(txDevice); } catch { }
             }
+            if (rxDevice != IntPtr.Zero)
+            {
+                try { ZlgCanApi.ZCAN_CloseDevice(rxDevice); } catch { }
+            }
+
             if (updateFields)
             {
                 _rxProtocolFd = false;
@@ -1744,30 +1744,20 @@ namespace USBCANTool
                     ZlgCanApi.GET_ID(canId) == 0x146);
         }
 
-        private static bool SignalTouchesManagedByte(uint canId, DbcSignal signal)
+        private static bool IsManagedDbcSignal(DbcSignal signal)
         {
-            int position = signal.StartBit;
-            for (int bit = 0; bit < signal.BitLength; bit++)
-            {
-                int byteIndex = position / 8;
-                if ((byteIndex == 7 && (IsCrcCanId(canId) || IsNdrChecksumCanId(canId))) ||
-                    (byteIndex == 6 && IsBmsCounterCanId(canId)))
-                    return true;
+            if (signal == null || string.IsNullOrEmpty(signal.Name))
+                return false;
 
-                if (byteIndex == 6 && IsDcdcCounterCanId(canId))
-                {
-                    int bitInByte = position & 7;
-                    bool lowNibble = signal.IsLittleEndian ? bitInByte < 4 : bitInByte >= 4;
-                    if (lowNibble)
-                        return true;
-                }
+            return HasSignalNameSuffix(signal.Name, "D_Counter") ||
+                   HasSignalNameSuffix(signal.Name, "D_CRC") ||
+                   HasSignalNameSuffix(signal.Name, "D_CRC8");
+        }
 
-                if (signal.IsLittleEndian)
-                    position++;
-                else
-                    position = (position & 7) == 0 ? position + 15 : position - 1;
-            }
-            return false;
+        private static bool HasSignalNameSuffix(string signalName, string suffix)
+        {
+            return signalName.Equals(suffix, StringComparison.OrdinalIgnoreCase) ||
+                   signalName.EndsWith("_" + suffix, StringComparison.OrdinalIgnoreCase);
         }
 
         private static byte CalculateCrc(uint canId, byte* data, int length)
@@ -2545,7 +2535,8 @@ namespace USBCANTool
                 e.Cancel = true;
                 return;
             }
-            FreePins();
+            if (_rxThread == null || !_rxThread.IsAlive)
+                FreePins();
             base.OnFormClosing(e);
         }
     }
