@@ -31,6 +31,7 @@ namespace USBCANTool
         private static readonly object BmsCounterLock = new object();
         private static byte _bmsCounter;
         private static byte _dcdcAliveCounter;
+        private static byte _obcCounter;
         private readonly object _latestSignalLock = new object();
         private readonly LatestSignal[] _latestSignals = new LatestSignal[RewriteSlotCount];
         private readonly bool[] _latestSignalDirty = new bool[RewriteSlotCount];
@@ -563,7 +564,7 @@ namespace USBCANTool
                 seedData[7] = 0;
             if (IsBmsCounterCanId(id))
                 seedData[6] = 0;
-            else if (IsDcdcCounterCanId(id))
+            else if (IsDcdcCounterCanId(id) || IsObcCounterCanId(id))
                 seedData[6] &= 0xF0;
 
             using (var builder = new DbcSignalBuilderForm(matches, data =>
@@ -1356,6 +1357,7 @@ namespace USBCANTool
                 EnsureMinimumCanLength(ref f);
                 if (applyCounter)
                 {
+                    ApplyObcCounter(ref f);
                     ApplyBmsCrc(ref f, true);
                     ApplyNdrChecksum(ref f);
                 }
@@ -1414,6 +1416,7 @@ namespace USBCANTool
                     EnsureMinimumFdLength(ref f);
                     if (applyCounter)
                     {
+                        ApplyObcCounter(ref f);
                         ApplyBmsCrc(ref f, true);
                         ApplyNdrChecksum(ref f);
                     }
@@ -1429,6 +1432,7 @@ namespace USBCANTool
                     EnsureMinimumCanLength(ref classic);
                     if (applyCounter)
                     {
+                        ApplyObcCounter(ref classic);
                         ApplyBmsCrc(ref classic, true);
                         ApplyNdrChecksum(ref classic);
                     }
@@ -1648,8 +1652,6 @@ namespace USBCANTool
                 case 0x3A3:
                 case 0x3B5:
                 case 0x445:
-                case 0x461:
-                case 0x462:
                     return true;
                 default:
                     return false;
@@ -1693,6 +1695,16 @@ namespace USBCANTool
             {
                 byte counter = _dcdcAliveCounter;
                 _dcdcAliveCounter = (byte)((_dcdcAliveCounter + 1) & 0x0F);
+                return counter;
+            }
+        }
+
+        private static byte GetNextObcCounter()
+        {
+            lock (BmsCounterLock)
+            {
+                byte counter = _obcCounter;
+                _obcCounter = (byte)((_obcCounter + 1) & 0x0F);
                 return counter;
             }
         }
@@ -1742,6 +1754,32 @@ namespace USBCANTool
                    (ZlgCanApi.GET_ID(canId) == 0x1CA ||
                     ZlgCanApi.GET_ID(canId) == 0x145 ||
                     ZlgCanApi.GET_ID(canId) == 0x146);
+        }
+
+        private static bool IsObcCounterCanId(uint canId)
+        {
+            return !ZlgCanApi.IS_EFF(canId) &&
+                   !ZlgCanApi.IS_RTR(canId) &&
+                   !ZlgCanApi.IS_ERR(canId) &&
+                   ZlgCanApi.GET_ID(canId) == 0x461;
+        }
+
+        private static void ApplyObcCounter(ref ZlgCanApi.can_frame frame)
+        {
+            if (!IsObcCounterCanId(frame.can_id) || frame.can_dlc != 8)
+                return;
+
+            fixed (byte* data = frame.data)
+                data[6] = (byte)((data[6] & 0xF0) | GetNextObcCounter());
+        }
+
+        private static void ApplyObcCounter(ref ZlgCanApi.canfd_frame frame)
+        {
+            if (!IsObcCounterCanId(frame.can_id) || frame.len != 8)
+                return;
+
+            fixed (byte* data = frame.data)
+                data[6] = (byte)((data[6] & 0xF0) | GetNextObcCounter());
         }
 
         private static bool IsManagedDbcSignal(DbcSignal signal)
